@@ -1,3 +1,4 @@
 [core]
 longpaths = true
-autocrlf = true
+[core]
+autocrlf = false
