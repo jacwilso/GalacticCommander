@@ -36,16 +36,18 @@ public class Ship : MonoBehaviour, IInteractable, IDamageable
         health = general.Health;
         shieldStrength = general.ShieldStrength;
         ghostShip.gameObject.SetActive(false);
+        ghostShip.transform.position = Vector3.zero;
+        ghostShip.transform.rotation = Quaternion.identity;
     }
 
     public void Select()
     {
         if (TurnBehaviour.instance.Turn == TurnBehaviour.TurnEnum.Player)
         {
+            UISelectors.instance.transform.position = transform.position;
+            UISelectors.instance.gameObject.SetActive(true);
             TurnBehaviour.instance.ActionPhase += Action;
             TurnBehaviour.instance.EndPhase += End;
-            ghostShip.gameObject.SetActive(true);
-            ghostShip.Select();
         } else
         {
             // TODO
@@ -54,7 +56,7 @@ public class Ship : MonoBehaviour, IInteractable, IDamageable
 
     public void Deselect()
     {
-        ghostShip.Deselect();
+        
     }
 
     public void Damaged(GotHitParams hit)
@@ -76,18 +78,24 @@ public class Ship : MonoBehaviour, IInteractable, IDamageable
         // Dead
     }
 
-    public void Action()
+    private void Action()
     {
-        Movement();
+        StartCoroutine(ExecuteMovement());
     }
 
-    public void End()
+    private void End()
     {
-        ghostShip.transform.position = transform.position;
-        ghostShip.transform.rotation = transform.rotation;
+        ghostShip.transform.position = Vector3.zero;
+        ghostShip.transform.rotation = Quaternion.identity;
     }
 
     public void Movement()
+    {
+        ghostShip.gameObject.SetActive(true);
+        ghostShip.Select();
+    }
+
+    private IEnumerator ExecuteMovement()
     {
         flightPath = new BezierCurve(new Vector3[4]{
             transform.position,
@@ -96,11 +104,6 @@ public class Ship : MonoBehaviour, IInteractable, IDamageable
             ghostShip.transform.position
         });
         ghostShip.gameObject.SetActive(false);
-        StartCoroutine(ExecuteMovement());
-    }
-
-    public IEnumerator ExecuteMovement()
-    {
         float t = 0f;
         while (t < 1f)
         {

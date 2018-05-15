@@ -3,7 +3,7 @@
 public class LookAt : MonoBehaviour
 {
     [SerializeField]
-    private Transform target;
+    protected Transform target;
     [SerializeField]
     private string tag;
     [SerializeField]

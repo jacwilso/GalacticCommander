@@ -17,6 +17,11 @@ public class ARCursor : MonoBehaviour
     public delegate void CursorDelegate();
     public CursorDelegate Default, Hovering, Selected;
 
+    public IInteractable Interact
+    {
+        get { return interact; }
+    }
+
     private Transform cam;
     private State state;
     private IInteractable interact;
@@ -59,6 +64,7 @@ public class ARCursor : MonoBehaviour
         if (Input.GetMouseButtonDown(0))
 #else
         if (Input.GetTouch(0).phase == TouchPhase.Began)
+        //if (EventSystem.current.IsPointerOverGameObject(Input.GetTouch(0).fingerId)))
 #endif
         {
             if (state == State.Hovering)
@@ -68,9 +74,14 @@ public class ARCursor : MonoBehaviour
                 interact.Select();
             } else if (state == State.Selected)
             {
-                state = State.Default;
-                interact?.Deselect();
+                Deselect();
             }
         }
+    }
+
+    public void Deselect()
+    {
+        state = State.Default;
+        interact?.Deselect();
     }
 }
