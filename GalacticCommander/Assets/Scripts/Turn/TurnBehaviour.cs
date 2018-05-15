@@ -6,9 +6,14 @@ public class TurnBehaviour : MonoBehaviour {
     public static TurnBehaviour instance;
 
     public delegate void TurnDelegate();
-    public TurnDelegate EnemyTurn, PlayerTurn, PhaseTurn;
+    public TurnDelegate EnemyTurn, PlayerTurn, ActionPhase, EndPhase;
 
-    private enum State
+    public TurnEnum Turn
+    {
+        get { return turn; }
+    }
+
+    public enum TurnEnum
     {
         Player,
         Enemy
@@ -20,9 +25,9 @@ public class TurnBehaviour : MonoBehaviour {
         End
     }
 
-    private State state;
+    private TurnEnum turn;
     private Phase phase;
-    private TurnDelegate turn;
+    private TurnDelegate startTurn;
 
     private void Awake()
     {
@@ -33,19 +38,19 @@ public class TurnBehaviour : MonoBehaviour {
 
     private void Start()
     {
-        turn = PlayerTurn;
+        startTurn = PlayerTurn;
     }
 
     public void NextTurn()
     {
-        state = state == State.Player ? State.Enemy : State.Player;
-        switch(state)
+        turn = turn == TurnEnum.Player ? TurnEnum.Enemy : TurnEnum.Player;
+        switch(turn)
         {
-            case State.Player:
-                turn = PlayerTurn;
+            case TurnEnum.Player:
+                startTurn = PlayerTurn;
                 break;
-            case State.Enemy:
-                turn = EnemyTurn;
+            case TurnEnum.Enemy:
+                startTurn = EnemyTurn;
                 break;
         }
     }
@@ -55,18 +60,18 @@ public class TurnBehaviour : MonoBehaviour {
         switch (phase)
         {
             case Phase.Start:
-                turn?.Invoke();
-                turn = PhaseTurn;
+                startTurn?.Invoke();
+                startTurn = null;
                 phase = Phase.Action;
                 break;
             case Phase.Action:
-                turn?.Invoke();
-                turn = PhaseTurn;
+                ActionPhase?.Invoke();
+                ActionPhase = null;
                 phase = Phase.End;
                 break;
             case Phase.End:
-                turn?.Invoke();
-                PhaseTurn = turn = null;
+                EndPhase?.Invoke();
+                EndPhase = null;
                 phase = Phase.Start;
                 NextTurn();
                 break;

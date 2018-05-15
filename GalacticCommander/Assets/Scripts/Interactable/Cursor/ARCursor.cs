@@ -44,27 +44,33 @@ public class ARCursor : MonoBehaviour
             {
                 state = State.Hovering;
                 Hovering?.Invoke();
-                HoverInput();
             }
         } else if (state == State.Hovering)
         {
             state = State.Default;
             Default?.Invoke();
         }
+        InputUpdate();
     }
 
-    private void HoverInput()
+    private void InputUpdate()
     {
 #if UNITY_EDITOR
         if (Input.GetMouseButtonDown(0))
 #else
-        if (true) // Mobile
+        if (Input.GetTouch(0).phase == TouchPhase.Began)
 #endif
         {
-            state = State.Selected;
-            Selected?.Invoke();
-            interact.Interact();
-            // object selected
+            if (state == State.Hovering)
+            {
+                state = State.Selected;
+                Selected?.Invoke();
+                interact.Select();
+            } else if (state == State.Selected)
+            {
+                state = State.Default;
+                interact?.Deselect();
+            }
         }
     }
 }

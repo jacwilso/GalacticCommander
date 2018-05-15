@@ -18,19 +18,19 @@ public class TransitionBehaviour : MonoBehaviour {
     private void Player()
     {
         Turn("Player Start");
-        TurnBehaviour.instance.PhaseTurn += Action;
+        TurnBehaviour.instance.ActionPhase += Action;
     }
 
     private void Enemy()
     {
         Turn("Enemy Start");
-        TurnBehaviour.instance.PhaseTurn += Action;
+        TurnBehaviour.instance.ActionPhase += Action;
     }
 
     private void Action()
     {
         Turn("Action");
-        TurnBehaviour.instance.PhaseTurn = End;
+        TurnBehaviour.instance.EndPhase = End;
     }
 
     private void End()
