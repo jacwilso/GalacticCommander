@@ -80,7 +80,10 @@ namespace GoogleARCoreInternal
                 ExternApi.ArPresto_setConfiguration(ref prestoConfig);
                 m_CachedConfig = ScriptableObject.CreateInstance<ARCoreSessionConfig>();
                 m_CachedConfig.CopyFrom(config);
-                handle.Free();
+			    if (handle.IsAllocated)
+			    {
+                	handle.Free();
+			    }
             }
         }
 
