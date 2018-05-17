@@ -36,8 +36,8 @@ public class Ship : MonoBehaviour, IInteractable, IDamageable
         health = general.Health;
         shieldStrength = general.ShieldStrength;
         ghostShip.gameObject.SetActive(false);
-        ghostShip.transform.position = Vector3.zero;
-        ghostShip.transform.rotation = Quaternion.identity;
+        ghostShip.transform.localPosition= Vector3.zero;
+        ghostShip.transform.localRotation = Quaternion.identity;
     }
 
     public void Select()
@@ -56,7 +56,7 @@ public class Ship : MonoBehaviour, IInteractable, IDamageable
 
     public void Deselect()
     {
-        
+        ghostShip.Deselect();
     }
 
     public void Damaged(GotHitParams hit)
@@ -85,8 +85,8 @@ public class Ship : MonoBehaviour, IInteractable, IDamageable
 
     private void End()
     {
-        ghostShip.transform.position = Vector3.zero;
-        ghostShip.transform.rotation = Quaternion.identity;
+        ghostShip.transform.localPosition = Vector3.zero;
+        ghostShip.transform.localRotation = Quaternion.identity;
     }
 
     public void Movement()

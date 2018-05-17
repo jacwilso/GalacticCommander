@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+#if UNITY_EDITOR
+using Input = GoogleARCore.InstantPreviewInput;
+#endif
 
 public class ARCursor : MonoBehaviour
 {
@@ -60,11 +63,10 @@ public class ARCursor : MonoBehaviour
 
     private void InputUpdate()
     {
-#if UNITY_EDITOR
+#if UNITY_EDITOR && !INSTANT_PREVIEW
         if (Input.GetMouseButtonDown(0))
 #else
-        if (Input.GetTouch(0).phase == TouchPhase.Began)
-        //if (EventSystem.current.IsPointerOverGameObject(Input.GetTouch(0).fingerId)))
+        if (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began)
 #endif
         {
             if (state == State.Hovering)

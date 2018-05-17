@@ -34,8 +34,8 @@ public class GhostShip : MonoBehaviour, IInteractable
         float dist = Vector3.Distance(cam.position, transform.position);
         planeOffset = new Plane(normal, dist);
         camPos = cam.position;
-        camRot = Quaternion.Inverse(cam.rotation) * transform.rotation;
-        transform.rotation = camRot * transform.rotation;
+        //camRot = Quaternion.Inverse(cam.rotation) * transform.rotation;
+        //transform.rotation = camRot * transform.rotation;
     }
     
     public void Deselect()

@@ -9,6 +9,7 @@
             {
                 ship.Movement();
             }
+            UISelectors.instance.gameObject.SetActive(false);
         }
     }
 }

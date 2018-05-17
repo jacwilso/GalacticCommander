@@ -25,6 +25,11 @@ public class UISelectors : MonoBehaviour
 
     private void OnEnable()
     {
+        ActionWheel();
+    }
+
+    public void ActionWheel()
+    {
         actionWheel.SetActive(true);
         attackWheel.SetActive(false);
     }
