@@ -28,13 +28,10 @@ public class Ship : MonoBehaviour, IInteractable, IDamageable
     [SerializeField]
     private GhostShip ghostShip;
 
-    private int health, shieldStrength;
     private BezierCurve flightPath;
 
     private void Start ()
     {
-        health = general.Health;
-        shieldStrength = general.ShieldStrength;
         ghostShip.gameObject.SetActive(false);
         ghostShip.transform.localPosition= Vector3.zero;
         ghostShip.transform.localRotation = Quaternion.identity;
@@ -62,12 +59,12 @@ public class Ship : MonoBehaviour, IInteractable, IDamageable
     public void Damaged(GotHitParams hit)
     {
         // TODO include armor values
-        shieldStrength -= hit.damage;
-        health += Mathf.Min(0, shieldStrength);
+        general.ShieldStrength.value -= hit.damage;
+        general.Health.value += Mathf.Min(0, general.ShieldStrength.value);
 
-        shieldStrength = Mathf.Max(0, shieldStrength);
-        health = Mathf.Max(0, health);
-        if (health == 0)
+        general.ShieldStrength.value = Mathf.Max(0, general.ShieldStrength.value);
+        general.Health.value = Mathf.Max(0, general.Health.value);
+        if (general.Health.value == 0)
         {
             Death();
         }

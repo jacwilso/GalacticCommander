@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -8,29 +9,46 @@ public class ShipProperties : ScriptableObject
     [Header("Ship")]
     [SerializeField]
     private int health;
-    public int Health => health;
+    [NonSerialized]
+    public ModifiableStat<int> Health;
+
     [SerializeField]
     private int armor;
-    public int Armor => armor;
+    [NonSerialized]
+    public ModifiableStat<int> Armor;
+
     [SerializeField]
     [Range(0, 100)]
     private int evasion;
-    public int Evasion => evasion;
+    [NonSerialized]
+    public ModifiableStat<int> Evasion;
+
     [SerializeField]
     private int energy;
     public int Energy => energy;
-    //[SerializeField]
-    //private float speed;
-    //public float Speed => speed;
+
     [Header("Shield")]
     [SerializeField]
     private int shieldStrength;
-    public int ShieldStrength => shieldStrength;
+    [NonSerialized]
+    public ModifiableStat<int> ShieldStrength;
+
     [SerializeField]
     private int shieldRegen;
-    public int ShieldRegen => shieldRegen;
+    [NonSerialized]
+    public ModifiableStat<int> ShieldRegen;
+
     [Header("Actions")]
     public MovementProperties movement;
     public List<AttackProperties> attacks;
     public List<AbilityProperties> abilities;
+
+    public void OnAfterDeserialize()
+    {
+        Health = new ModifiableStat<int>(health);
+        Armor = new ModifiableStat<int>(armor);
+        Evasion = new ModifiableStat<int>(evasion);
+        ShieldStrength = new ModifiableStat<int>(shieldStrength);
+        ShieldRegen = new ModifiableStat<int>(shieldRegen);
+    }
 }

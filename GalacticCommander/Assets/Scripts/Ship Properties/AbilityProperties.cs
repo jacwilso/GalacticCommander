@@ -1,7 +1,10 @@
 ﻿using UnityEngine;
 
-//[CreateAssetMenu(menuName = "Ship Properties/Ability")]
 public abstract class AbilityProperties : ActionProperties
 {
-    public abstract void Ability();
+    [SerializeField]
+    private int turnCooldown;
+    public int TurnCooldown => turnCooldown;
+
+    public abstract void Ability(Ship target);
 }
