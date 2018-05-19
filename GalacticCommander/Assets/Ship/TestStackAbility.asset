@@ -9,8 +9,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 348107f15f61151499b99a61b9f51209, type: 3}
-  m_Name: StackAbility
+  m_Name: TestStackAbility
   m_EditorClassIdentifier: 
   cost: 0
   range: 0
   turnCooldown: 0
+  abilities: []

@@ -150,7 +150,7 @@ PlayerSettings:
   androidSupportedAspectRatio: 1
   androidMaxAspectRatio: 2.1
   applicationIdentifier:
-    Android: com.Company.HelloAR
+    Android: com.galacticcommander.alan.galacticcommander
   buildNumber: {}
   AndroidBundleVersionCode: 1
   AndroidMinSdkVersion: 24
@@ -725,9 +725,9 @@ PlayerSettings:
     UNet: 1
   facebookSdkVersion: 7.9.4
   apiCompatibilityLevel: 3
-  cloudProjectId: 4fd54322-85f1-4f2a-9051-02472408e6e0
-  projectName: GalacticCommander
-  organizationId: jacwilso
+  cloudProjectId: a8072b79-1bc5-427a-af96-615851e4fabc
+  projectName: GalacticCommander (2)
+  organizationId: alanturner
   cloudEnabled: 0
   enableNativePlatformBackendsForNewInputSystem: 0
   disableOldInputManagerSupport: 0
