@@ -7,23 +7,20 @@ using UnityEditor;
 [CanEditMultipleObjects]
 public class StatAbilityEditor : Editor
 {
-
-    private List<string> _properties = new List<string>();
-    private int _index = 0;
-
-    private List<string> shipProperties, //= new List<string>(),
-        attackProperties; //= new List<string>();
+    private Dictionary<string, string> shipProperties = new Dictionary<string, string>(),
+        attackProperties = new Dictionary<string, string>();
 
     private void OnEnable()
     {
-        shipProperties = CreateInstance<ShipProperties>().GetType().GetFields().Where(param => param.FieldType.IsGenericType && param.FieldType.GetGenericTypeDefinition() == typeof(ModifiableStat<>)).Select(param => ObjectNames.NicifyVariableName(param.Name)).ToList();
-
-        attackProperties = CreateInstance<AttackProperties>().GetType().GetFields().Where(param => param.FieldType.IsGenericType && param.FieldType.GetGenericTypeDefinition() == typeof(ModifiableStat<>)).Select(param => ObjectNames.NicifyVariableName(param.Name)).ToList();
+        PropertyDictionary(typeof(ShipProperties), shipProperties);
+        PropertyDictionary(typeof(AttackProperties), attackProperties);
     }
 
     public override void OnInspectorGUI()
     {
         DrawDefaultInspector();
+        Dictionary<string, string> _properties = null;
+        int _index = 0;
         StatAbility statAbility = target as StatAbility;
 
         statAbility.propertyObject = (PropertyObject)EditorGUILayout.EnumPopup("Property Object", statAbility.propertyObject);
@@ -31,14 +28,22 @@ public class StatAbilityEditor : Editor
         {
             case PropertyObject.Ship:
                 _properties = shipProperties;
-                
                 break;
             case PropertyObject.Attack:
                 _properties = attackProperties;
                 break;
         }
-        _index = EditorGUILayout.Popup("Parameter", _index, _properties.ToArray());
-        statAbility.parameter = _properties[_index];
+        string[] keys = _properties.Keys.ToArray();
+        _index = EditorGUILayout.Popup("Parameter", _index, keys);
+        statAbility.parameter = _properties[keys[_index]];
         EditorUtility.SetDirty(target);
+    }
+
+    private void PropertyDictionary(Type obj, Dictionary<string, string> properties)
+    {
+        CreateInstance(obj).GetType().GetFields().Where(param => param.FieldType == typeof(Stat)).ToList().ForEach(param => {
+            string var = ObjectNames.NicifyVariableName(param.Name);
+            properties.Add(var, param.Name);
+        });
     }
 }

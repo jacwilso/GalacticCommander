@@ -8,12 +8,12 @@ public class AttackProperties : ActionProperties
     [Range(0, 100)]
     private int accuracy;
     [NonSerialized]
-    public ModifiableStat<int> Accuracy;
+    public Stat Accuracy;
 
     [SerializeField]
     private int damage;
     [NonSerialized]
-    public ModifiableStat<int> Damage;
+    public Stat Damage;
 
     [SerializeField]
     [Range(-90f, 90f)]
@@ -29,10 +29,4 @@ public class AttackProperties : ActionProperties
     public AudioSource HitSFX => hitSFX;
     public AudioSource MissSFX => missSFX;
     public AudioSource FireSFX => fireSFX;
-
-    public void OnAfterDeserialize()
-    {
-        Accuracy = new ModifiableStat<int>(accuracy);
-        Damage = new ModifiableStat<int>(damage);
-    }
 }

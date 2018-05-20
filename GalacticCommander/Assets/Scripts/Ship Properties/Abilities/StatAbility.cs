@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 [CreateAssetMenu(menuName = "Ship Properties/Ability/Buff\u2215Debuff")]
 public class StatAbility : AbilityProperties
@@ -17,14 +18,19 @@ public class StatAbility : AbilityProperties
     [HideInInspector]
     public string parameter;
     [SerializeField]
+    [Tooltip("Whether the effect should be flat added, percentage add, or percentage multiply.")]
+    private StatModType modifierType;
+    [SerializeField]
     private float effect;
+    [NonSerialized]
     private float Effect;
     [SerializeField]
     [Tooltip("Number of turns the effect will last.")]
     private float duration;
 
-    public void OnAfterDeserialize()
+    public override void OnAfterDeserialize()
     {
+        base.OnAfterDeserialize();
         if (statType == StatType.Debuff)
         {
             Effect = -1f * effect;
@@ -33,6 +39,16 @@ public class StatAbility : AbilityProperties
 
     public override void Ability(Ship target)
     {
+        switch(propertyObject)
+        {
+            case PropertyObject.Ship:
+                Stat modifyStat = (Stat)target.general.GetType().GetField(parameter).GetValue(target.general);
+                modifyStat.AddModifier(new StatModifier(Effect, modifierType));
+                break;
+            case PropertyObject.Attack:
+                //TODO
+                break;
+        }
         throw new System.NotImplementedException();
     }
 }

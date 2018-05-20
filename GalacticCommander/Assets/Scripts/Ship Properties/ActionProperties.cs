@@ -1,11 +1,13 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
-public abstract class ActionProperties : ScriptableObject
+public abstract class ActionProperties : StatPropertyObject
 {
     [SerializeField]
     private int cost;
     public int Cost => cost;
     [SerializeField]
     private int range;
-    public int Range => range;
+    [NonSerialized]
+    public Stat Range;
 }

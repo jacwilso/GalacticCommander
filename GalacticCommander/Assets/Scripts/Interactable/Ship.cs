@@ -2,12 +2,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Ship : MonoBehaviour, IInteractable, IDamageable
+public class Ship : StatBehaviour, IInteractable, IDamageable
 {
     [System.Serializable]
     private class AttackPositions
     {
-        public AttackProperties 
+        public List<AttackProperties>
             top, 
             bottom, 
             left, 
@@ -17,8 +17,7 @@ public class Ship : MonoBehaviour, IInteractable, IDamageable
     }
 
     [Header("Properties")]
-    [SerializeField]
-    private ShipProperties general;
+    public ShipProperties general;
     [SerializeField]
     private MovementProperties movement;
     [SerializeField]
@@ -30,10 +29,10 @@ public class Ship : MonoBehaviour, IInteractable, IDamageable
 
     private BezierCurve flightPath;
 
-    private void Start ()
+    public void Start() 
     {
         ghostShip.gameObject.SetActive(false);
-        ghostShip.transform.localPosition= Vector3.zero;
+        ghostShip.transform.localPosition = Vector3.zero;
         ghostShip.transform.localRotation = Quaternion.identity;
     }
 
