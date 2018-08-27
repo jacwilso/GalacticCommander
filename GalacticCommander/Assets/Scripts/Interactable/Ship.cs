@@ -1,69 +1,27 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Ship : StatBehaviour, IInteractable, IDamageable
-{
-    [System.Serializable]
-    private class AttackPositions
+public class Ship : MonoBehaviour, IDamageable {
+
+    public ShipProperties properties;
+    public event Action DeathEvent;
+
+    private void Start()
     {
-        public List<AttackProperties>
-            top, 
-            bottom, 
-            left, 
-            right, 
-            front, 
-            back;
-    }
-
-    [Header("Properties")]
-    public ShipProperties general;
-    [SerializeField]
-    private MovementProperties movement;
-    [SerializeField]
-    private AttackPositions attacks;
-    [SerializeField]
-    private List<AbilityProperties> abilites;
-    [SerializeField]
-    private GhostShip ghostShip;
-
-    private BezierCurve flightPath;
-
-    public void Start() 
-    {
-        ghostShip.gameObject.SetActive(false);
-        ghostShip.transform.localPosition = Vector3.zero;
-        ghostShip.transform.localRotation = Quaternion.identity;
-    }
-
-    public void Select()
-    {
-        if (TurnBehaviour.instance.Turn == TurnBehaviour.TurnEnum.Player)
-        {
-            UISelectors.instance.transform.position = transform.position;
-            UISelectors.instance.gameObject.SetActive(true);
-            TurnBehaviour.instance.ActionPhase += Action;
-            TurnBehaviour.instance.EndPhase += End;
-        } else
-        {
-            // TODO
-        }
-    }
-
-    public void Deselect()
-    {
-        ghostShip.Deselect();
+        TurnOrder.Instance.Subscribe(this);
     }
 
     public void Damaged(GotHitParams hit)
     {
         // TODO include armor values
-        general.ShieldStrength.value -= hit.damage;
-        general.Health.value += Mathf.Min(0, general.ShieldStrength.value);
+        properties.ShieldStrength.value -= hit.damage;
+        properties.Health.value += Mathf.Min(0, properties.ShieldStrength.value);
 
-        general.ShieldStrength.value = Mathf.Max(0, general.ShieldStrength.value);
-        general.Health.value = Mathf.Max(0, general.Health.value);
-        if (general.Health.value == 0)
+        properties.ShieldStrength.value = Mathf.Max(0, properties.ShieldStrength.value);
+        properties.Health.value = Mathf.Max(0, properties.Health.value);
+        if (properties.Health.value == 0)
         {
             Death();
         }
@@ -72,41 +30,17 @@ public class Ship : StatBehaviour, IInteractable, IDamageable
     public void Death()
     {
         // Dead
+        DeathEvent();
+        TurnOrder.Instance.Unsubscribe(this);
     }
 
-    private void Action()
+    public void StartTurn()
     {
-        StartCoroutine(ExecuteMovement());
+
     }
 
-    private void End()
+    private void EndTurn()
     {
-        ghostShip.transform.localPosition = Vector3.zero;
-        ghostShip.transform.localRotation = Quaternion.identity;
-    }
-
-    public void Movement()
-    {
-        ghostShip.gameObject.SetActive(true);
-        ghostShip.Select();
-    }
-
-    private IEnumerator ExecuteMovement()
-    {
-        flightPath = new BezierCurve(new Vector3[4]{
-            transform.position,
-            ghostShip.transform.position,
-            transform.position,
-            ghostShip.transform.position
-        });
-        ghostShip.gameObject.SetActive(false);
-        float t = 0f;
-        while (t < 1f)
-        {
-            t += Time.deltaTime;
-            transform.position = flightPath.GetPoint(t);
-            //Debug.Log(t + " " + flightPath.GetPoint(t));
-            yield return null;
-        }
+        //ghostShip.End();
     }
 }

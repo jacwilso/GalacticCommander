@@ -1,36 +1,36 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+/*
 public class TransitionBehaviour : MonoBehaviour {
     
     public void Start()
     {
-        TurnBehaviour.instance.PlayerTurn += Player;
-        TurnBehaviour.instance.EnemyTurn += Enemy;
+        TurnOrder.Instance.PlayerTurn += Player;
+        TurnOrder.Instance.EnemyTurn += Enemy;
     }
 
     public void NextPhase()
     {
-        TurnBehaviour.instance.NextPhase();
+        TurnOrder.Instance.NextPhase();
     }
 
     private void Player()
     {
         Turn("Player Start");
-        TurnBehaviour.instance.ActionPhase += Action;
+        TurnOrder.Instance.ActionPhase += Action;
     }
 
     private void Enemy()
     {
         Turn("Enemy Start");
-        TurnBehaviour.instance.ActionPhase += Action;
+        TurnOrder.Instance.ActionPhase += Action;
     }
 
     private void Action()
     {
         Turn("Action");
-        TurnBehaviour.instance.EndPhase = End;
+        TurnOrder.Instance.EndPhase = End;
     }
 
     private void End()
@@ -43,3 +43,4 @@ public class TransitionBehaviour : MonoBehaviour {
         Debug.Log(t);
     }
 }
+*/

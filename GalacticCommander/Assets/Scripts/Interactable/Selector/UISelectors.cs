@@ -5,11 +5,15 @@ using UnityEngine.EventSystems;
 
 public class UISelectors : MonoBehaviour
 {
-    public static UISelectors instance;
+    public static UISelectors Instance
+    {
+        get { return instance; }
+    }
 
     [SerializeField]
-    private GameObject actionWheel,
-        attackWheel;
+    private GameObject actionWheel;
+
+    private static UISelectors instance;
 
     private void Awake()
     {
@@ -25,18 +29,11 @@ public class UISelectors : MonoBehaviour
 
     private void OnEnable()
     {
-        ActionWheel();
-    }
-
-    public void ActionWheel()
-    {
         actionWheel.SetActive(true);
-        attackWheel.SetActive(false);
     }
 
-    public void AttackWheel()
+    public void ToggleActionWheel()
     {
-        actionWheel.SetActive(false);
-        attackWheel.SetActive(true);
+        actionWheel.SetActive(!actionWheel.activeSelf);
     }
 }

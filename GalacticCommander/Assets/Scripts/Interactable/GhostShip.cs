@@ -4,42 +4,52 @@ using UnityEngine;
 
 public class GhostShip : MonoBehaviour, IInteractable
 {
+    [SerializeField]
+    private Transform handle;
+    [SerializeField]
+    private Vector3 handleOffset;
+
     private bool selected;
     private Plane planeOffset;
     private Vector3 camPos;
     private Quaternion camRot;
-    private Transform cam;
+    private Camera cam;
+    private Vector3 toHandle;
 
     private void Start ()
     {
-        cam = Camera.main.transform;
-	}
+        cam = Camera.main;
+        toHandle = handle.position - transform.position;
+    }
 
     private void Update()
     {
         if (selected)
         {
-            float dist = Vector3.Dot(cam.position - transform.position, planeOffset.normal);
-            Vector3 offset = (cam.position - camPos);
-            transform.position += (dist - planeOffset.distance) * planeOffset.normal;
-            transform.position += offset - Vector3.Dot(offset, planeOffset.normal) * planeOffset.normal;
-            camPos = cam.position;
+            transform.rotation = cam.transform.rotation;
+            Vector3 handlePos = cam.transform.position + transform.forward * (cam.nearClipPlane + 0.01f);
+
+            Vector3 toHandleWorld = handle.transform.TransformDirection(toHandle);
+            transform.position = handlePos - toHandleWorld;
         }
     }
 
     public void Select()
     {
         selected = true;
-        Vector3 normal = (cam.position - transform.position).normalized;
-        float dist = Vector3.Distance(cam.position, transform.position);
-        planeOffset = new Plane(normal, dist);
-        camPos = cam.position;
-        //camRot = Quaternion.Inverse(cam.rotation) * transform.rotation;
-        //transform.rotation = camRot * transform.rotation;
+        gameObject.SetActive(true);
     }
     
     public void Deselect()
     {
         selected = false;
+    }
+
+    public void Hide()
+    {
+        gameObject.SetActive(false);
+        transform.localPosition = Vector3.zero;
+        handle.localPosition = toHandle;
+        transform.localRotation = Quaternion.identity;
     }
 }

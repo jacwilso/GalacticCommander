@@ -2,11 +2,11 @@
 
 namespace UIWheel
 {
-    public class Attack : Segment
+    public class AttackSegment : Segment
     {
         public override void Select()
         {
-            UISelectors.instance.AttackWheel();
+
         }
     }
 }

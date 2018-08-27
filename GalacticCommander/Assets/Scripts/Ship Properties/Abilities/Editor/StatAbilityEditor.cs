@@ -2,18 +2,21 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEditor;
+using UnityEngine;
 
 [CustomEditor(typeof(StatAbility))]
 [CanEditMultipleObjects]
 public class StatAbilityEditor : Editor
 {
     private Dictionary<string, string> shipProperties = new Dictionary<string, string>(),
-        attackProperties = new Dictionary<string, string>();
+        attackProperties = new Dictionary<string, string>(),
+        movementProperites = new Dictionary<string, string>();
 
     private void OnEnable()
     {
-        PropertyDictionary(typeof(ShipProperties), shipProperties);
-        PropertyDictionary(typeof(AttackProperties), attackProperties);
+        PropertyDictionary(new ShipProperties(), shipProperties);
+        PropertyDictionary(new AttackProperties.AttackStat(), attackProperties);
+        PropertyDictionary(new MovementProperties(), movementProperites);
     }
 
     public override void OnInspectorGUI()
@@ -32,6 +35,9 @@ public class StatAbilityEditor : Editor
             case PropertyObject.Attack:
                 _properties = attackProperties;
                 break;
+            case PropertyObject.Movement:
+                _properties = movementProperites;
+                break;
         }
         string[] keys = _properties.Keys.ToArray();
         _index = EditorGUILayout.Popup("Parameter", _index, keys);
@@ -39,9 +45,10 @@ public class StatAbilityEditor : Editor
         EditorUtility.SetDirty(target);
     }
 
-    private void PropertyDictionary(Type obj, Dictionary<string, string> properties)
+    private void PropertyDictionary(object obj, Dictionary<string, string> properties)
     {
-        CreateInstance(obj).GetType().GetFields().Where(param => param.FieldType == typeof(Stat)).ToList().ForEach(param => {
+        obj.GetType().GetFields().Where(param => param.FieldType == typeof(Stat)).ToList().ForEach(param =>
+        {
             string var = ObjectNames.NicifyVariableName(param.Name);
             properties.Add(var, param.Name);
         });

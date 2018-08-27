@@ -1,12 +1,11 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu(menuName = "Ship Properties/Ship")]
 public class ShipProperties : StatPropertyObject
 {
-    [Header("Ship")]
+    [Header("General Stats")]
     [SerializeField]
     private int health;
     [NonSerialized]
@@ -25,9 +24,20 @@ public class ShipProperties : StatPropertyObject
 
     [SerializeField]
     private int energy;
-    public int Energy => energy;
+    [NonSerialized]
+    public Stat Energy;
 
-    [Header("Shield")]
+    [SerializeField]
+    private int actionPoints;
+    [NonSerialized]
+    public Stat ActionPoints;
+
+    [SerializeField]
+    private int initiative;
+    [NonSerialized]
+    public Stat Initiative;
+
+    [Header("Shield Stats")]
     [SerializeField]
     private int shieldStrength;
     [NonSerialized]
@@ -41,4 +51,8 @@ public class ShipProperties : StatPropertyObject
     public MovementProperties movement;
     public List<AttackProperties> attacks;
     public List<AbilityProperties> abilities;
+
+    [Header("Other")]
+    private Sprite icon;
+    public Sprite Icon => icon;
 }

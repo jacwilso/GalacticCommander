@@ -1,33 +1,38 @@
-﻿using System.Collections;
+﻿using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.EventSystems;
 #if UNITY_EDITOR
 using Input = GoogleARCore.InstantPreviewInput;
 #endif
 
 public class ARCursor : MonoBehaviour
 {
-    public static ARCursor instance;
-
-    private enum State
+    public static ARCursor Instance
     {
-        Default,
-        Hovering,
-        Selected
+        get { return instance; }
     }
 
-    public delegate void CursorDelegate();
-    public CursorDelegate Default, Hovering, Selected;
-
-    public IInteractable Interact
+    public IInteractable Selected
     {
-        get { return interact; }
+        get { return selected; }
+        set
+        {
+            Deselect();
+            selected = value;
+            selected.Select();
+        }
     }
 
-    private Transform cam;
-    private State state;
-    private IInteractable interact;
+    private static ARCursor instance;
+
+    private Camera cam;
+    private IInteractable selected;
+    private PointerEventData pointerData;
+    private EventSystem eventSys;
+
+    Vector3 pos, dir;
 
     private void Awake()
     {
@@ -38,52 +43,46 @@ public class ARCursor : MonoBehaviour
 
     private void Start()
     {
-        cam = Camera.main.transform;
+        cam = Camera.main;
+        eventSys = EventSystem.current;
+        pointerData = new PointerEventData(null);
     }
 
     private void Update()
     {
-        RaycastHit hit;
-        if (state != State.Selected
-            && Physics.Raycast(new Ray(cam.position, cam.forward), out hit))
-        {
-            interact = hit.transform.GetComponent<IInteractable>();
-            if (interact != null)
-            {
-                state = State.Hovering;
-                Hovering?.Invoke();
-            }
-        } else if (state == State.Hovering)
-        {
-            state = State.Default;
-            Default?.Invoke();
-        }
-        InputUpdate();
-    }
-
-    private void InputUpdate()
-    {
 #if UNITY_EDITOR && !INSTANT_PREVIEW
         if (Input.GetMouseButtonDown(0))
+        {
+            Vector2 screenPos = Input.mousePosition;
 #else
         if (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began)
-#endif
         {
-            if (state == State.Hovering)
+            Vector2 screenPos = Input.GetTouch(0).position;
+#endif
+            pointerData.position = screenPos;
+            List<RaycastResult> results = new List<RaycastResult>();
+            eventSys.RaycastAll(pointerData, results);
+            if (results.Count > 0)
+                return;
+
+            IInteractable oldSelection = selected;
+            Deselect();
+
+            RaycastHit hit;
+            if (Physics.Raycast(cam.ScreenPointToRay(screenPos), out hit))
             {
-                state = State.Selected;
-                Selected?.Invoke();
-                interact.Select();
-            } else if (state == State.Selected)
-            {
-                Deselect();
+                selected = hit.transform.GetComponent<IInteractable>();
+                if (oldSelection != null && oldSelection == selected)
+                    Deselect();
+                else
+                    selected?.Select();
             }
         }
     }
 
     public void Deselect()
     {
-        state = State.Default;
-        interact?.Deselect();
+        selected?.Deselect();
+        selected = null;
     }
 }

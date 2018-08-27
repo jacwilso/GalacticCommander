@@ -12,3 +12,26 @@ MonoBehaviour:
   m_Name: TestAttack
   m_EditorClassIdentifier: 
   cost: 0
+  range: 0
+  front:
+    accuracy: 0
+    damage: 0
+  back:
+    accuracy: 0
+    damage: 0
+  top:
+    accuracy: 0
+    damage: 0
+  bottom:
+    accuracy: 0
+    damage: 0
+  left:
+    accuracy: 0
+    damage: 0
+  right:
+    accuracy: 0
+    damage: 0
+  energy: 0
+  hitSFX: {fileID: 0}
+  missSFX: {fileID: 0}
+  fireSFX: {fileID: 0}
