@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 #if UNITY_EDITOR
-using Input = GoogleARCore.InstantPreviewInput;
+//using Input = GoogleARCore.InstantPreviewInput;
 #endif
 
 public class ARCursor : MonoBehaviour

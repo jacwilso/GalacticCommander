@@ -5,8 +5,11 @@ using UnityEngine;
 
 public class Ship : MonoBehaviour, IDamageable {
 
-    public ShipProperties properties;
     public event Action DeathEvent;
+
+    public ShipProperties properties;
+
+	private Stat accuracy;
 
     private void Start()
     {

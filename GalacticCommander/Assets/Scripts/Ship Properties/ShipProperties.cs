@@ -23,11 +23,6 @@ public class ShipProperties : StatPropertyObject
     public Stat Evasion;
 
     [SerializeField]
-    private int energy;
-    [NonSerialized]
-    public Stat Energy;
-
-    [SerializeField]
     private int actionPoints;
     [NonSerialized]
     public Stat ActionPoints;
@@ -49,10 +44,13 @@ public class ShipProperties : StatPropertyObject
 
     [Header("Actions")]
     public MovementProperties movement;
-    public List<AttackProperties> attacks;
-    public List<AbilityProperties> abilities;
+	public AbilityProperties[] network;
+    public AttackProperties[] weapons;
+    public AbilityProperties[] engines;
+	public AbilityProperties[] structure;
+	public AbilityProperties[] personnel;
 
-    [Header("Other")]
+	[Header("Other")]
     private Sprite icon;
     public Sprite Icon => icon;
 }

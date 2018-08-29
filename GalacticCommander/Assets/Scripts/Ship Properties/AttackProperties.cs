@@ -8,8 +8,8 @@ public class AttackProperties : ActionProperties
     private AttackStat front, back, top, bottom, left, right;
 
     [SerializeField]
-    private int energy;
-    public int Energy => energy;
+    private int requirement;
+    public int Requirement => requirement;
 
     [SerializeField]
     private AudioSource hitSFX, missSFX, fireSFX;
@@ -27,9 +27,8 @@ public class AttackProperties : ActionProperties
         public Stat Accuracy;
 
         [SerializeField]
-        private int damage;
+        private Vector2 damage;
         [NonSerialized]
         public Stat Damage;
     }
 }
-    
