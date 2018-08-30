@@ -23,8 +23,11 @@ MonoBehaviour:
   - {fileID: 0}
   weapons:
   - {fileID: 0}
+  engines:
   - {fileID: 0}
-  engines: []
-  structure: []
-  energy: []
-  personnel: []
+  structure:
+  - {fileID: 0}
+  energy:
+  - {fileID: 0}
+  personnel:
+  - {fileID: 0}
