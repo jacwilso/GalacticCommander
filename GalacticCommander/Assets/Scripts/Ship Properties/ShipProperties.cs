@@ -48,7 +48,8 @@ public class ShipProperties : StatPropertyObject
     public AttackProperties[] weapons;
     public AbilityProperties[] engines;
 	public AbilityProperties[] structure;
-	public AbilityProperties[] personnel;
+    public AbilityProperties[] energy;
+    public AbilityProperties[] personnel;
 
 	[Header("Other")]
     private Sprite icon;
