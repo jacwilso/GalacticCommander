@@ -25,6 +25,8 @@ public class ARCursor : MonoBehaviour
         }
     }
 
+    public event Action DeselectEvent;
+
     private static ARCursor instance;
 
     private Camera cam;
@@ -82,6 +84,7 @@ public class ARCursor : MonoBehaviour
 
     public void Deselect()
     {
+        DeselectEvent?.Invoke();
         selected?.Deselect();
         selected = null;
     }

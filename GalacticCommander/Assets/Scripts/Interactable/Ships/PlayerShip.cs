@@ -3,30 +3,22 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(Ship))]
-public class PlayerShip : MonoBehaviour, IInteractable {
-
-    [SerializeField]
-    private GhostShip ghostShip;
+public class PlayerShip : MonoBehaviour, IInteractable
+{
+    private Ship ship;
+    private ActionType action = ActionType.None;
 
     public void Start()
     {
-        ghostShip.gameObject.SetActive(false);
-        ghostShip.transform.localPosition = Vector3.zero;
-        ghostShip.transform.localRotation = Quaternion.identity;
+        ship = GetComponent<Ship>();
     }
 
     public void Select()
     {
-        //if (TurnBehaviour.instance.Turn == TurnBehaviour.TurnEnum.Player)
+        if (TurnOrder.Instance.Current == ship && action == ActionType.None)
         {
-            //TODO Move to player ship
             UISelectors.Instance.transform.position = transform.position;
-            UISelectors.Instance.gameObject.SetActive(true);
-            //TurnBehaviour.instance.ActionPhase += Action;
-            //TurnBehaviour.instance.EndPhase += End;
-        }// else
-        {
-            // TODO
+            UISelectors.Instance.Activate(ship.properties);
         }
     }
 
@@ -35,26 +27,40 @@ public class PlayerShip : MonoBehaviour, IInteractable {
         UISelectors.Instance.gameObject.SetActive(false);
     }
 
-    public void Movement()
+    #region Movement
+    public void SelectMovement()
     {
-        ARCursor.Instance.Selected = ghostShip;
+        action = ActionType.Movement;
+        ARCursor.Instance.Selected = ship.Ghost;
+    }
+
+    public void ConfirmMovement()
+    {
+        StartCoroutine(ExecuteMovement());
+    }
+
+    public void CancelMovement()
+    {
+        action = ActionType.None;
+        ship.Ghost.Hide();
     }
 
     private IEnumerator ExecuteMovement()
     {
         float t = 0f;
-        Vector3 startPos = transform.position, endPos = ghostShip.transform.position;
-        Quaternion startRot = transform.rotation, endRot = ghostShip.transform.rotation;
+        Vector3 startPos = transform.position, endPos = ship.Ghost.transform.position;
+        Quaternion startRot = transform.rotation, endRot = ship.Ghost.transform.rotation;
         while (t < 1f)
         {
             t += Time.deltaTime;
             transform.position = Vector3.Lerp(startPos, endPos, t);
             transform.rotation = Quaternion.Lerp(startRot, endRot, t);
-            ghostShip.transform.position = endPos;
-            ghostShip.transform.rotation = endRot;
+            ship.Ghost.transform.position = endPos;
+            ship.Ghost.transform.rotation = endRot;
             yield return null;
         }
-        ghostShip.Hide();
+        ship.Ghost.Hide();
+        action = ActionType.None;
 
         /*
         flightPath = new BezierCurve(new Vector3[4]{
@@ -74,4 +80,9 @@ public class PlayerShip : MonoBehaviour, IInteractable {
         }
         */
     }
+    #endregion
+
+    #region Attack
+
+    #endregion
 }

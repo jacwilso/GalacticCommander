@@ -4,15 +4,19 @@ using UnityEngine;
 using UnityEngine.UI;
 using System.Linq;
 
-public class TurnOrder : MonoBehaviour {
-
+public class TurnOrder : MonoBehaviour
+{
     public static TurnOrder Instance
     {
         get { return instance; }
     }
 
+    public Ship Current => initiative[indx];
+
     [SerializeField]
-    private TurnIcon current;
+    private TurnIcon currentIcon;
+    [SerializeField]
+    private ShipPointer pointer;
 
     private static TurnOrder instance;
 
@@ -28,11 +32,18 @@ public class TurnOrder : MonoBehaviour {
 
     private void Start()
     {
-        initiative = new List<Ship>();
+        if (initiative == null)
+        {
+            initiative = new List<Ship>();
+        }
     }
 
     public void Subscribe(Ship ship)
     {
+        if (initiative == null)
+        {
+            initiative = new List<Ship>();
+        }
         initiative.Add(ship);
     }
 
@@ -44,22 +55,24 @@ public class TurnOrder : MonoBehaviour {
     public void DetermineIntiative()
     {
         indx = 0;
-        initiative.OrderBy(ship => ship.properties.Initiative.value);
-        StartShipTurn();
+        initiative = initiative.OrderByDescending(ship => ship.properties.Initiative.value).ToList();
+        StartTurn();
     }
 
-    public void StartShipTurn()
+    private void StartTurn()
     {
-        current.icon.sprite = initiative[indx].properties.Icon;
-        initiative[indx].StartTurn();
+        currentIcon.icon.sprite = Current.properties.Icon;
+        Current.StartTurn();
+        //pointer.PointTo(initiative[indx]); // TODO
     }
 
-    public void EndShipTurn()
+    public void EndTurn()
     {
+        Current.EndTurn();
         indx++;
         if (indx >= initiative.Count)
             DetermineIntiative();
         else
-            StartShipTurn();
+            StartTurn();
     }
 }

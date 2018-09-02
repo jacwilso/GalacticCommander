@@ -3,15 +3,14 @@
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 348107f15f61151499b99a61b9f51209, type: 3}
-  m_Name: TestStackAbility
+  m_Script: {fileID: 11500000, guid: 62a048ee6e205ea4fa04f82e6d10b0d7, type: 3}
+  m_Name: TestMovement
   m_EditorClassIdentifier: 
+  icon: {fileID: 0}
   cost: 0
-  range: 0
-  turnCooldown: 0
-  abilities: []
+  speed: 0

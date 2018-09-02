@@ -44,14 +44,18 @@ public class ShipProperties : StatPropertyObject
 
     [Header("Actions")]
     public MovementProperties movement;
-	public AbilityProperties[] network;
+    public AbilityProperties[] network;
     public AttackProperties[] weapons;
     public AbilityProperties[] engines;
-	public AbilityProperties[] structure;
+    public AbilityProperties[] structure;
     public AbilityProperties[] energy;
     public AbilityProperties[] personnel;
 
-	[Header("Other")]
+    [Header("Other")]
+    [SerializeField]
     private Sprite icon;
     public Sprite Icon => icon;
+
+    [NonSerialized]
+    public Stat accuracy;
 }

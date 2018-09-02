@@ -10,15 +10,15 @@ public class GhostShip : MonoBehaviour, IInteractable
     private Vector3 handleOffset;
 
     private bool selected;
-    private Plane planeOffset;
-    private Vector3 camPos;
-    private Quaternion camRot;
     private Camera cam;
     private Vector3 toHandle;
 
-    private void Start ()
+    private void Start()
     {
         cam = Camera.main;
+        transform.localPosition = Vector3.zero;
+        transform.localRotation = Quaternion.identity;
+
         toHandle = handle.position - transform.position;
     }
 
@@ -39,10 +39,15 @@ public class GhostShip : MonoBehaviour, IInteractable
         selected = true;
         gameObject.SetActive(true);
     }
-    
+
     public void Deselect()
     {
         selected = false;
+    }
+
+    public void Init()
+    {
+        gameObject.SetActive(false);
     }
 
     public void Hide()

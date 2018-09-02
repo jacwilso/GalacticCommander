@@ -3,16 +3,23 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Ship : MonoBehaviour, IDamageable {
-
+public class Ship : MonoBehaviour, IDamageable
+{
     public event Action DeathEvent;
+    public event Action DamageEvent;
+    public event Action StartTurnEvent;
+    public event Action EndTurnEvent;
+
+    public GhostShip Ghost => ghost;
 
     public ShipProperties properties;
 
-	private Stat accuracy;
+    private GhostShip ghost;
 
     private void Start()
     {
+        ghost = GetComponentInChildren<GhostShip>();
+        ghost.Init();
         TurnOrder.Instance.Subscribe(this);
     }
 
@@ -24,6 +31,7 @@ public class Ship : MonoBehaviour, IDamageable {
 
         properties.ShieldStrength.value = Mathf.Max(0, properties.ShieldStrength.value);
         properties.Health.value = Mathf.Max(0, properties.Health.value);
+        DamageEvent?.Invoke();
         if (properties.Health.value == 0)
         {
             Death();
@@ -33,17 +41,18 @@ public class Ship : MonoBehaviour, IDamageable {
     public void Death()
     {
         // Dead
-        DeathEvent();
+        DeathEvent?.Invoke();
         TurnOrder.Instance.Unsubscribe(this);
     }
 
     public void StartTurn()
     {
-
+        StartTurnEvent?.Invoke();
     }
 
-    private void EndTurn()
+    public void EndTurn()
     {
+        EndTurnEvent?.Invoke();
         //ghostShip.End();
     }
 }

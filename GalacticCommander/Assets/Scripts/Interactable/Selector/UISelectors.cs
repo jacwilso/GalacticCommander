@@ -10,10 +10,14 @@ public class UISelectors : MonoBehaviour
         get { return instance; }
     }
 
-    [SerializeField]
-    private GameObject actionWheel;
+    [SerializeField, MinMaxValue(0.01f, 10f)]
+    private Vector2 scaleBounds;
+
 
     private static UISelectors instance;
+
+    private Camera cam;
+    private Segmenter segmenter;
 
     private void Awake()
     {
@@ -24,16 +28,26 @@ public class UISelectors : MonoBehaviour
 
     private void Start()
     {
-        gameObject.SetActive(false);
+        //gameObject.SetActive(false);
+        cam = Camera.main;
+        segmenter = GetComponentInChildren<Segmenter>();
     }
 
-    private void OnEnable()
+    private void Update()
     {
-        actionWheel.SetActive(true);
+        float scale = Vector3.SqrMagnitude(cam.transform.position - transform.position);
+        scale = Mathf.Min(Mathf.Max(scaleBounds.x, scale), scaleBounds.y);
+        transform.localScale = scale * Vector3.one;
     }
 
-    public void ToggleActionWheel()
+    public void Activate(ShipProperties properties)
     {
-        actionWheel.SetActive(!actionWheel.activeSelf);
+        int segments = properties.network.Length +
+            properties.weapons.Length +
+            properties.engines.Length +
+            properties.structure.Length +
+            properties.energy.Length +
+            properties.personnel.Length;
+        segmenter.Segments = segments;
     }
 }
