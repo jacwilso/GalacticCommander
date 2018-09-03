@@ -5,11 +5,15 @@ using UnityEngine;
 public class AttackProperties : ActionProperties
 {
     [SerializeField]
-    private AttackStat front, back, top, bottom, left, right;
+    public AttackStat front, back, top, bottom, left, right;
 
     [SerializeField]
     private int requirement;
     public int Requirement => requirement;
+
+    [SerializeField, EnumFlag]
+    private ResistanceTypes damageTypes;
+    public ResistanceTypes DamageTypes => damageTypes;
 
     [SerializeField]
     private AudioSource hitSFX, missSFX, fireSFX;
@@ -27,8 +31,8 @@ public class AttackProperties : ActionProperties
         public Stat Accuracy;
 
         [SerializeField]
-        private Vector2 damage;
+        private Vector2Int[] damage;
         [NonSerialized]
-        public Stat Damage;
+        public Stat[] Damage;
     }
 }

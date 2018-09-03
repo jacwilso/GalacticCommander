@@ -18,12 +18,11 @@ MonoBehaviour:
   initiative: 100
   shieldStrength: 10
   shieldRegen: 0
-  movement: {fileID: 11400000, guid: e2fd4ed55a56a114cb7c5a805f6806a5, type: 2}
+  movement: {fileID: 11400000, guid: 0fc7e4af9e301104c8cb3ac97ac0300a, type: 2}
   network:
   - {fileID: 0}
   weapons:
-  - {fileID: 0}
-  - {fileID: 0}
+  - {fileID: 11400000, guid: 0ed084c532bf8314b8a844800c418bd1, type: 2}
   engines:
   - {fileID: 0}
   - {fileID: 0}

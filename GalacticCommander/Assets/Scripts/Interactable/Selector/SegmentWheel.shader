@@ -6,7 +6,6 @@
         _Color("Color", Color) = (0,0,0,0)
         _InnerRadius("Inner Radius", Range(0,1)) = 0
         _OuterRadius("Outer Radius", Range(0,1)) = 1
-        _Segments("Segments", float) = 1
         _Thickness("Line Thickness", float) = 1
     }
         SubShader
@@ -21,18 +20,21 @@
                 #pragma fragment frag
                 // make fog work
                 #pragma multi_compile_fog
+                #define PI 3.14159265358979323846
 
                 #include "UnityCG.cginc"
 
                 struct appdata
                 {
                     float4 vertex : POSITION;
+                    //float3 normal : NORMAL;
                     float2 uv : TEXCOORD0;
                 };
 
                 struct v2f
                 {
                     float4 vertex : SV_POSITION;
+                    //float3 normal : NORMAL;
                     float2 uv : TEXCOORD0;
                 };
 
@@ -40,8 +42,10 @@
                 float4 _MainTex_ST;
                 float4 _Color;
                 float _InnerRadius, _OuterRadius;
-                float _Segments, _Thickness;
-#define PI 3.14159265358979323846
+                float _Thickness;
+
+                uniform float _Segments;
+                float2 _LineSegments[100];
 
                 v2f vert(appdata v)
                 {
@@ -60,17 +64,12 @@
                         discard;
                     }
 
-                    int num = _Segments;
-                    float angle = 2 * PI / num;
-                    for (int x = 1; x <= _Segments; x++)
+                    float angle = 2 * PI / _Segments;
+                    for (int x = 0; x < _Segments; x++)
                     {
-                        float2 linePos = float2(
-                            _OuterRadius * cos(angle * x),
-                            _OuterRadius * sin(angle * x)
-                            );
-                        float2 perp = linePos.yx;
-                        linePos.x *= -1;
-                        if (abs(dot(normalize(perp), iPos)) < _Thickness && dot(linePos, iPos) > 0)
+                        float2 perp = _LineSegments[x].yx;
+                        perp.x *= -1;
+                        if (abs(dot(normalize(perp), iPos)) < _Thickness && dot(_LineSegments[x].xy, iPos) > 0)
                         {
                             discard;
                         }

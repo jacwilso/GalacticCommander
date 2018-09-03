@@ -15,4 +15,6 @@ MonoBehaviour:
   cost: 0
   turnCooldown: 0
   target: 0
-  abilities: []
+  abilities:
+  - {fileID: 0}
+  - {fileID: 0}

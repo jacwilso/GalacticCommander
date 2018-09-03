@@ -25,16 +25,21 @@ public class ARCursor : MonoBehaviour
         }
     }
 
+    public Vector2 InputPosition
+    {
+        get { return screenPos; }
+    }
+
     public event Action DeselectEvent;
 
     private static ARCursor instance;
 
     private Camera cam;
     private IInteractable selected;
-    private PointerEventData pointerData;
-    private EventSystem eventSys;
+    //private PointerEventData pointerData;
+    //private EventSystem eventSys;
+    private Vector2 screenPos;
 
-    Vector3 pos, dir;
 
     private void Awake()
     {
@@ -46,8 +51,8 @@ public class ARCursor : MonoBehaviour
     private void Start()
     {
         cam = Camera.main;
-        eventSys = EventSystem.current;
-        pointerData = new PointerEventData(null);
+        //eventSys = EventSystem.current;
+        //pointerData = new PointerEventData(null);
     }
 
     private void Update()
@@ -55,29 +60,32 @@ public class ARCursor : MonoBehaviour
 #if UNITY_EDITOR && !INSTANT_PREVIEW
         if (Input.GetMouseButtonDown(0))
         {
-            Vector2 screenPos = Input.mousePosition;
+            screenPos = Input.mousePosition;
 #else
         if (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began)
         {
-            Vector2 screenPos = Input.GetTouch(0).position;
+            screenPos = Input.GetTouch(0).position;
 #endif
-            pointerData.position = screenPos;
-            List<RaycastResult> results = new List<RaycastResult>();
-            eventSys.RaycastAll(pointerData, results);
-            if (results.Count > 0)
-                return;
+            //pointerData.position = screenPos;
+            //List<RaycastResult> results = new List<RaycastResult>();
+            //eventSys.RaycastAll(pointerData, results);
+            //if (results.Count > 0)
+            //    return;
 
-            IInteractable oldSelection = selected;
-            Deselect();
+            IInteractable newSelected = null;
+            IInteractable oldSelected = selected;
 
             RaycastHit hit;
             if (Physics.Raycast(cam.ScreenPointToRay(screenPos), out hit))
             {
-                selected = hit.transform.GetComponent<IInteractable>();
-                if (oldSelection != null && oldSelection == selected)
-                    Deselect();
-                else
-                    selected?.Select();
+                newSelected = hit.transform.GetComponent<IInteractable>();
+            }
+
+            Deselect();
+            if (newSelected != null && newSelected != oldSelected)
+            {
+                selected = newSelected;
+                newSelected?.Select();
             }
         }
     }

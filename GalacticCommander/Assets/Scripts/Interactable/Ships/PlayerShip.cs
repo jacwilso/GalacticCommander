@@ -17,14 +17,24 @@ public class PlayerShip : MonoBehaviour, IInteractable
     {
         if (TurnOrder.Instance.Current == ship && action == ActionType.None)
         {
-            UISelectors.Instance.transform.position = transform.position;
-            UISelectors.Instance.Activate(ship.properties);
+            UIWheel.ActionWheel.Instance.transform.position = transform.position;
+            UIWheel.ActionWheel.Instance.Activate(this, ship.properties);
         }
     }
 
     public void Deselect()
     {
-        UISelectors.Instance.gameObject.SetActive(false);
+        UIWheel.ActionWheel.Instance.Deselect();
+    }
+
+    public void Action(int segment)
+    {
+        // TODO
+        //ship.properties.GetAction(segment).Action();
+        if (segment == 0)
+        {
+            SelectMovement();
+        }
     }
 
     #region Movement

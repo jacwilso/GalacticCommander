@@ -10,4 +10,6 @@ public abstract class ActionProperties : StatPropertyObject
     [SerializeField]
     private int cost;
     public int Cost => cost;
+
+    //public abstract void Action();
 }

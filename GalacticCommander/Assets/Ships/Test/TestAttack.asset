@@ -9,29 +9,40 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b298fcc141954fa42bc8469bc6455a96, type: 3}
-  m_Name: Light Laser Array
+  m_Name: TestAttack
   m_EditorClassIdentifier: 
-  icon: {fileID: 21300000, guid: e83b14cb6f838be4b9008c0943f73ca1, type: 3}
-  cost: 1
+  icon: {fileID: 0}
+  cost: 0
   front:
-    accuracy: 80
-    damage: {x: 4, y: 6}
+    accuracy: 0
+    damage:
+    - {x: 0, y: 11}
+    - {x: 0, y: 1}
+    - {x: 0, y: 1}
+    - {x: 0, y: 1}
+    - {x: 0, y: 1}
+    - {x: 0, y: 1}
+    - {x: 0, y: 1}
   back:
-    accuracy: 80
-    damage: {x: 4, y: 6}
+    accuracy: 0
+    damage: []
   top:
-    accuracy: 80
-    damage: {x: 4, y: 6}
+    accuracy: 0
+    damage: []
   bottom:
-    accuracy: 80
-    damage: {x: 4, y: 6}
+    accuracy: 0
+    damage: []
   left:
-    accuracy: 80
-    damage: {x: 4, y: 6}
+    accuracy: 0
+    damage:
+    - {x: 0, y: 1}
+    - {x: 0, y: 1}
+    - {x: 0, y: 1}
   right:
-    accuracy: 80
-    damage: {x: 4, y: 6}
-  requirement: 1
+    accuracy: 0
+    damage: []
+  requirement: 0
+  damageTypes: -1
   hitSFX: {fileID: 0}
   missSFX: {fileID: 0}
   fireSFX: {fileID: 0}

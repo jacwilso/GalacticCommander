@@ -4,7 +4,7 @@
     {
         public override void Select()
         {
-            UISelectors.Instance.gameObject.SetActive(false);
+            ActionWheel.Instance.gameObject.SetActive(false);
             ARCursor.Instance.Deselect();
         }
     }

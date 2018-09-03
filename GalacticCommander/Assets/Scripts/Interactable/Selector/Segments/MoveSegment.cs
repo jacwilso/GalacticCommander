@@ -14,7 +14,7 @@ namespace UIWheel
             player = (PlayerShip)ARCursor.Instance.Selected;
             player?.SelectMovement();
             ARCursor.Instance.DeselectEvent += Display;
-            UISelectors.Instance.gameObject.SetActive(false);
+            ActionWheel.Instance.gameObject.SetActive(false);
         }
 
         public void ConfirmMove()

@@ -11,6 +11,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 62a048ee6e205ea4fa04f82e6d10b0d7, type: 3}
   m_Name: TestMovement
   m_EditorClassIdentifier: 
-  icon: {fileID: 0}
-  cost: 0
-  speed: 0
+  icon: {fileID: 21300000, guid: 493a6985745474b4b9f840272eee973d, type: 3}
+  cost: 10
+  speed: 10
