@@ -19,6 +19,8 @@ public class AttackPropertiesInspector : Editor
         string[] excludeProps = new string[] { "m_Script", "front", "back", "top", "bottom", "left", "right" };
         DrawPropertiesExcluding(serializedObject, excludeProps);
 
+        EditorGUILayout.Space();
+        EditorGUILayout.LabelField("Damage", EditorStyles.boldLabel);
         SerializedProperty[] properties = new SerializedProperty[excludeProps.Length - 1];
         List<ResistanceTypes> types = GetTypeList(attack.DamageTypes);
         for (int i = 1; i < excludeProps.Length; i++)
