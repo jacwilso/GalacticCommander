@@ -57,9 +57,17 @@ public class ShipProperties : StatPropertyObject
     [SerializeField]
     private Sprite icon;
     public Sprite Icon => icon;
+    [SerializeField]
+    private ParticleSystem explosion;
+    public ParticleSystem Explosion => explosion;
 
+
+    // NON SERIALIZED
     [NonSerialized]
-    public Stat accuracy;
+    public Stat accuracy = new Stat(0),
+        damage = new Stat(0);
+    [NonSerialized]
+    public AttackProperties activeWeapon;
 
     public List<Sprite> GetIcons()
     {
@@ -84,6 +92,29 @@ public class ShipProperties : StatPropertyObject
         return icons;
     }
 
+    public List<bool> AvailableActions(int currentAP)
+    {
+        List<bool> availableActions = new List<bool>
+        {
+            movement.Cost <= currentAP
+        };
+
+        GetType().GetFields()
+            .Where(field => field.GetValue(this) is ActionProperties[]).ToList()
+            .ForEach(param =>
+            {
+                ActionProperties[] actions = param.GetValue(this) as ActionProperties[];
+                for (int i = 0; i < actions.Length; i++)
+                {
+                    if (actions[i] != null)
+                    {
+                        availableActions.Add(actions[i].Cost <= currentAP);
+                    }
+                }
+            });
+        return availableActions;
+    }
+
     public ActionProperties GetAction(int option)
     {
         if (option == 0)
@@ -95,9 +126,9 @@ public class ShipProperties : StatPropertyObject
         for (int i = 0; i < fields.Length; i++)
         {
             ActionProperties[] actions = fields[i].GetValue(this) as ActionProperties[];
-            if (actions.Length < option)
+            if (actions.Length >= option)
             {
-                return actions[option];
+                return actions[option - 1];
             }
             else
             {

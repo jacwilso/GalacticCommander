@@ -22,10 +22,23 @@ public class Stat
             if (isDirty)
             {
                 isDirty = false;
-                statValue = CalculateStat();
+                maxValue = value = CalculateStat();
             }
-            return statValue;
+            return maxValue;
         }
+    }
+
+    public float Value
+    {
+        get
+        {
+            if (isDirty)
+            {
+                return MaxValue;
+            }
+            return value;
+        }
+        set { this.value = value; }
     }
 
     public List<StatModifier> StatModifiers
@@ -33,16 +46,15 @@ public class Stat
         get { return statModifiers; }
     }
 
-    public float value;
-
     private float baseValue;
-    private readonly List<StatModifier> statModifiers  = new List<StatModifier>();
-    private bool isDirty;
-    private float statValue;
+    private readonly List<StatModifier> statModifiers = new List<StatModifier>();
+    private bool isDirty = true;
+    private float maxValue;
+    private float value;
 
     public Stat(float baseValue)
     {
-        this.baseValue =  value = baseValue;
+        this.baseValue = baseValue;
     }
 
     public void AddModifier(StatModifier mod)
@@ -79,7 +91,7 @@ public class Stat
         for (int i = 0; i < statModifiers.Count; i++)
         {
             StatModifier mod = statModifiers[i];
-            switch(mod.Type)
+            switch (mod.Type)
             {
                 case StatModType.Flat:
                     value += mod.Value;
@@ -106,7 +118,8 @@ public class Stat
         if (a.Order < b.Order)
         {
             return -1;
-        } else if (a.Order > b.Order)
+        }
+        else if (a.Order > b.Order)
         {
             return 1;
         }

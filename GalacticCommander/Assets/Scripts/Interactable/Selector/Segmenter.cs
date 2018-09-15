@@ -1,6 +1,5 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace UIWheel
@@ -17,35 +16,48 @@ namespace UIWheel
         [SerializeField]
         private float radius;
         [SerializeField]
-        private SpriteRenderer icon;
+        private UnityEngine.UI.Image iconPrefab;
         [SerializeField]
         private Transform iconParent;
-
+        [SerializeField]
+        private Material segmentMaterial;
+        [SerializeField]
         private int segments;
-        private MeshRenderer rend;
-        private List<SpriteRenderer> iconPool;
+
+        private List<UnityEngine.UI.Image> iconPool;
 
         private void OnEnable()
         {
-            rend = GetComponent<MeshRenderer>();
-            iconPool = new List<SpriteRenderer>();
+            iconPool = new List<UnityEngine.UI.Image>();
         }
 
-        private void SegmentLines()
+        [ContextMenu("Segment Lines")]
+        private void SegmentLinesTest()
         {
+            SegmentLines(Enumerable.Repeat(true, segments).ToList());
+        }
+
+        private void SegmentLines(List<bool> availableActions)
+        {
+            if (segments <= 1)
+            {
+                segmentMaterial.SetFloat("_Segments", 0);
+                return;
+            }
             float angle = 2f * Mathf.PI / segments;
-            float outerRadius = rend.material.GetFloat("_OuterRadius");
+            float outerRadius = segmentMaterial.GetFloat("_OuterRadius");
             Vector4[] _LineSegments = new Vector4[segments];
             for (int i = 0; i < segments; i++)
             {
                 _LineSegments[i] = new Vector4(
                     outerRadius * Mathf.Cos(angle * i),
                     outerRadius * Mathf.Sin(angle * i),
-                    0, 0
+                    availableActions[i] ? 1 : 0, 0
                     );
             }
-            rend.sharedMaterial.SetFloat("_Segments", segments);
-            rend.sharedMaterial.SetVectorArray("_LineSegments", _LineSegments);
+            segmentMaterial.SetFloat("_Angle", angle);
+            segmentMaterial.SetFloat("_Segments", segments);
+            segmentMaterial.SetVectorArray("_LineSegments", _LineSegments);
         }
 
         private void SegmentIcons(List<Sprite> icons)
@@ -55,7 +67,7 @@ namespace UIWheel
             angle *= Mathf.Deg2Rad;
             for (int i = 0; i < segments; i++)
             {
-                SpriteRenderer s = iconPool[i];
+                UnityEngine.UI.Image s = iconPool[i];
                 s.transform.localPosition = new Vector2(
                     radius * Mathf.Cos(angle * (i + 0.5f)),
                     radius * Mathf.Sin(angle * (i + 0.5f)));
@@ -67,7 +79,7 @@ namespace UIWheel
         {
             for (int i = iconPool.Count; i < segments; i++)
             {
-                iconPool.Add(Instantiate(icon, iconParent));
+                iconPool.Add(Instantiate(iconPrefab, iconParent));
             }
             for (int i = segments; i < iconPool.Count; i++)
             {
@@ -75,11 +87,11 @@ namespace UIWheel
             }
         }
 
-        public void SetSegments(List<Sprite> icons)
+        public void SetSegments(List<Sprite> icons, List<bool> availableActions)
         {
             segments = icons.Count;
             SegmentIcons(icons);
-            SegmentLines();
+            SegmentLines(availableActions);
         }
     }
 }

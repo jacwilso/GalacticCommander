@@ -13,7 +13,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   health: 20
   armor: 0
-  evasion: 15
+  evasion: 1
   actionPoints: 4
   initiative: 0
   shieldStrength: 10
@@ -37,3 +37,5 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   icon: {fileID: 21300000, guid: 6515bfd4c6f0e3444879ab051365512e, type: 3}
+  explosion: {fileID: 198310040112494490, guid: 2acff60daffbe7c4aaae3390e2ed78a3,
+    type: 2}

@@ -9,10 +9,7 @@ using UnityEngine.EventSystems;
 
 public class ARCursor : MonoBehaviour
 {
-    public static ARCursor Instance
-    {
-        get { return instance; }
-    }
+    public static ARCursor Instance => instance;
 
     public IInteractable Selected
     {
@@ -30,16 +27,15 @@ public class ARCursor : MonoBehaviour
         get { return screenPos; }
     }
 
-    public event Action DeselectEvent;
+    public event Action DeselectEvent, SelectEvent;
 
     private static ARCursor instance;
 
     private Camera cam;
     private IInteractable selected;
-    //private PointerEventData pointerData;
-    //private EventSystem eventSys;
+    private PointerEventData pointerData;
+    private EventSystem eventSys;
     private Vector2 screenPos;
-
 
     private void Awake()
     {
@@ -51,8 +47,8 @@ public class ARCursor : MonoBehaviour
     private void Start()
     {
         cam = Camera.main;
-        //eventSys = EventSystem.current;
-        //pointerData = new PointerEventData(null);
+        eventSys = EventSystem.current;
+        pointerData = new PointerEventData(null);
     }
 
     private void Update()
@@ -66,17 +62,20 @@ public class ARCursor : MonoBehaviour
         {
             screenPos = Input.GetTouch(0).position;
 #endif
-            //pointerData.position = screenPos;
-            //List<RaycastResult> results = new List<RaycastResult>();
-            //eventSys.RaycastAll(pointerData, results);
-            //if (results.Count > 0)
-            //    return;
-
             IInteractable newSelected = null;
             IInteractable oldSelected = selected;
 
             RaycastHit hit;
-            if (Physics.Raycast(cam.ScreenPointToRay(screenPos), out hit))
+            pointerData.position = screenPos;
+            List<RaycastResult> results = new List<RaycastResult>();
+            eventSys.RaycastAll(pointerData, results);
+            if (results.Count > 0)
+            {
+                newSelected = results[0].gameObject.GetComponent<IInteractable>();
+                newSelected?.Select();
+                return;
+            }
+            else if (Physics.Raycast(cam.ScreenPointToRay(screenPos), out hit))
             {
                 newSelected = hit.transform.GetComponent<IInteractable>();
             }
@@ -86,6 +85,7 @@ public class ARCursor : MonoBehaviour
             {
                 selected = newSelected;
                 newSelected?.Select();
+                SelectEvent?.Invoke();
             }
         }
     }

@@ -39,15 +39,15 @@ public class StatAbility : AbilityProperties
 
     public override void Ability(Ship target)
     {
-        switch(propertyObject)
+        switch (propertyObject)
         {
             case PropertyObject.Ship:
                 Stat modifyStat = (Stat)target.properties.GetType().GetField(parameter).GetValue(target.properties);
                 modifyStat.AddModifier(new StatModifier(Effect, modifierType));
                 break;
-            case PropertyObject.Attack:
-                //TODO
-                break;
+            //case PropertyObject.Attack:
+            //    //TODO
+            //    break;
             case PropertyObject.Movement:
                 //TODO
                 break;
@@ -59,6 +59,6 @@ public class StatAbility : AbilityProperties
 public enum PropertyObject
 {
     Ship,
-    Attack,
+    //Attack,
     Movement
 }

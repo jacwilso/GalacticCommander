@@ -15,25 +15,35 @@ public class StatUI : MonoBehaviour
     private void Start()
     {
         ship = GetComponentInParent<Ship>();
-        ship.DamageEvent += Damaged;
+        ship.DamageEvent += UpdateDisplay;
 
         nameText.text = ship.properties.name;
-        healthText.text = ship.properties.Health.value.ToString();
-        shieldText.text = ship.properties.ShieldStrength.value.ToString();
+        healthText.text = ship.properties.Health.MaxValue.ToString("F2");
+        shieldText.text = ship.properties.ShieldStrength.MaxValue.ToString("F2");
 
+        // gameObject.SetActive(false);
         accuracyText.transform.parent.gameObject.SetActive(false);
+        damageText.transform.parent.gameObject.SetActive(false);
     }
 
-    public void Damaged()
+    public void AttackDisplay(float accuracy, Vector2 damageMinMax)
     {
-        healthText.text = ship.properties.Health.value.ToString();
-        shieldText.text = ship.properties.ShieldStrength.value.ToString();
-    }
-
-    public void Display(float accuracy, Vector2 damage)
-    {
+        gameObject.SetActive(true);
         accuracyText.transform.parent.gameObject.SetActive(true);
-        accuracyText.text = accuracy.ToString();
-        damageText.text = damage.x + " - " + damage.y;
+        damageText.transform.parent.gameObject.SetActive(true);
+        accuracyText.text = accuracy.ToString("F2");
+        damageText.text = damageMinMax.x.ToString("F2") + " - " + damageMinMax.y.ToString("F2");
+    }
+
+    public void AttackHide()
+    {
+        accuracyText.transform.parent.gameObject.SetActive(false);
+        damageText.transform.parent.gameObject.SetActive(false);
+    }
+
+    public void UpdateDisplay()
+    {
+        healthText.text = ship.properties.Health.Value.ToString("F2");
+        shieldText.text = ship.properties.ShieldStrength.Value.ToString("F2");
     }
 }

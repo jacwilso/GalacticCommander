@@ -40,7 +40,6 @@ public class AttackPropertiesInspector : Editor
                     }
                     else
                     {
-
                         for (int j = 0; j < types.Count; j++)
                         {
                             if (childProp.arraySize <= j)

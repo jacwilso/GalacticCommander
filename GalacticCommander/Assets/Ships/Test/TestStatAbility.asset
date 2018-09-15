@@ -14,10 +14,12 @@ MonoBehaviour:
   icon: {fileID: 0}
   cost: 0
   turnCooldown: 0
+  requirement: 0
+  range: 0
   target: 0
   statType: 1
-  propertyObject: 2
-  parameter: Speed
+  propertyObject: 0
+  parameter: Evasion
   modifierType: 200
   effect: 1.2
   duration: 0

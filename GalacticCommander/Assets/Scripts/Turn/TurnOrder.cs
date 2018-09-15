@@ -1,17 +1,18 @@
-﻿using System.Collections;
+﻿using System;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 using System.Linq;
 
 public class TurnOrder : MonoBehaviour
 {
-    public static TurnOrder Instance
-    {
-        get { return instance; }
-    }
+    public event Action EndRoundEvent;
 
-    public Ship Current => initiative[indx];
+    public static TurnOrder Instance => instance;
+
+    public Ship Current
+    {
+        get { return indx < 0 ? null : initiative[indx]; }
+    }
 
     [SerializeField]
     private TurnIcon currentIcon;
@@ -21,7 +22,7 @@ public class TurnOrder : MonoBehaviour
     private static TurnOrder instance;
 
     private List<Ship> initiative;
-    private int indx;
+    private int indx = -1;
 
     private void Awake()
     {
@@ -36,6 +37,7 @@ public class TurnOrder : MonoBehaviour
         {
             initiative = new List<Ship>();
         }
+        EndRoundEvent += EndRound;
     }
 
     public void Subscribe(Ship ship)
@@ -55,7 +57,7 @@ public class TurnOrder : MonoBehaviour
     public void DetermineIntiative()
     {
         indx = 0;
-        initiative = initiative.OrderByDescending(ship => ship.properties.Initiative.value).ToList();
+        initiative = initiative.OrderByDescending(ship => ship.properties.Initiative.Value).ToList();
         StartTurn();
     }
 
@@ -71,8 +73,13 @@ public class TurnOrder : MonoBehaviour
         Current.EndTurn();
         indx++;
         if (indx >= initiative.Count)
-            DetermineIntiative();
+            EndRoundEvent?.Invoke();
         else
             StartTurn();
+    }
+
+    public void EndRound()
+    {
+        indx = -1;
     }
 }

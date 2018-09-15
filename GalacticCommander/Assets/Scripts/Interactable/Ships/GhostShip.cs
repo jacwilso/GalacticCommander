@@ -38,11 +38,13 @@ public class GhostShip : MonoBehaviour, IInteractable
     {
         selected = true;
         gameObject.SetActive(true);
+        ConfirmationUI.Instance.Activate(false);
     }
 
     public void Deselect()
     {
         selected = false;
+        ConfirmationUI.Instance.Activate(true);
     }
 
     public void Init()

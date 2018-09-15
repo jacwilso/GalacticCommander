@@ -4,6 +4,7 @@
     {
         _MainTex("Texture", 2D) = "white" {}
         _Color("Color", Color) = (0,0,0,0)
+        _DisableColor("Disabled", Color) = (0.6,0.6,0.6,0.6)
         _InnerRadius("Inner Radius", Range(0,1)) = 0
         _OuterRadius("Outer Radius", Range(0,1)) = 1
         _Thickness("Line Thickness", float) = 1
@@ -12,6 +13,7 @@
         {
             Tags { "RenderType" = "Opaque" }
             LOD 100
+            ZWrite Off
 
             Pass
             {
@@ -40,12 +42,13 @@
 
                 sampler2D _MainTex;
                 float4 _MainTex_ST;
-                float4 _Color;
+                float4 _Color, _DisableColor;
                 float _InnerRadius, _OuterRadius;
                 float _Thickness;
 
                 uniform float _Segments;
-                float2 _LineSegments[100];
+                float3 _LineSegments[100];
+                uniform float _Angle;
 
                 v2f vert(appdata v)
                 {
@@ -64,18 +67,23 @@
                         discard;
                     }
 
-                    float angle = 2 * PI / _Segments;
+                    fixed4 col = fixed4(1,1,1,1);
+                    float iAngle = atan2(iPos.y, iPos.x) + PI;
                     for (int x = 0; x < _Segments; x++)
                     {
-                        float2 perp = _LineSegments[x].yx;
-                        perp.x *= -1;
-                        if (abs(dot(normalize(perp), iPos)) < _Thickness && dot(_LineSegments[x].xy, iPos) > 0)
+                        float2 lineSeg = _LineSegments[x].xy;
+                        float2 perp = lineSeg.yx;
+                        lineSeg.x *= -1;
+                        if (abs(dot(normalize(perp), iPos)) < _Thickness && dot(lineSeg, iPos) > 0)
                         {
                             discard;
                         }
+                        if (_LineSegments[_Segments - x - 1].z == 0 && x * _Angle < iAngle && iAngle < (x+1) * _Angle) {
+                            col *= _DisableColor;
+                        }
                     }
 
-                    fixed4 col = tex2D(_MainTex, i.uv) * _Color;
+                    col *= tex2D(_MainTex, i.uv) * _Color;
                     return col;
                 }
 

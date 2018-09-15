@@ -14,35 +14,36 @@ MonoBehaviour:
   icon: {fileID: 0}
   cost: 0
   front:
-    accuracy: 0
+    accuracy: 10
     damage:
-    - {x: 0, y: 11}
-    - {x: 0, y: 1}
-    - {x: 0, y: 1}
-    - {x: 0, y: 1}
-    - {x: 0, y: 1}
-    - {x: 0, y: 1}
-    - {x: 0, y: 1}
+    - {x: 3, y: 4}
   back:
-    accuracy: 0
-    damage: []
-  top:
-    accuracy: 0
-    damage: []
-  bottom:
-    accuracy: 0
-    damage: []
-  left:
-    accuracy: 0
+    accuracy: 11
     damage:
-    - {x: 0, y: 1}
-    - {x: 0, y: 1}
-    - {x: 0, y: 1}
+    - {x: 3, y: 5}
+  top:
+    accuracy: 12
+    damage:
+    - {x: 3, y: 6}
+  bottom:
+    accuracy: 13
+    damage:
+    - {x: 3, y: 7}
+  left:
+    accuracy: 14
+    damage:
+    - {x: 3, y: 8}
   right:
-    accuracy: 0
-    damage: []
+    accuracy: 15
+    damage:
+    - {x: 3, y: 9}
   requirement: 0
-  damageTypes: -1
+  weaponType: 0
+  damageTypes: 1
+  accuracy:
+    middleRange: 18
+    steepness: -24
+    offset: 12
   hitSFX: {fileID: 0}
   missSFX: {fileID: 0}
   fireSFX: {fileID: 0}

@@ -9,13 +9,13 @@ using UnityEngine;
 public class StatAbilityEditor : Editor
 {
     private Dictionary<string, string> shipProperties = new Dictionary<string, string>(),
-        attackProperties = new Dictionary<string, string>(),
+        //attackProperties = new Dictionary<string, string>(),
         movementProperites = new Dictionary<string, string>();
 
     private void OnEnable()
     {
         PropertyDictionary(new ShipProperties(), shipProperties);
-        PropertyDictionary(new AttackProperties.AttackStat(), attackProperties);
+        //PropertyDictionary(new AttackProperties.AttackStat(), attackProperties);
         PropertyDictionary(new MovementProperties(), movementProperites);
     }
 
@@ -32,14 +32,15 @@ public class StatAbilityEditor : Editor
             case PropertyObject.Ship:
                 _properties = shipProperties;
                 break;
-            case PropertyObject.Attack:
-                _properties = attackProperties;
-                break;
+            //case PropertyObject.Attack:
+            //    _properties = attackProperties;
+            //    break;
             case PropertyObject.Movement:
                 _properties = movementProperites;
                 break;
         }
         string[] keys = _properties.Keys.ToArray();
+        _index = Array.FindIndex(keys, elem => elem == ObjectNames.NicifyVariableName(statAbility.parameter));
         _index = EditorGUILayout.Popup("Parameter", _index, keys);
         statAbility.parameter = _properties[keys[_index]];
         EditorUtility.SetDirty(target);

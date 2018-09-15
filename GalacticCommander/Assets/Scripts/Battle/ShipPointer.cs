@@ -5,7 +5,8 @@ public class ShipPointer : MonoBehaviour
     private Ship ship;
 
     private Camera cam;
-    private RectTransform pointerRect, canvasRect;
+    private RectTransform pointerRect;
+    private WorldToCanvas w2c;
     private Vector2 canvasBorder;
     private bool offset;
 
@@ -15,17 +16,13 @@ public class ShipPointer : MonoBehaviour
         pointerRect = GetComponent<RectTransform>();
         pointerRect.gameObject.SetActive(false);
 
-        canvasRect = GetComponentInParent<RectTransform>();
-        canvasBorder = 0.05f * new Vector2(canvasRect.rect.width, canvasRect.rect.height);
+        w2c = new WorldToCanvas(GetComponentInParent<Canvas>());
+        canvasBorder = 0.05f * new Vector2(w2c.canvasRect.rect.width, w2c.canvasRect.rect.height);
     }
 
     private void Update()
     {
-        Vector2 viewportPos = Camera.main.WorldToViewportPoint(ship.transform.position);
-        Vector2 screenPos2 = new Vector2(
-            ((viewportPos.x * canvasRect.sizeDelta.x) - (canvasRect.sizeDelta.x * 0.5f)),
-            ((viewportPos.y * canvasRect.sizeDelta.y) - (canvasRect.sizeDelta.y * 0.5f))
-            );
+        Vector2 screenPos2 = w2c.ConvertWorldToCanvas(ship.transform.position);
         //Vector3 screenPos = cam.WorldToScreenPoint(ship.transform.position);
         //if (screenPos.z > 0 &&
         //    screenPos.x > 0 && screenPos.x < Screen.width &&
@@ -36,8 +33,8 @@ public class ShipPointer : MonoBehaviour
         //        ((viewportPos.x * canvasRect.sizeDelta.x) - (canvasRect.sizeDelta.x * 0.5f)),
         //        ((viewportPos.y * canvasRect.sizeDelta.y) - (canvasRect.sizeDelta.y * 0.5f))
         //        );
-        if (screenPos2.x > canvasRect.rect.xMin + canvasBorder.x && screenPos2.x < canvasRect.rect.xMax - canvasBorder.x &&
-            screenPos2.y > canvasRect.rect.yMin + canvasBorder.y && screenPos2.y < canvasRect.rect.yMax - canvasBorder.y)
+        if (screenPos2.x > w2c.canvasRect.rect.xMin + canvasBorder.x && screenPos2.x < w2c.canvasRect.rect.xMax - canvasBorder.x &&
+            screenPos2.y > w2c.canvasRect.rect.yMin + canvasBorder.y && screenPos2.y < w2c.canvasRect.rect.yMax - canvasBorder.y)
         {
             pointerRect.anchoredPosition = screenPos2 + 70f * Vector2.up;
             transform.rotation = Quaternion.identity;
