@@ -69,8 +69,9 @@ namespace UIWheel
             float angle = 2f * Mathf.PI / segmenter.Segments;
             Vector2 inputPos = ARCursor.Instance.InputPosition;
             inputPos -= 0.5f * new Vector2(Screen.width, Screen.height);
-            float inputAngle = Mathf.Atan2(inputPos.y, inputPos.x) - Mathf.PI;
-            int segment = (int)(-inputAngle / angle);
+            inputPos -= uiElement.anchoredPosition;
+            float inputAngle = Mathf.Repeat(Mathf.PI - Mathf.Atan2(inputPos.y, -inputPos.x) + 0.5f * angle, 2 * Mathf.PI);
+            int segment = (int)(inputAngle / angle);
             if (availableActions[segment])
             {
                 gameObject.SetActive(false);

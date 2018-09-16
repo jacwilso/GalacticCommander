@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class EnemyShip : Ship
 {
+    [SerializeField]
+    private EnemyAI aI;
+
     private StatUI statUI;
     private Ship ship;
     private float cachedAccuracy;
@@ -12,30 +15,45 @@ public class EnemyShip : Ship
     protected override void Start()
     {
         base.Start();
-        ship = GetComponent<Ship>();
         statUI = GetComponentInChildren<StatUI>();
-        GetComponent<Ship>().StartTurnEvent += Move;
+        // GetComponent<Ship>().StartTurnEvent += Move;
         DamageEvent += statUI.UpdateDisplay;
     }
 
-    public override void Select()
+    public override void Select() { }
+
+    public override void Deselect() { }
+
+    public override void StartTurn()
     {
-        return;
+        base.StartTurn();
+        Move();
     }
 
-    public override void Deselect()
-    {
-        return;
-    }
-
-
+    #region  Movement
     private void Move()
     {
-        Debug.Log("move");
-        transform.position += transform.forward;
-        TurnOrder.Instance.EndTurn();
+        Vector3 moveTo = aI.Move(this);
+        StartCoroutine(ExecuteMovement(moveTo));
     }
 
+    private IEnumerator ExecuteMovement(Vector3 moveTo)
+    {
+        float t = 0f;
+        Vector3 startPos = transform.position, endPos = moveTo;
+        // Quaternion startRot = transform.rotation, endRot = transform.rotation;
+        while (t < 1f)
+        {
+            t += Time.deltaTime;
+            transform.position = Vector3.Lerp(startPos, endPos, t);
+            // transform.rotation = Quaternion.Lerp(startRot, endRot, t);
+            yield return null;
+        }
+        TurnOrder.Instance.EndTurn();
+    }
+    #endregion
+
+    #region Attacked
     public void SelectAttack()
     {
         Ship active = TurnOrder.Instance.Current;
@@ -74,4 +92,5 @@ public class EnemyShip : Ship
         cachedAccuracy = (active.properties.accuracy.Value - ship.properties.Evasion.Value) * active.properties.activeWeapon.accuracy.Calculate(range);
         cachedAccuracy = Mathf.Max(cachedAccuracy, 0);
     }
+    #endregion
 }

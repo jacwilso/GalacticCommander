@@ -17,6 +17,9 @@ public abstract class Ship : MonoBehaviour, IDamageable, IInteractable
 
     protected FiringZone zone;
     protected GhostShip ghost;
+    protected bool displayMovement;
+    protected int turnAP;
+    public int TurnAP => turnAP;
 
     protected virtual void Start()
     {
@@ -24,6 +27,15 @@ public abstract class Ship : MonoBehaviour, IDamageable, IInteractable
         ghost = GetComponentInChildren<GhostShip>();
         ghost.Init();
         TurnOrder.Instance.Subscribe(this);
+    }
+
+    protected virtual void OnDrawGizmos()
+    {
+        if (displayMovement)
+        {
+            Gizmos.color = new Color(0, 1f, 0, 0.25f);
+            Gizmos.DrawSphere(transform.position, properties.movement.Speed.Value * turnAP);
+        }
     }
 
     public void Damaged(GotHitParams hit)
@@ -52,22 +64,16 @@ public abstract class Ship : MonoBehaviour, IDamageable, IInteractable
 
     public virtual void StartTurn()
     {
+        turnAP = (int)properties.ActionPoints.Value;
         StartTurnEvent?.Invoke();
     }
 
     public void EndTurn()
     {
         EndTurnEvent?.Invoke();
-        //ghostShip.End();
     }
 
     public abstract void Select();
-    // {
-    //     throw new NotImplementedException();
-    // }
 
     public abstract void Deselect();
-    // {
-    //     throw new NotImplementedException();
-    // }
 }

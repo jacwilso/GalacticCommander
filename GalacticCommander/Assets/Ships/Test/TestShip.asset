@@ -22,8 +22,10 @@ MonoBehaviour:
   network: []
   weapons:
   - {fileID: 11400000, guid: 2553ec674f1d55243acba0848673b877, type: 2}
+  - {fileID: 11400000, guid: ea5c9d65e3da1a749a15cd070c296714, type: 2}
   engines: []
   structure: []
   energy: []
   personnel: []
   icon: {fileID: 21300000, guid: 0ff6866986e61f6408e9c20da12a9169, type: 3}
+  explosion: {fileID: 0}

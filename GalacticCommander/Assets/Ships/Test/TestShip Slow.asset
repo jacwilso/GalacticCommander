@@ -15,7 +15,7 @@ MonoBehaviour:
   armor: 0
   evasion: 1
   actionPoints: 4
-  initiative: 0
+  initiative: 1000
   shieldStrength: 10
   shieldRegen: 0
   movement: {fileID: 11400000, guid: e2fd4ed55a56a114cb7c5a805f6806a5, type: 2}

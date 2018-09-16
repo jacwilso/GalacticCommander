@@ -28,7 +28,10 @@ namespace UIWheel
 
         private void OnEnable()
         {
-            iconPool = new List<UnityEngine.UI.Image>();
+            if (iconPool == null)
+            {
+                iconPool = new List<UnityEngine.UI.Image>();
+            }
         }
 
         [ContextMenu("Segment Lines")]
@@ -69,8 +72,8 @@ namespace UIWheel
             {
                 UnityEngine.UI.Image s = iconPool[i];
                 s.transform.localPosition = new Vector2(
-                    radius * Mathf.Cos(angle * (i + 0.5f)),
-                    radius * Mathf.Sin(angle * (i + 0.5f)));
+                    radius * Mathf.Cos(angle * i),
+                    radius * Mathf.Sin(angle * i));
                 s.sprite = icons[i];
             }
         }

@@ -9,12 +9,14 @@ public class GhostShip : MonoBehaviour, IInteractable
     [SerializeField]
     private Vector3 handleOffset;
 
+    private Ship ship;
     private bool selected;
     private Camera cam;
     private Vector3 toHandle;
 
     private void Start()
     {
+        ship = GetComponentInParent<Ship>();
         cam = Camera.main;
         transform.localPosition = Vector3.zero;
         transform.localRotation = Quaternion.identity;
@@ -31,6 +33,17 @@ public class GhostShip : MonoBehaviour, IInteractable
 
             Vector3 toHandleWorld = handle.transform.TransformDirection(toHandle);
             transform.position = handlePos - toHandleWorld;
+
+            float distSq = Vector3.SqrMagnitude(transform.parent.position - transform.position);
+            float speedSq = ship.properties.movement.Speed.Value;
+            speedSq *= speedSq;
+            int cost = Mathf.CeilToInt(distSq / speedSq);
+            PlayerShip player = (PlayerShip)ship;
+            if (cost > player.TurnAP)
+            {
+                Debug.Log("STOP");
+                //TODO
+            }
         }
     }
 
@@ -45,6 +58,20 @@ public class GhostShip : MonoBehaviour, IInteractable
     {
         selected = false;
         ConfirmationUI.Instance.Activate(true);
+        float distSq = Vector3.SqrMagnitude(transform.parent.position - transform.position);
+        float speedSq = ship.properties.movement.Speed.Value;
+        speedSq *= speedSq;
+        int cost = Mathf.CeilToInt(distSq / speedSq);
+        PlayerShip player = (PlayerShip)ship;
+        if (cost > player.TurnAP)
+        {
+            ConfirmationUI.Instance.Activate(false, true);
+        }
+        else if (ConfirmationUI.Instance.gameObject.activeSelf)
+        {
+            player.CacheAP = cost;
+            ConfirmationUI.Instance.Activate(true);
+        }
     }
 
     public void Init()

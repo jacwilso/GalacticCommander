@@ -4,17 +4,16 @@ using UnityEngine;
 
 public class PlayerShip : Ship
 {
+    public int CacheAP
+    {
+        set { cacheAP = value; }
+    }
+
     [SerializeField]
     private GameEvent attackEvent;
 
     private ActionType action = ActionType.None;
-    private int turnAP;
-    public int TurnAP => turnAP;
-
-    protected override void Start()
-    {
-        base.Start();
-    }
+    private int cacheAP;
 
     public override void Select()
     {
@@ -30,17 +29,8 @@ public class PlayerShip : Ship
         UIWheel.ActionWheel.Instance.Deselect();
     }
 
-    public override void StartTurn()
-    {
-        base.StartTurn();
-        turnAP = (int)properties.ActionPoints.Value;
-        Debug.Log("Start Turn AP: " + turnAP);
-    }
-
     public void Action(int segment)
     {
-        // TODO
-        //properties.GetAction(segment).Action();
         ConfirmationUI.Instance.TurnAction();
         if (segment == 0)
         {
@@ -81,13 +71,16 @@ public class PlayerShip : Ship
         ARCursor.Instance.Selected = Ghost;
         ConfirmationUI.Instance.ConfirmEvent += ConfirmMovement;
         ConfirmationUI.Instance.CancelEvent += CancelMovement;
+        displayMovement = true;
     }
 
     public void ConfirmMovement()
     {
+        turnAP -= cacheAP;
         StartCoroutine(ExecuteMovement());
         ConfirmationUI.Instance.ConfirmEvent -= ConfirmMovement;
         ConfirmationUI.Instance.CancelEvent -= CancelMovement;
+        displayMovement = false;
     }
 
     public void CancelMovement()
@@ -96,6 +89,7 @@ public class PlayerShip : Ship
         Ghost.Hide();
         ConfirmationUI.Instance.ConfirmEvent -= ConfirmMovement;
         ConfirmationUI.Instance.CancelEvent -= CancelMovement;
+        displayMovement = false;
     }
 
     private IEnumerator ExecuteMovement()
