@@ -21,6 +21,7 @@ public class StatPropertyObject : ScriptableObject, ISerializationCallbackReceiv
                 }
                 else
                 {
+                    param.SetValue(this, new Stat(0));
                     Debug.LogWarning(param.Name + " cannot be modified, no base name exists.");
                 }
             });

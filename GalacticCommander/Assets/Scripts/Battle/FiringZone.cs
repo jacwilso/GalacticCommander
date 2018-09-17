@@ -2,17 +2,15 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class FiringZone : MonoBehaviour {
+public class FiringZone : MonoBehaviour
+{
 
     public Vector3 InnerScale => innerScale;
     public Vector3 OuterScale => outerScale;
 
-#if UNITY_EDITOR
-	public Transform target;
-#endif
-
-	[SerializeField]
-    private Vector3 innerScale = Vector3.one, 
+    // [SerializeField]
+    [MinValue(0.1f)]
+    public Vector3 innerScale = Vector3.one,
         outerScale = 3f * Vector3.one;
 
     private Plane[,] frustums;
@@ -29,47 +27,47 @@ public class FiringZone : MonoBehaviour {
         new Vector3(1, 1, 1),
     };
 
-	private int[] winding =
-	{
+    private int[] winding =
+    {
         // back
         6, 4, 0,
-		2, 0,
-		6, 2,
-		4, 6,
-		1, 4, 
+        2, 0,
+        6, 2,
+        4, 6,
+        1, 4, 
         // left
         3, 2, 0,
-		3, 1,
-		1, 0,
-		0, 2,
-		2, 3, 
+        3, 1,
+        1, 0,
+        0, 2,
+        2, 3, 
         // bottom
         5, 1, 0,
-		4, 0,
-		1, 5,
-		0, 1,
-		5, 4, 
+        4, 0,
+        1, 5,
+        0, 1,
+        5, 4, 
         // front
         7, 3, 1,
-		1, 3,
-		7, 5,
-		3, 7,
-		5, 1, 
+        1, 3,
+        7, 5,
+        3, 7,
+        5, 1, 
         // top
         7, 6, 2,
-		3, 2,
-		2, 6,
-		6, 7,
-		7, 3, 
+        3, 2,
+        2, 6,
+        6, 7,
+        7, 3, 
         // right
         7, 5, 4,
-		6, 4,
-		7, 6,
-		5, 7,
-		4, 5,
-	};
+        6, 4,
+        7, 6,
+        5, 7,
+        4, 5,
+    };
 
-	private void OnValidate()
+    private void OnValidate()
     {
         if (innerScale.x > outerScale.x || innerScale.y > outerScale.y || innerScale.z > outerScale.z)
             Debug.LogError("Inner scale must be smaller than outer scale.");
@@ -77,35 +75,34 @@ public class FiringZone : MonoBehaviour {
 
     private void OnEnable()
     {
-		RecalculateFrustum();
+        RecalculateFrustum();
     }
 
-	public void RecalculateFrustum()
-	{
-		if (frustums == null)
-		{
-			frustums = new Plane[6, 5];
-		}
+    public void RecalculateFrustum(Vector3 position, Quaternion rotation)
+    {
+        if (frustums == null)
+        {
+            frustums = new Plane[6, 5];
+        }
 
-		Vector3 pos = transform.position;
-		for (int i = 0; i < 6; i++)
-		{
-			int indx = i * 11;
-			frustums[i, 0] = new Plane(
-				pos + 0.5f * (transform.rotation * Vector3.Scale(innerScale, cubeVerticies[winding[indx]])),
-				pos + 0.5f * (transform.rotation * Vector3.Scale(innerScale, cubeVerticies[winding[++indx]])),
-				pos + 0.5f * (transform.rotation * Vector3.Scale(innerScale, cubeVerticies[winding[++indx]]))
-			);
-			for (int j = 0; j < 4; j++)
-				frustums[i, j + 1] = new Plane(
-					pos + 0.5f * (transform.rotation * Vector3.Scale(outerScale, cubeVerticies[winding[++indx]])),
-					pos + 0.5f * (transform.rotation * Vector3.Scale(innerScale, cubeVerticies[winding[indx]])),
-					pos + 0.5f * (transform.rotation * Vector3.Scale(innerScale, cubeVerticies[winding[++indx]]))
-				);
-		}
-	}
+        for (int i = 0; i < 6; i++)
+        {
+            int indx = i * 11;
+            frustums[i, 0] = new Plane(
+                position + 0.5f * (rotation * Vector3.Scale(innerScale, cubeVerticies[winding[indx]])),
+                position + 0.5f * (rotation * Vector3.Scale(innerScale, cubeVerticies[winding[++indx]])),
+                position + 0.5f * (rotation * Vector3.Scale(innerScale, cubeVerticies[winding[++indx]]))
+            );
+            for (int j = 0; j < 4; j++)
+                frustums[i, j + 1] = new Plane(
+                    position + 0.5f * (rotation * Vector3.Scale(outerScale, cubeVerticies[winding[++indx]])),
+                    position + 0.5f * (rotation * Vector3.Scale(innerScale, cubeVerticies[winding[indx]])),
+                    position + 0.5f * (rotation * Vector3.Scale(innerScale, cubeVerticies[winding[++indx]]))
+                );
+        }
+    }
 
-	public Face FrustrumFace(Vector3 point)
+    public Face FrustrumFace(Vector3 target)
     {
         for (int i = 0; i < 6; i++)
         {
@@ -113,7 +110,7 @@ public class FiringZone : MonoBehaviour {
             for (int j = 0; j < 5; j++)
             {
                 //Debug.Log(i + ", " + j + " " + frustrums[i, j].GetSide(point));
-                if (!frustums[i,j].GetSide(point))
+                if (!frustums[i, j].GetSide(target))
                 {
                     inFront = false;
                     break;

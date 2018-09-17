@@ -115,26 +115,21 @@ public class ShipProperties : StatPropertyObject
         return availableActions;
     }
 
+    public List<AbilityProperties> GetAbilities()
+    {
+        return GetType().GetFields()
+                   .Where(field => field.GetValue(this) is AbilityProperties[])
+                   .SelectMany(param => param.GetValue(this) as AbilityProperties[]).ToList();
+    }
+
     public ActionProperties GetAction(int option)
     {
         if (option == 0)
         {
             return movement;
         }
-        FieldInfo[] fields = GetType().GetFields()
-            .Where(field => field.GetValue(this) is ActionProperties[]).ToArray();
-        for (int i = 0; i < fields.Length; i++)
-        {
-            ActionProperties[] actions = fields[i].GetValue(this) as ActionProperties[];
-            if (actions.Length >= option)
-            {
-                return actions[option - 1];
-            }
-            else
-            {
-                option -= actions.Length;
-            }
-        }
-        return null;
+        return GetType().GetFields()
+            .Where(field => field.GetValue(this) is ActionProperties[])
+            .SelectMany(param => param.GetValue(this) as ActionProperties[]).ToArray()[option - 1];
     }
 }

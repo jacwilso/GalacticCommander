@@ -12,6 +12,7 @@ public abstract class Ship : MonoBehaviour, IDamageable, IInteractable
     public event Action EndTurnEvent;
 
     public GhostShip Ghost => ghost;
+    public FiringZone Zone => zone;
 
     public ShipProperties properties;
 
@@ -20,6 +21,8 @@ public abstract class Ship : MonoBehaviour, IDamageable, IInteractable
     protected bool displayMovement;
     protected int turnAP;
     public int TurnAP => turnAP;
+    protected float cachedAccuracy;
+    protected Vector2Int cachedDamage;
 
     protected virtual void Start()
     {
@@ -38,6 +41,7 @@ public abstract class Ship : MonoBehaviour, IDamageable, IInteractable
         }
     }
 
+    #region Damage
     public void Damaged(GotHitParams hit)
     {
         // TODO include armor values
@@ -61,6 +65,28 @@ public abstract class Ship : MonoBehaviour, IDamageable, IInteractable
         TurnOrder.Instance.Unsubscribe(this);
         Instantiate<ParticleSystem>(properties.Explosion, transform);
     }
+
+    public Vector2Int AttackerDamage(FiringZone.Face face)
+    {
+        Vector2Int damage = new Vector2Int();
+        Ship attacker = TurnOrder.Instance.Current;
+        attacker.properties.damage.BaseValue = attacker.properties.activeWeapon[(int)face].Damage.x;
+        damage.x = (int)attacker.properties.damage.Value;
+        attacker.properties.damage.BaseValue = attacker.properties.activeWeapon[(int)face].Damage.y;
+        damage.y = (int)attacker.properties.damage.Value;
+        return damage;
+    }
+
+    public float AttackerAccuracy(FiringZone.Face face)
+    {
+        Ship attacker = TurnOrder.Instance.Current;
+        float range = Vector3.Distance(transform.position, attacker.transform.position);
+        attacker.properties.accuracy.BaseValue = attacker.properties.activeWeapon[(int)face].Accuracy;
+        float accuracy = (attacker.properties.accuracy.Value - properties.Evasion.Value) * attacker.properties.activeWeapon.accuracy.Calculate(range);
+        accuracy = Mathf.Max(accuracy, 0);
+        return accuracy;
+    }
+    #endregion
 
     public virtual void StartTurn()
     {

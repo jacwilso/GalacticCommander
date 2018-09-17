@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 [CreateAssetMenu()]
@@ -7,6 +9,8 @@ public class EnemyAI : ScriptableObject
     public float minTargetDist;
     [MinValue(0)]
     public float minDistToMove;
+    [Range(0, 100)]
+    public float minAccReq;
 
     enum MovementType
     {
@@ -14,6 +18,83 @@ public class EnemyAI : ScriptableObject
     }
     [SerializeField]
     private MovementType movementType;
+
+    private PlayerShip[] players;
+
+    struct Action
+    {
+        float priority;
+        List<ActionProperties> actions;
+    };
+    private SortedList<float, Action> priorityAction;
+
+    public void ActionList(EnemyShip ship)
+    {
+        players = FindObjectsOfType<PlayerShip>();
+        EnemyShip[] allies = FindObjectsOfType<EnemyShip>();
+        priorityAction = new SortedList<float, Action>();
+        List<AttackProperties> weapons = ship.properties.weapons.OfType<AttackProperties>().ToList();
+        List<AbilityProperties> abilities = ship.properties.GetAbilities();
+        AbilityProperties.TargetType friendlyAbilityTypes = AbilityProperties.TargetType.Self |
+            AbilityProperties.TargetType.SelfAOE |
+            AbilityProperties.TargetType.Ally |
+            AbilityProperties.TargetType.AllyAOE;
+        AbilityProperties.TargetType enemyAbilityTypes = AbilityProperties.TargetType.Enemy |
+            AbilityProperties.TargetType.EnemyAOE;
+        // for (int i = 0; i < )
+
+
+        // for (int i = 0; i < )
+    }
+
+    private void CalculatePositionPriority(EnemyShip ship, EnemyShip[] allies,
+        List<AbilityProperties> abilities, List<AttackProperties> weapons, int actionPoints,
+        AbilityProperties.TargetType friendlyAbilityTypes, AbilityProperties.TargetType enemyAbilityTypes)
+    {
+        for (int i = 0; i < weapons.Count; i++)
+        {
+            if (ship.properties.weapons[j].Cost > actionPoints)
+            {
+                weapons.RemoveAt(i);
+            }
+        }
+
+        float priority = 0;
+        ship.Zone.RecalculateFrustum();
+        for (int i = 0; i < players.Length; i++)
+        {
+            FiringZone.Face face = ship.Zone.FrustrumFace(players[i].transform.position);
+            for (int j = 0; j < ship.properties.weapons.Length; i++)
+            {
+                ship.properties.activeWeapon = ship.properties.weapons[j];
+                float accuracy = players[i].AttackerAccuracy(face);
+                if (accuracy < minAccReq)
+                {
+                    continue;
+                }
+                Vector2 damage = players[i].AttackerDamage(face);
+                priority += accuracy * 0.5f * (damage.y + damage.x);
+            }
+            float range = Vector3.Distance(ship.transform.position, players[i].transform.position);
+            for (int j = 0; j < abilities.Count; j++)
+            {
+                if ((abilities[i].Target & friendlyAbilityTypes) == 0 && abilities[i].Ready && abilities[i].Range <= range)
+                {
+                    priority += abilities[i].AIPriority;
+                }
+            }
+        }
+        for (int i = 0; i < allies.Length; i++)
+        {
+            for (int j = 0; j < abilities.Count; j++)
+            {
+                if ((abilities[i].Target & enemyAbilityTypes) == 0 && abilities[i].Ready && abilities[i].Range <= range)
+                {
+                    priority += abilities[i].AIPriority;
+                }
+            }
+        }
+    }
 
     #region Movement
     public Vector3 Move(Ship ship)
@@ -54,7 +135,6 @@ public class EnemyAI : ScriptableObject
     private Vector3 CenteralPosition(Transform shipTransform)
     {
         Vector3 center = new Vector3();
-        PlayerShip[] players = FindObjectsOfType<PlayerShip>();
         for (int i = 0; i < players.Length; i++)
         {
             Vector3 dir = players[i].transform.position - shipTransform.position;
@@ -65,10 +145,10 @@ public class EnemyAI : ScriptableObject
     }
     #endregion
 
+    #region Rules
     private PlayerShip WeakestTarget()
     {
         float min = Mathf.Infinity;
-        PlayerShip[] players = FindObjectsOfType<PlayerShip>();
         PlayerShip weakest = null;
         for (int i = 0; i < players.Length; i++)
         {
@@ -86,7 +166,6 @@ public class EnemyAI : ScriptableObject
     private PlayerShip ClosestTarget(Transform shipTransform)
     {
         float min = Mathf.Infinity;
-        PlayerShip[] players = FindObjectsOfType<PlayerShip>();
         PlayerShip player = null;
         for (int i = 0; i < players.Length; i++)
         {
@@ -99,4 +178,5 @@ public class EnemyAI : ScriptableObject
         }
         return player;
     }
+    #endregion
 }
