@@ -53,6 +53,8 @@ public class ShipProperties : StatPropertyObject
     public AbilityProperties[] energy;
     public AbilityProperties[] personnel;
 
+    public ShipTypeModifier modifier;
+
     [Header("Other")]
     [SerializeField]
     private Sprite icon;
@@ -68,6 +70,8 @@ public class ShipProperties : StatPropertyObject
         damage = new Stat(0);
     [NonSerialized]
     public AttackProperties activeWeapon;
+
+    // Functions
 
     public List<Sprite> GetIcons()
     {

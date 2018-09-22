@@ -75,7 +75,7 @@ public class FiringZone : MonoBehaviour
 
     private void OnEnable()
     {
-        RecalculateFrustum();
+        RecalculateFrustum(transform.position, transform.rotation);
     }
 
     public void RecalculateFrustum(Vector3 position, Quaternion rotation)

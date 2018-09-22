@@ -51,14 +51,13 @@ public class PlayerShip : Ship
                 AbilityProperties ability = action as AbilityProperties;
                 switch (ability.Target)
                 {
-                    case AbilityProperties.TargetType.Self:
-                        break;
-                    case AbilityProperties.TargetType.Ally:
-                        break;
-                    case AbilityProperties.TargetType.Enemy:
-                        break;
-                    case AbilityProperties.TargetType.All:
-                        break;
+                    case AbilityProperties.TargetType.Self: break;
+                    case AbilityProperties.TargetType.SelfAOE: break;
+                    case AbilityProperties.TargetType.Ally: break;
+                    case AbilityProperties.TargetType.AllyAOE: break;
+                    case AbilityProperties.TargetType.Enemy: break;
+                    case AbilityProperties.TargetType.EnemyAOE: break;
+                    case AbilityProperties.TargetType.All: break;
                 }
             }
         }
@@ -107,7 +106,7 @@ public class PlayerShip : Ship
             yield return null;
         }
         Ghost.Hide();
-        zone.RecalculateFrustum();
+        zone.RecalculateFrustum(transform.position, transform.rotation);
         action = ActionType.None;
 
         /*

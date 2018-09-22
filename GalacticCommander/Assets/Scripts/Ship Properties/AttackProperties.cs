@@ -5,29 +5,6 @@ using UnityEngine;
 public class AttackProperties : ActionProperties
 {
     [SerializeField]
-    public AttackStat this[int i]
-    {
-        get
-        {
-            switch (i)
-            {
-                case 0: return front;
-                case 1: return back;
-                case 2: return top;
-                case 3: return bottom;
-                case 4: return left;
-                case 5: return right;
-                default:
-                    Debug.LogError("AttackProperties::[] out of bounds");
-                    return front;
-            }
-        }
-    }
-
-    [SerializeField]
-    public AttackStat front, back, top, bottom, left, right;
-
-    [SerializeField]
     private int requirement;
     public int Requirement => requirement;
 
@@ -40,7 +17,18 @@ public class AttackProperties : ActionProperties
     public ResistanceTypes DamageTypes => damageTypes;
 
     [SerializeField]
-    public AccuracyCurve accuracy;
+    public AccuracyCurve curve;
+
+    [SerializeField]
+    [Range(0, 100)]
+    private int accuracy;
+
+    [SerializeField]
+    private Vector2Int[] damage;
+
+    public int Accuracy => accuracy;
+    [NonSerialized]
+    public Vector2Int Damage;
 
     [Header("SFX"), SerializeField]
     private AudioSource hitSFX;
@@ -49,31 +37,6 @@ public class AttackProperties : ActionProperties
     public AudioSource HitSFX => hitSFX;
     public AudioSource MissSFX => missSFX;
     public AudioSource FireSFX => fireSFX;
-
-    [System.Serializable]
-    public struct AttackStat
-    {
-        [SerializeField]
-        [Range(0, 100)]
-        private int accuracy;
-
-        [SerializeField]
-        private Vector2Int[] damage;
-
-        public int Accuracy => accuracy;
-        [NonSerialized]
-        public Vector2Int Damage;
-        public void SumDamage()
-        {
-            Vector2Int dmg = Vector2Int.zero;
-            for (int i = 0; i < damage.Length; i++)
-            {
-                dmg += damage[i];
-            }
-            Damage = dmg;
-            //Debug.Log(Damage);
-        }
-    }
 
     [System.Serializable]
     public struct AccuracyCurve
@@ -90,11 +53,19 @@ public class AttackProperties : ActionProperties
 
     private void OnEnable()
     {
-        front.SumDamage();
-        back.SumDamage();
-        top.SumDamage();
-        bottom.SumDamage();
-        left.SumDamage();
-        right.SumDamage();
+        SumDamage();
+    }
+
+    // Function
+
+    public void SumDamage()
+    {
+        Vector2Int dmg = Vector2Int.zero;
+        for (int i = 0; i < damage.Length; i++)
+        {
+            dmg += damage[i];
+        }
+        Damage = dmg;
+        //Debug.Log(Damage);
     }
 }

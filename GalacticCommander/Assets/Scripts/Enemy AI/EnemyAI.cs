@@ -53,14 +53,14 @@ public class EnemyAI : ScriptableObject
     {
         for (int i = 0; i < weapons.Count; i++)
         {
-            if (ship.properties.weapons[j].Cost > actionPoints)
+            if (ship.properties.weapons[i].Cost > actionPoints)
             {
                 weapons.RemoveAt(i);
             }
         }
 
         float priority = 0;
-        ship.Zone.RecalculateFrustum();
+        ship.Zone.RecalculateFrustum(ship.transform.position, ship.transform.rotation);
         for (int i = 0; i < players.Length; i++)
         {
             FiringZone.Face face = ship.Zone.FrustrumFace(players[i].transform.position);
@@ -86,6 +86,7 @@ public class EnemyAI : ScriptableObject
         }
         for (int i = 0; i < allies.Length; i++)
         {
+            float range = Vector3.Distance(ship.transform.position, allies[i].transform.position);
             for (int j = 0; j < abilities.Count; j++)
             {
                 if ((abilities[i].Target & enemyAbilityTypes) == 0 && abilities[i].Ready && abilities[i].Range <= range)

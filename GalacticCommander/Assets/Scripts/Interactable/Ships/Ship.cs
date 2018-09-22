@@ -70,9 +70,9 @@ public abstract class Ship : MonoBehaviour, IDamageable, IInteractable
     {
         Vector2Int damage = new Vector2Int();
         Ship attacker = TurnOrder.Instance.Current;
-        attacker.properties.damage.BaseValue = attacker.properties.activeWeapon[(int)face].Damage.x;
+        attacker.properties.damage.BaseValue = attacker.properties.activeWeapon.Damage.x;
         damage.x = (int)attacker.properties.damage.Value;
-        attacker.properties.damage.BaseValue = attacker.properties.activeWeapon[(int)face].Damage.y;
+        attacker.properties.damage.BaseValue = attacker.properties.activeWeapon.Damage.y;
         damage.y = (int)attacker.properties.damage.Value;
         return damage;
     }
@@ -81,8 +81,8 @@ public abstract class Ship : MonoBehaviour, IDamageable, IInteractable
     {
         Ship attacker = TurnOrder.Instance.Current;
         float range = Vector3.Distance(transform.position, attacker.transform.position);
-        attacker.properties.accuracy.BaseValue = attacker.properties.activeWeapon[(int)face].Accuracy;
-        float accuracy = (attacker.properties.accuracy.Value - properties.Evasion.Value) * attacker.properties.activeWeapon.accuracy.Calculate(range);
+        attacker.properties.accuracy.BaseValue = attacker.properties.activeWeapon.Accuracy;
+        float accuracy = (attacker.properties.accuracy.Value - properties.Evasion.Value) * attacker.properties.activeWeapon.curve.Calculate(range);
         accuracy = Mathf.Max(accuracy, 0);
         return accuracy;
     }

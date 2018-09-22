@@ -89,7 +89,7 @@ public class FiringZoneEditor : Editor
             return;
         }
 
-        scr.RecalculateFrustum();
+        scr.RecalculateFrustum(scr.transform.position, scr.transform.rotation);
 
         FiringZone.Face face = scr.FrustrumFace(staticTarget.position);
         int[] winding =

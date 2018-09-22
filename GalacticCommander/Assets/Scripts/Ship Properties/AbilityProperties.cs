@@ -29,14 +29,14 @@ public abstract class AbilityProperties : ActionProperties
     public abstract void Ability(Ship target);
 
     [Flags]
-    public enum TargetType
+    public enum TargetType : int
     {
-        Self = (0 << 1),
-        SelfAOE = (0 << 2), // you + allies
-        Ally = (0 << 3),
-        AllyAOE = (0 << 4),
-        Enemy = (0 << 5),
-        EnemyAOE = (0 << 6),
+        Self = (1 << 0),
+        SelfAOE = (1 << 1), // you + allies
+        Ally = (1 << 2),
+        AllyAOE = (1 << 3),
+        Enemy = (1 << 4),
+        EnemyAOE = (1 << 5),
         All = ~0
     }
 }
