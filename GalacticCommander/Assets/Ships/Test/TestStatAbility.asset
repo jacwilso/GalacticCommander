@@ -16,7 +16,7 @@ MonoBehaviour:
   turnCooldown: 0
   requirement: 0
   range: 0
-  target: 0
+  target: 2
   aiPriority: 0
   statType: 1
   propertyObject: 0

@@ -67,7 +67,7 @@ public class EnemyAI : ScriptableObject
             for (int j = 0; j < ship.properties.weapons.Length; i++)
             {
                 ship.properties.activeWeapon = ship.properties.weapons[j];
-                float accuracy = players[i].AttackerAccuracy(face);
+                float accuracy = players[i].AttackerAccuracy();
                 if (accuracy < minAccReq)
                 {
                     continue;

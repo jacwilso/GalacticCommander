@@ -55,7 +55,7 @@ public class EnemyShip : Ship
     {
         Ship active = TurnOrder.Instance.Current;
         FiringZone.Face face = active.GetComponent<FiringZone>().FrustrumFace(transform.position);
-        cachedAccuracy = AttackerAccuracy(face);
+        cachedAccuracy = AttackerAccuracy();
         cachedDamage = AttackerDamage(face);
         statUI.AttackDisplay(cachedAccuracy, cachedDamage);
     }

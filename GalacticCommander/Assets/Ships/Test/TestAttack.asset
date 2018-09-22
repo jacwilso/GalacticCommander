@@ -13,37 +13,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   icon: {fileID: 0}
   cost: 1
-  front:
-    accuracy: 10
-    damage:
-    - {x: 3, y: 4}
-  back:
-    accuracy: 11
-    damage:
-    - {x: 3, y: 5}
-  top:
-    accuracy: 12
-    damage:
-    - {x: 3, y: 6}
-  bottom:
-    accuracy: 13
-    damage:
-    - {x: 3, y: 7}
-  left:
-    accuracy: 14
-    damage:
-    - {x: 3, y: 8}
-  right:
-    accuracy: 15
-    damage:
-    - {x: 3, y: 9}
   requirement: 0
   weaponType: 0
   damageTypes: 1
-  accuracy:
-    middleRange: 18
-    steepness: -24
-    offset: 12
+  curve:
+    middleRange: 0
+    steepness: 0
+    offset: 0
+  accuracy: 0
+  damage:
+  - {x: 24, y: 57}
+  - {x: 0, y: 1}
   hitSFX: {fileID: 0}
   missSFX: {fileID: 0}
   fireSFX: {fileID: 0}

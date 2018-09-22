@@ -5,7 +5,7 @@ using UnityEditor;
 public class ShipPropertiesEditor : Editor
 {
     ShipProperties ship;
-    bool foldout;
+    bool foldout = true;
     Editor modifierEditor;
 
     private void OnEnable()

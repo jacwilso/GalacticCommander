@@ -70,14 +70,16 @@ public abstract class Ship : MonoBehaviour, IDamageable, IInteractable
     {
         Vector2Int damage = new Vector2Int();
         Ship attacker = TurnOrder.Instance.Current;
+        attacker.properties.damage.AddModifier(attacker.properties.modifier[(int)face]);
         attacker.properties.damage.BaseValue = attacker.properties.activeWeapon.Damage.x;
-        damage.x = (int)attacker.properties.damage.Value;
         attacker.properties.damage.BaseValue = attacker.properties.activeWeapon.Damage.y;
+        damage.x = (int)attacker.properties.damage.Value;
         damage.y = (int)attacker.properties.damage.Value;
+        attacker.properties.damage.RemoveModifier(attacker.properties.modifier[(int)face]);
         return damage;
     }
 
-    public float AttackerAccuracy(FiringZone.Face face)
+    public float AttackerAccuracy()
     {
         Ship attacker = TurnOrder.Instance.Current;
         float range = Vector3.Distance(transform.position, attacker.transform.position);

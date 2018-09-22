@@ -27,5 +27,6 @@ MonoBehaviour:
   structure: []
   energy: []
   personnel: []
+  modifier: {fileID: 11400000, guid: 6ed868300154aa04cafd770ea79ccc92, type: 2}
   icon: {fileID: 21300000, guid: 0ff6866986e61f6408e9c20da12a9169, type: 3}
   explosion: {fileID: 0}
