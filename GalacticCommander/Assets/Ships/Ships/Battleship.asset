@@ -11,14 +11,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8f3e068fa11f6064f95bca0a3a97b806, type: 3}
   m_Name: Battleship
   m_EditorClassIdentifier: 
-  health: 30
+  health: 35
   armor: 0
-  evasion: 10
+  evasion: 0
   actionPoints: 4
   initiative: 20
   shieldStrength: 15
   shieldRegen: 0
-  movement: {fileID: 11400000, guid: e2fd4ed55a56a114cb7c5a805f6806a5, type: 2}
+  movement: {fileID: 11400000, guid: 233a2d167f5062e4792f3121c82d02fb, type: 2}
   network:
   - {fileID: 0}
   - {fileID: 0}
@@ -40,3 +40,7 @@ MonoBehaviour:
   personnel:
   - {fileID: 0}
   - {fileID: 0}
+  modifier: {fileID: 11400000, guid: c1889fc5624cec841a16ec50b1b6395a, type: 2}
+  icon: {fileID: 0}
+  explosion: {fileID: 198310040112494490, guid: 2acff60daffbe7c4aaae3390e2ed78a3,
+    type: 2}
