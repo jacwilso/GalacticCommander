@@ -31,3 +31,6 @@ MonoBehaviour:
   - {fileID: 0}
   personnel:
   - {fileID: 0}
+  modifier: {fileID: 11400000, guid: 44bc5cf595bab75469b332282ca766b6, type: 2}
+  icon: {fileID: 0}
+  explosion: {fileID: 0}

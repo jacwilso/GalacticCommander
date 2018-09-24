@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7e9f9d1a1c19a534da15d506888ec840, type: 3}
+  m_Name: DreadnaughtDamageProfile
+  m_EditorClassIdentifier: 
+  front: 0
+  back: 0
+  left: 0
+  right: 0
+  top: 0
+  bottom: 0
+  enableFront: 0
+  enableBack: 0
+  enableLeft: 0
+  enableRight: 0
+  enableTop: 0
+  enableBottom: 0

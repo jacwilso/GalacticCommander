@@ -9,24 +9,20 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b298fcc141954fa42bc8469bc6455a96, type: 3}
-  m_Name: Light Laser Array
+  m_Name: Light Laser
   m_EditorClassIdentifier: 
-  icon: {fileID: 21300000, guid: e83b14cb6f838be4b9008c0943f73ca1, type: 3}
-  cost: 1
-  requirement: 1
+  icon: {fileID: 0}
+  cost: 2
+  requirement: 0
   weaponType: 0
   damageTypes: 2
   curve:
-    middleRange: 0
-    steepness: 0
-    offset: 0
-  accuracy: 0
+    middleRange: 18
+    steepness: -24
+    offset: 12
+  accuracy: 100
   damage:
-  - {x: 0, y: 1}
-  - {x: 0, y: 1}
-  - {x: 0, y: 1}
-  - {x: 0, y: 1}
-  - {x: 0, y: 1}
+  - {x: 4, y: 6}
   hitSFX: {fileID: 0}
   missSFX: {fileID: 0}
   fireSFX: {fileID: 0}
