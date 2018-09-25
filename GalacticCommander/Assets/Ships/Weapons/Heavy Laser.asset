@@ -9,11 +9,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b298fcc141954fa42bc8469bc6455a96, type: 3}
-  m_Name: Light Laser
+  m_Name: Heavy Laser
   m_EditorClassIdentifier: 
   icon: {fileID: 0}
   cost: 2
-  requirement: 1
+  requirement: 3
   weaponType: 0
   damageTypes: 2
   curve:
@@ -22,7 +22,7 @@ MonoBehaviour:
     offset: 12
   accuracy: 100
   damage:
-  - {x: 4, y: 6}
+  - {x: 18, y: 24}
   hitSFX: {fileID: 0}
   missSFX: {fileID: 0}
   fireSFX: {fileID: 0}

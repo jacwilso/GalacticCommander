@@ -9,20 +9,21 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b298fcc141954fa42bc8469bc6455a96, type: 3}
-  m_Name: Light Laser
+  m_Name: Light Plasma Cannon
   m_EditorClassIdentifier: 
   icon: {fileID: 0}
-  cost: 2
+  cost: 1
   requirement: 1
   weaponType: 0
-  damageTypes: 2
+  damageTypes: 3
   curve:
-    middleRange: 18
-    steepness: -24
-    offset: 12
-  accuracy: 100
+    middleRange: 0
+    steepness: 0
+    offset: 0
+  accuracy: 95
   damage:
-  - {x: 4, y: 6}
+  - {x: 1, y: 4}
+  - {x: 1, y: 4}
   hitSFX: {fileID: 0}
   missSFX: {fileID: 0}
   fireSFX: {fileID: 0}
