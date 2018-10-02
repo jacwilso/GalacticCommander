@@ -78,7 +78,8 @@
                         {
                             discard;
                         }
-                        if (_LineSegments[_Segments - x - 1].z == 0 && x * _Angle < iAngle && iAngle < (x+1) * _Angle) {
+                        //(_Segments - x) % _Segments
+                        if (_LineSegments[x].z == 0 && (x) * _Angle < iAngle && iAngle < (x+1) * _Angle) {
                             col *= _DisableColor;
                         }
                     }

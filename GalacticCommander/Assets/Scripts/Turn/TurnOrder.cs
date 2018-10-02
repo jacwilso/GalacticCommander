@@ -5,7 +5,7 @@ using System.Linq;
 
 public class TurnOrder : MonoBehaviour
 {
-    public event Action EndRoundEvent;
+    public GameEvent EndRoundEvent;
 
     public static TurnOrder Instance => instance;
 
@@ -37,7 +37,7 @@ public class TurnOrder : MonoBehaviour
         {
             initiative = new List<Ship>();
         }
-        EndRoundEvent += EndRound;
+        EndRoundEvent.RegisterListener(EndRound);
     }
 
     public void Subscribe(Ship ship)
@@ -73,7 +73,7 @@ public class TurnOrder : MonoBehaviour
         Current.EndTurn();
         indx++;
         if (indx >= initiative.Count)
-            EndRoundEvent?.Invoke();
+            EndRoundEvent.Raise();
         else
             StartTurn();
     }

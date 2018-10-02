@@ -30,6 +30,8 @@ public abstract class Ship : MonoBehaviour, IDamageable, IInteractable
         ghost = GetComponentInChildren<GhostShip>();
         ghost.Init();
         TurnOrder.Instance.Subscribe(this);
+        properties = ScriptableObject.Instantiate(properties);
+        properties.CreateInstance();
     }
 
     protected virtual void OnDrawGizmos()

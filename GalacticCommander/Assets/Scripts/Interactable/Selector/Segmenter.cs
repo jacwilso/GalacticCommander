@@ -55,7 +55,7 @@ namespace UIWheel
                 _LineSegments[i] = new Vector4(
                     outerRadius * Mathf.Cos(angle * i),
                     outerRadius * Mathf.Sin(angle * i),
-                    availableActions[i] ? 1 : 0, 0
+                    availableActions[(i + 2) % segments] ? 1 : 0, 0
                     );
             }
             segmentMaterial.SetFloat("_Angle", angle);
@@ -66,14 +66,14 @@ namespace UIWheel
         private void SegmentIcons(List<Sprite> icons)
         {
             IconPool();
-            float angle = 360 / segments;
-            angle *= Mathf.Deg2Rad;
+            float angle = 2f * Mathf.PI / segments;
+            float offset = 0.5f * angle * (1 - segments % 2);
             for (int i = 0; i < segments; i++)
             {
                 UnityEngine.UI.Image s = iconPool[i];
                 s.transform.localPosition = new Vector2(
-                    radius * Mathf.Cos(angle * i),
-                    radius * Mathf.Sin(angle * i));
+                    radius * Mathf.Cos(offset + angle * i),
+                    radius * Mathf.Sin(offset + angle * i));
                 s.sprite = icons[i];
             }
         }

@@ -68,7 +68,7 @@ Material:
     - _OcclusionStrength: 1
     - _OuterRadius: 0.9
     - _Parallax: 0.02
-    - _Segments: 3
+    - _Segments: 4
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
     - _SrcBlend: 1

@@ -42,7 +42,8 @@ public class ShipProperties : StatPropertyObject
 
     [SerializeField]
     private int shieldRegen;
-    public int ShieldRegen => shieldRegen;
+    [NonSerialized]
+    public Stat ShieldRegen;
 
     [Header("Actions")]
     public MovementProperties movement;
@@ -52,6 +53,7 @@ public class ShipProperties : StatPropertyObject
     public AbilityProperties[] structure;
     public AbilityProperties[] energy;
     public AbilityProperties[] personnel;
+    private ActionProperties[] actions;
 
     public ShipTypeModifier modifier;
 
@@ -70,6 +72,19 @@ public class ShipProperties : StatPropertyObject
         damage = new Stat(0);
     [NonSerialized]
     public AttackProperties activeWeapon;
+
+    public void CreateInstance() {
+        movement = ScriptableObject.Instantiate(movement);
+        actions = GetType().GetFields()
+            .Where(field => field.GetValue(this) is ActionProperties[])
+            .SelectMany(param => param.GetValue(this) as ActionProperties[]).ToArray();
+        for (int i = 0; i < actions.Length; i++) {
+            if (actions[i] != null)
+            {
+                actions[i] = ScriptableObject.Instantiate(actions[i]);
+            }
+        }
+    }
 
     // Functions
 
@@ -102,7 +117,7 @@ public class ShipProperties : StatPropertyObject
         {
             movement.Cost <= currentAP
         };
-
+        /*
         GetType().GetFields()
             .Where(field => field.GetValue(this) is ActionProperties[]).ToList()
             .ForEach(param =>
@@ -112,10 +127,18 @@ public class ShipProperties : StatPropertyObject
                 {
                     if (actions[i] != null)
                     {
-                        availableActions.Add(actions[i].Cost <= currentAP);
+                        Debug.Log(actions[i].TurnCooldown);
+                        availableActions.Add(actions[i].Cost <= currentAP && actions[i].TurnCooldown == 0);
                     }
                 }
             });
+            */
+        for (int i = 0; i < actions.Length; i++) {
+            if (actions[i] != null)
+            {
+                availableActions.Add(actions[i].Cost <= currentAP && actions[i].TurnCooldown == 0);
+            }
+        }
         return availableActions;
     }
 
@@ -132,8 +155,9 @@ public class ShipProperties : StatPropertyObject
         {
             return movement;
         }
-        return GetType().GetFields()
+        return actions[option - 1];
+        /*return GetType().GetFields()
             .Where(field => field.GetValue(this) is ActionProperties[])
-            .SelectMany(param => param.GetValue(this) as ActionProperties[]).ToArray()[option - 1];
+            .SelectMany(param => param.GetValue(this) as ActionProperties[]).ToArray()[option - 1];*/
     }
 }

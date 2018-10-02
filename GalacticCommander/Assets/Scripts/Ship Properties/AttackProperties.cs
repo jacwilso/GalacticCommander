@@ -58,7 +58,7 @@ public class AttackProperties : ActionProperties
 
     // Function
 
-    public void SumDamage()
+    private void SumDamage()
     {
         Vector2Int dmg = Vector2Int.zero;
         for (int i = 0; i < damage.Length; i++)

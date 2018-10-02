@@ -9,11 +9,15 @@ public class PlayerShip : Ship
         set { cacheAP = value; }
     }
 
-    [SerializeField]
-    private GameEvent attackEvent;
+    private GameEvent PlayerAttackEvent;
 
     private ActionType action = ActionType.None;
     private int cacheAP;
+
+    private void Awake() {
+        ResourceRequest req = Resources.LoadAsync("Events/PlayerAttackEvent", typeof(GameEvent));
+        PlayerAttackEvent = req.asset as GameEvent;
+    }
 
     public override void Select()
     {
@@ -31,6 +35,7 @@ public class PlayerShip : Ship
 
     public void Action(int segment)
     {
+        Debug.Log(segment);
         ConfirmationUI.Instance.TurnAction();
         if (segment == 0)
         {
@@ -133,7 +138,7 @@ public class PlayerShip : Ship
     private void SelectAttack()
     {
         action = ActionType.Attack;
-        attackEvent.Raise();
+        PlayerAttackEvent.Raise();
         ConfirmationUI.Instance.ConfirmEvent += ConfirmAttack;
         ConfirmationUI.Instance.CancelEvent += CancelAttack;
         ConfirmationUI.Instance.Activate(false, true);
@@ -157,6 +162,7 @@ public class PlayerShip : Ship
     private void ConfirmAttack()
     {
         turnAP -= properties.activeWeapon.Cost;
+        properties.activeWeapon.Used();
         EnemyShip enemy = (EnemyShip)ARCursor.Instance.Selected;
         if (enemy)
         {
@@ -173,7 +179,7 @@ public class PlayerShip : Ship
     private void UnregisterAttackEvents()
     {
         action = ActionType.None;
-        attackEvent.Lower();
+        PlayerAttackEvent.Lower();
         ARCursor.Instance.SelectEvent -= CheckEnemy;
         ConfirmationUI.Instance.ConfirmEvent -= ConfirmAttack;
         ConfirmationUI.Instance.CancelEvent -= CancelAttack;

@@ -4,10 +4,6 @@ using UnityEngine;
 public abstract class AbilityProperties : ActionProperties
 {
     [SerializeField]
-    private int turnCooldown;
-    public int TurnCooldown => turnCooldown;
-
-    [SerializeField]
     private int requirement;
     public int Requirement => requirement;
 
