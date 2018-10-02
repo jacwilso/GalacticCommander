@@ -17,11 +17,13 @@ public class ShipPropertiesEditor : Editor
     {
         serializedObject.Update();
         DrawDefaultInspector();
-        foldout = EditorGUILayout.InspectorTitlebar(foldout, ship.modifier);
-        if (foldout)
-        {
-            CreateCachedEditor(ship.modifier, null, ref modifierEditor);
-            modifierEditor.OnInspectorGUI();
+        if (ship.modifier) {
+            foldout = EditorGUILayout.InspectorTitlebar(foldout, ship.modifier);
+            if (foldout)
+            {
+                CreateCachedEditor(ship.modifier, null, ref modifierEditor);
+                modifierEditor.OnInspectorGUI();
+            }
         }
         serializedObject.ApplyModifiedProperties();
     }
