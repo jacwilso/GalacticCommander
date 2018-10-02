@@ -11,19 +11,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8f3e068fa11f6064f95bca0a3a97b806, type: 3}
   m_Name: Battle Cruiser
   m_EditorClassIdentifier: 
-  health: 30
+  health: 20
   armor: 0
-  evasion: 5
+  evasion: 1
   actionPoints: 4
   initiative: 30
-  shieldStrength: 20
+  shieldStrength: 27
   shieldRegen: 0
-  movement: {fileID: 11400000, guid: a028d61c68963ec4a8e33959baacefea, type: 2}
-  network:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
+  movement: {fileID: 11400000, guid: a96b059dd5339814985ad00266f3d2c5, type: 2}
+  network: []
   weapons:
+  - {fileID: 0}
+  - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
   engines:
@@ -43,3 +42,7 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
+  modifier: {fileID: 11400000, guid: cbde563a5b8d33a4f8f5dd1cf8049885, type: 2}
+  icon: {fileID: 0}
+  explosion: {fileID: 198310040112494490, guid: 2acff60daffbe7c4aaae3390e2ed78a3,
+    type: 2}

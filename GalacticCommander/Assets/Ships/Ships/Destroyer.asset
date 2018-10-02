@@ -11,14 +11,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8f3e068fa11f6064f95bca0a3a97b806, type: 3}
   m_Name: Destroyer
   m_EditorClassIdentifier: 
-  health: 10
+  health: 15
   armor: 0
-  evasion: 15
+  evasion: 2
   actionPoints: 4
-  initiative: 10
+  initiative: 70
   shieldStrength: 10
   shieldRegen: 0
-  movement: {fileID: 11400000, guid: 8454578561e8e994594bfd08b35351f9, type: 2}
+  movement: {fileID: 11400000, guid: d724797091fdf97439ccaeb8ebab01aa, type: 2}
   network:
   - {fileID: 0}
   - {fileID: 0}
@@ -32,3 +32,7 @@ MonoBehaviour:
   energy: []
   personnel:
   - {fileID: 0}
+  modifier: {fileID: 11400000, guid: 24c28d1204af3f2488dcc71b97d4a360, type: 2}
+  icon: {fileID: 0}
+  explosion: {fileID: 198310040112494490, guid: 2acff60daffbe7c4aaae3390e2ed78a3,
+    type: 2}

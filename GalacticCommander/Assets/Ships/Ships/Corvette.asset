@@ -13,15 +13,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   health: 10
   armor: 0
-  evasion: 20
+  evasion: 6
   actionPoints: 4
-  initiative: 20
-  shieldStrength: 10
+  initiative: 80
+  shieldStrength: 5
   shieldRegen: 0
-  movement: {fileID: 11400000, guid: e2fd4ed55a56a114cb7c5a805f6806a5, type: 2}
+  movement: {fileID: 11400000, guid: d724797091fdf97439ccaeb8ebab01aa, type: 2}
   network:
   - {fileID: 0}
   weapons:
+  - {fileID: 0}
   - {fileID: 0}
   engines:
   - {fileID: 0}
@@ -32,3 +33,7 @@ MonoBehaviour:
   personnel:
   - {fileID: 0}
   - {fileID: 0}
+  modifier: {fileID: 11400000, guid: db87acf923c14eb4692870aed17e7e0c, type: 2}
+  icon: {fileID: 0}
+  explosion: {fileID: 198310040112494490, guid: 2acff60daffbe7c4aaae3390e2ed78a3,
+    type: 2}
