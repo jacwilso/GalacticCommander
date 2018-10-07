@@ -1,4 +1,7 @@
 ﻿public enum WeaponType
 {
-    Laser
+    Laser,
+    Ballistic,
+    Missile,
+    Craft
 }

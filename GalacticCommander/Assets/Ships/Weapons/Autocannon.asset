@@ -13,8 +13,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   icon: {fileID: 0}
   cost: 1
+  turnCooldown: 0
   requirement: 1
-  weaponType: 0
+  weaponType: 1
   damageTypes: 1
   curve:
     middleRange: 18
