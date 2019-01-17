@@ -46,11 +46,11 @@ public class Stat
         get { return statModifiers; }
     }
 
-    private float baseValue;
-    private readonly List<StatModifier> statModifiers = new List<StatModifier>();
-    private bool isDirty = true;
-    private float maxValue;
-    private float value;
+    float baseValue;
+    readonly List<StatModifier> statModifiers = new List<StatModifier>();
+    bool isDirty = true;
+    float maxValue;
+    float value;
 
     public Stat(float baseValue)
     {
@@ -84,7 +84,7 @@ public class Stat
         }
     }
 
-    private float CalculateStat()
+    float CalculateStat()
     {
         float value = baseValue;
         float sumPercentAdd = 0;
@@ -113,7 +113,7 @@ public class Stat
     }
 
 
-    private int CompareModifierOrder(StatModifier a, StatModifier b)
+    int CompareModifierOrder(StatModifier a, StatModifier b)
     {
         if (a.Order < b.Order)
         {

@@ -6,7 +6,7 @@ using System;
 [CustomEditor(typeof(AttackProperties))]
 public class AttackPropertiesInspector : Editor
 {
-    private AttackProperties attack;
+    AttackProperties attack;
 
     public override void OnInspectorGUI()
     {
@@ -46,12 +46,16 @@ public class AttackPropertiesInspector : Editor
             vec.y = Mathf.Max(vec.y, vec.x + 1);
             vecProp.vector2IntValue = new Vector2Int((int)vec.x, (int)vec.y);
         }
+        for (int j = types.Count; j < prop.arraySize; j++)
+        {
+            prop.DeleteArrayElementAtIndex(j);
+        }
         EditorGUI.indentLevel--;
 
         serializedObject.ApplyModifiedProperties();
     }
 
-    private List<ResistanceTypes> GetTypeList(ResistanceTypes types)
+    List<ResistanceTypes> GetTypeList(ResistanceTypes types)
     {
         List<ResistanceTypes> result = new List<ResistanceTypes>();
         foreach (ResistanceTypes r in Enum.GetValues(typeof(ResistanceTypes)))

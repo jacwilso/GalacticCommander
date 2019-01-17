@@ -8,11 +8,11 @@ using UnityEngine;
 [CanEditMultipleObjects]
 public class StatAbilityEditor : Editor
 {
-    private Dictionary<string, string> shipProperties = new Dictionary<string, string>(),
-        //attackProperties = new Dictionary<string, string>(),
-        movementProperites = new Dictionary<string, string>();
+    Dictionary<string, string> shipProperties = new Dictionary<string, string>(),
+       //attackProperties = new Dictionary<string, string>(),
+       movementProperites = new Dictionary<string, string>();
 
-    private void OnEnable()
+    void OnEnable()
     {
         PropertyDictionary(new ShipProperties(), shipProperties);
         //PropertyDictionary(new AttackProperties.AttackStat(), attackProperties);
@@ -46,7 +46,7 @@ public class StatAbilityEditor : Editor
         EditorUtility.SetDirty(target);
     }
 
-    private void PropertyDictionary(object obj, Dictionary<string, string> properties)
+    void PropertyDictionary(object obj, Dictionary<string, string> properties)
     {
         obj.GetType().GetFields().Where(param => param.FieldType == typeof(Stat)).ToList().ForEach(param =>
         {

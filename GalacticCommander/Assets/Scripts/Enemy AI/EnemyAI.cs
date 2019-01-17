@@ -17,16 +17,16 @@ public class EnemyAI : ScriptableObject
         Closest, Weakest, Center
     }
     [SerializeField]
-    private MovementType movementType;
+    MovementType movementType;
 
-    private PlayerShip[] players;
+    PlayerShip[] players;
 
     struct Action
     {
         float priority;
         List<ActionProperties> actions;
     };
-    private SortedList<float, Action> priorityAction;
+    SortedList<float, Action> priorityAction;
 
     public void ActionList(EnemyShip ship)
     {
@@ -47,9 +47,9 @@ public class EnemyAI : ScriptableObject
         // for (int i = 0; i < )
     }
 
-    private void CalculatePositionPriority(EnemyShip ship, EnemyShip[] allies,
-        List<AbilityProperties> abilities, List<AttackProperties> weapons, int actionPoints,
-        AbilityProperties.TargetType friendlyAbilityTypes, AbilityProperties.TargetType enemyAbilityTypes)
+    void CalculatePositionPriority(EnemyShip ship, EnemyShip[] allies,
+       List<AbilityProperties> abilities, List<AttackProperties> weapons, int actionPoints,
+       AbilityProperties.TargetType friendlyAbilityTypes, AbilityProperties.TargetType enemyAbilityTypes)
     {
         for (int i = 0; i < weapons.Count; i++)
         {
@@ -115,7 +115,7 @@ public class EnemyAI : ScriptableObject
         return ship.transform.position + dir.normalized * maxDist;
     }
 
-    private Vector3 MoveToPosition(Transform shipTransform)
+    Vector3 MoveToPosition(Transform shipTransform)
     {
         PlayerShip player = null;
         switch (movementType)
@@ -133,7 +133,7 @@ public class EnemyAI : ScriptableObject
         return player.transform.position + dir.normalized * minTargetDist;
     }
 
-    private Vector3 CenteralPosition(Transform shipTransform)
+    Vector3 CenteralPosition(Transform shipTransform)
     {
         Vector3 center = new Vector3();
         for (int i = 0; i < players.Length; i++)
@@ -147,7 +147,7 @@ public class EnemyAI : ScriptableObject
     #endregion
 
     #region Rules
-    private PlayerShip WeakestTarget()
+    PlayerShip WeakestTarget()
     {
         float min = Mathf.Infinity;
         PlayerShip weakest = null;
@@ -164,7 +164,7 @@ public class EnemyAI : ScriptableObject
         return weakest;
     }
 
-    private PlayerShip ClosestTarget(Transform shipTransform)
+    PlayerShip ClosestTarget(Transform shipTransform)
     {
         float min = Mathf.Infinity;
         PlayerShip player = null;

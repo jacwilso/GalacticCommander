@@ -7,14 +7,14 @@ namespace CatlikeCoding
     public class BezierCurveInspector : Editor
     {
 
-        private const int lineSteps = 10;
-        private const float directionScale = 0.5f;
+        const int lineSteps = 10;
+        const float directionScale = 0.5f;
 
-        private BezierCurve curve;
-        private Transform handleTransform;
-        private Quaternion handleRotation;
+        BezierCurve curve;
+        Transform handleTransform;
+        Quaternion handleRotation;
 
-        private void OnSceneGUI()
+        void OnSceneGUI()
         {
             curve = target as BezierCurve;
             handleTransform = curve.transform;
@@ -34,7 +34,7 @@ namespace CatlikeCoding
             Handles.DrawBezier(p0, p3, p1, p2, Color.white, null, 2f);
         }
 
-        private void ShowDirections()
+        void ShowDirections()
         {
             Handles.color = Color.green;
             Vector3 point = curve.GetPoint(0f);
@@ -46,7 +46,7 @@ namespace CatlikeCoding
             }
         }
 
-        private Vector3 ShowPoint(int index)
+        Vector3 ShowPoint(int index)
         {
             Vector3 point = handleTransform.TransformPoint(curve.points[index]);
             EditorGUI.BeginChangeCheck();

@@ -9,39 +9,39 @@ public class ShipProperties : StatPropertyObject
 {
     [Header("General Stats")]
     [SerializeField]
-    private int health;
+    int health;
     [NonSerialized]
     public Stat Health;
 
     [SerializeField]
-    private int armor;
+    int armor;
     [NonSerialized]
     public Stat Armor;
 
     [SerializeField]
     [Range(0, 100)]
-    private int evasion;
+    int evasion;
     [NonSerialized]
     public Stat Evasion;
 
     [SerializeField]
-    private int actionPoints;
+    int actionPoints;
     [NonSerialized]
     public Stat ActionPoints;
 
     [SerializeField]
-    private int initiative;
+    int initiative;
     [NonSerialized]
     public Stat Initiative;
 
     [Header("Shield Stats")]
     [SerializeField]
-    private int shieldStrength;
+    int shieldStrength;
     [NonSerialized]
     public Stat ShieldStrength;
 
     [SerializeField]
-    private int shieldRegen;
+    int shieldRegen;
     [NonSerialized]
     public Stat ShieldRegen;
 
@@ -53,16 +53,16 @@ public class ShipProperties : StatPropertyObject
     public AbilityProperties[] structure;
     public AbilityProperties[] energy;
     public AbilityProperties[] personnel;
-    private ActionProperties[] actions;
+    ActionProperties[] actions;
 
     public ShipTypeModifier modifier;
 
     [Header("Other")]
     [SerializeField]
-    private Sprite icon;
+    Sprite icon;
     public Sprite Icon => icon;
     [SerializeField]
-    private ParticleSystem explosion;
+    ParticleSystem explosion;
     public ParticleSystem Explosion => explosion;
 
 
@@ -73,12 +73,14 @@ public class ShipProperties : StatPropertyObject
     [NonSerialized]
     public AttackProperties activeWeapon;
 
-    public void CreateInstance() {
+    public void CreateInstance()
+    {
         movement = ScriptableObject.Instantiate(movement);
         actions = GetType().GetFields()
             .Where(field => field.GetValue(this) is ActionProperties[])
             .SelectMany(param => param.GetValue(this) as ActionProperties[]).ToArray();
-        for (int i = 0; i < actions.Length; i++) {
+        for (int i = 0; i < actions.Length; i++)
+        {
             if (actions[i] != null)
             {
                 actions[i] = ScriptableObject.Instantiate(actions[i]);
@@ -133,7 +135,8 @@ public class ShipProperties : StatPropertyObject
                 }
             });
             */
-        for (int i = 0; i < actions.Length; i++) {
+        for (int i = 0; i < actions.Length; i++)
+        {
             if (actions[i] != null)
             {
                 availableActions.Add(actions[i].Cost <= currentAP && actions[i].TurnCooldown == 0);

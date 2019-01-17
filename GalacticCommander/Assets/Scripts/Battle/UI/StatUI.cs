@@ -4,15 +4,15 @@ using TMPro;
 public class StatUI : MonoBehaviour
 {
     [SerializeField]
-    private TextMeshProUGUI nameText, healthText, shieldText;
+    TextMeshProUGUI nameText, healthText, shieldText;
     [Header("Attacked Stats"), SerializeField]
-    private TextMeshProUGUI accuracyText;
+    TextMeshProUGUI accuracyText;
     [SerializeField]
-    private TextMeshProUGUI damageText;
+    TextMeshProUGUI damageText;
 
-    private Ship ship;
+    Ship ship;
 
-    private void Start()
+    void Start()
     {
         ship = GetComponentInParent<Ship>();
         ship.DamageEvent += UpdateDisplay;

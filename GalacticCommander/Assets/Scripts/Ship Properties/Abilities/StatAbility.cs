@@ -4,7 +4,7 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "Ship Properties/Ability/Buff\u2215Debuff")]
 public class StatAbility : AbilityProperties
 {
-    private enum StatType
+    enum StatType
     {
         Buff,
         Debuff
@@ -12,21 +12,21 @@ public class StatAbility : AbilityProperties
 
     [Space(10)]
     [SerializeField]
-    private StatType statType;
+    StatType statType;
     [HideInInspector]
     public PropertyObject propertyObject;
     [HideInInspector]
     public string parameter;
     [SerializeField]
     [Tooltip("Whether the effect should be flat added, percentage add, or percentage multiply.")]
-    private StatModType modifierType;
+    StatModType modifierType;
     [SerializeField]
-    private float effect;
+    float effect;
     [NonSerialized]
-    private float Effect;
+    float Effect;
     [SerializeField]
     [Tooltip("Number of turns the effect will last.")]
-    private float duration;
+    float duration;
 
     public override void OnAfterDeserialize()
     {

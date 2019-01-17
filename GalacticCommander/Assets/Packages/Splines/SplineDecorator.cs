@@ -13,7 +13,7 @@ namespace CatlikeCoding
 
         public Transform[] items;
 
-        private void Awake()
+        void Awake()
         {
             if (frequency <= 0 || items == null || items.Length == 0)
             {

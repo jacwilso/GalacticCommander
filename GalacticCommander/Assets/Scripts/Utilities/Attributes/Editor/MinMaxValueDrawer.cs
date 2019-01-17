@@ -40,7 +40,7 @@ public class MinMaxValueDrawer : PropertyDrawer
         }
     }
 
-    private Vector2 MinMaxSlider(Rect position, MinMaxValueAttribute minMax, Vector2 vec)
+    Vector2 MinMaxSlider(Rect position, MinMaxValueAttribute minMax, Vector2 vec)
     {
         EditorGUI.MinMaxSlider(position, ref vec.x, ref vec.y, minMax.minVal, minMax.maxVal);
         return vec;

@@ -4,22 +4,22 @@ using UnityEngine;
 public abstract class AbilityProperties : ActionProperties
 {
     [SerializeField]
-    private int requirement;
+    int requirement;
     public int Requirement => requirement;
 
     [SerializeField]
-    private int range;
+    int range;
     public int Range => range;
 
     [SerializeField]
-    private TargetType target;
+    TargetType target;
     public TargetType Target => target;
 
-    private int turnsTillUse;
+    int turnsTillUse;
     public bool Ready => turnsTillUse == 0;
 
     [SerializeField]
-    private int aiPriority;
+    int aiPriority;
     public int AIPriority => aiPriority;
 
     public abstract void Ability(Ship target);

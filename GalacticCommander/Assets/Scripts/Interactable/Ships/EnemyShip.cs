@@ -5,9 +5,9 @@ using UnityEngine;
 public class EnemyShip : Ship
 {
     [SerializeField]
-    private EnemyAI aI;
+    EnemyAI aI;
 
-    private StatUI statUI;
+    StatUI statUI;
 
     protected override void Start()
     {
@@ -28,13 +28,13 @@ public class EnemyShip : Ship
     }
 
     #region  Movement
-    private void Move()
+    void Move()
     {
         Vector3 moveTo = aI.Move(this);
         StartCoroutine(ExecuteMovement(moveTo));
     }
 
-    private IEnumerator ExecuteMovement(Vector3 moveTo)
+    IEnumerator ExecuteMovement(Vector3 moveTo)
     {
         float t = 0f;
         Vector3 startPos = transform.position, endPos = moveTo;
@@ -70,6 +70,7 @@ public class EnemyShip : Ship
             hit.direction = hit.assailant.transform.position - transform.position;
             Damaged(hit);
         }
+        else { Debug.Log("Miss"); }
     }
     #endregion
 }

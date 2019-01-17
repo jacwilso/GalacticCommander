@@ -14,30 +14,30 @@ namespace UIWheel
         }
 
         //[SerializeField, MinMaxValue(0.01f, 10f)]
-        //private Vector2 scaleBounds;
+        // Vector2 scaleBounds;
         [NonSerialized]
         public Vector3 worldPos;
 
-        private static ActionWheel instance;
+        static ActionWheel instance;
 
         // Positioning
-        private Camera cam;
-        private PlayerShip ship;
-        private RectTransform uiElement;
-        private WorldToCanvas w2c;
+        Camera cam;
+        PlayerShip ship;
+        RectTransform uiElement;
+        WorldToCanvas w2c;
 
         // Segments
-        private Segmenter segmenter;
-        private List<bool> availableActions;
+        Segmenter segmenter;
+        List<bool> availableActions;
 
-        private void Awake()
+        void Awake()
         {
             if (instance != null)
                 Debug.LogError("Multiple action selectors");
             instance = this;
         }
 
-        private void Start()
+        void Start()
         {
             gameObject.SetActive(false);
             cam = Camera.main;
@@ -47,7 +47,7 @@ namespace UIWheel
             w2c = new WorldToCanvas(GetComponentInParent<Canvas>());
         }
 
-        private void Update()
+        void Update()
         {
             //float scale = Vector3.SqrMagnitude(cam.transform.position - transform.position);
             //scale = Mathf.Min(Mathf.Max(scaleBounds.x, scale), scaleBounds.y);

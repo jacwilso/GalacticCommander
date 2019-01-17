@@ -5,10 +5,10 @@ using UnityEditor;
 [CustomEditor(typeof(ShipTypeModifier))]
 public class ShipTypeModifierEditor : Editor
 {
-    private ShipTypeModifier modifier;
-    private readonly string[] sides = { "Back", "Left", "Bottom", "Front", "Top", "Right" };
+    ShipTypeModifier modifier;
+    readonly string[] sides = { "Back", "Left", "Bottom", "Front", "Top", "Right" };
 
-    private void OnEnable()
+    void OnEnable()
     {
         modifier = target as ShipTypeModifier;
     }

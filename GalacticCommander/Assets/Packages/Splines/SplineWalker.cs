@@ -13,10 +13,10 @@ namespace CatlikeCoding
 
         public SplineWalkerMode mode;
 
-        private float progress;
-        private bool goingForward = true;
+        float progress;
+        bool goingForward = true;
 
-        private void Update()
+        void Update()
         {
             if (goingForward)
             {

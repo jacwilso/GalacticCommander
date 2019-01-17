@@ -28,8 +28,8 @@ public class Flycam : MonoBehaviour
     public float slowMoveFactor = 0.25f;
     public float fastMoveFactor = 3;
 
-    private float rotationX = 0.0f;
-    private float rotationY = 0.0f;
+    float rotationX = 0.0f;
+    float rotationY = 0.0f;
 
     void Start()
     {

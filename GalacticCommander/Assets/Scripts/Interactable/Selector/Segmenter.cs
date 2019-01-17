@@ -14,19 +14,19 @@ namespace UIWheel
         }
 
         [SerializeField]
-        private float radius;
+        float radius;
         [SerializeField]
-        private UnityEngine.UI.Image iconPrefab;
+        UnityEngine.UI.Image iconPrefab;
         [SerializeField]
-        private Transform iconParent;
+        Transform iconParent;
         [SerializeField]
-        private Material segmentMaterial;
+        Material segmentMaterial;
         [SerializeField]
-        private int segments;
+        int segments;
 
-        private List<UnityEngine.UI.Image> iconPool;
+        List<UnityEngine.UI.Image> iconPool;
 
-        private void OnEnable()
+        void OnEnable()
         {
             if (iconPool == null)
             {
@@ -35,12 +35,12 @@ namespace UIWheel
         }
 
         [ContextMenu("Segment Lines")]
-        private void SegmentLinesTest()
+        void SegmentLinesTest()
         {
             SegmentLines(Enumerable.Repeat(true, segments).ToList());
         }
 
-        private void SegmentLines(List<bool> availableActions)
+        void SegmentLines(List<bool> availableActions)
         {
             if (segments <= 1)
             {
@@ -63,7 +63,7 @@ namespace UIWheel
             segmentMaterial.SetVectorArray("_LineSegments", _LineSegments);
         }
 
-        private void SegmentIcons(List<Sprite> icons)
+        void SegmentIcons(List<Sprite> icons)
         {
             IconPool();
             float angle = 2f * Mathf.PI / segments;
@@ -78,7 +78,7 @@ namespace UIWheel
             }
         }
 
-        private void IconPool()
+        void IconPool()
         {
             for (int i = iconPool.Count; i < segments; i++)
             {

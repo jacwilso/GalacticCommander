@@ -2,17 +2,18 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ObjectPool<T> : MonoBehaviour where T : MonoBehaviour {
+public class ObjectPool<T> : MonoBehaviour where T : MonoBehaviour
+{
 
     [SerializeField]
-    private int initialSize = 5, maxSize = 10;
+    int initialSize = 5, maxSize = 10;
     [SerializeField]
-    private T prefab;
+    T prefab;
 
-    private Queue<T> pool;
-    private int size;
+    Queue<T> pool;
+    int size;
 
-    private void Start()
+    void Start()
     {
         pool = new Queue<T>();
         size = initialSize;
@@ -24,7 +25,7 @@ public class ObjectPool<T> : MonoBehaviour where T : MonoBehaviour {
         }
     }
 
-    private void OnValidate()
+    void OnValidate()
     {
         if (initialSize < 0 || initialSize > maxSize)
             Debug.LogError("Initial size can't be less than 0 or greater than max.");

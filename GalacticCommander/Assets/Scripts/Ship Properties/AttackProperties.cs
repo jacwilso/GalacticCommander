@@ -5,15 +5,15 @@ using UnityEngine;
 public class AttackProperties : ActionProperties
 {
     [SerializeField]
-    private int requirement;
+    int requirement;
     public int Requirement => requirement;
 
     [SerializeField]
-    private WeaponType weaponType;
+    WeaponType weaponType;
     public WeaponType WeaponType => weaponType;
 
     [SerializeField, EnumFlag]
-    private ResistanceTypes damageTypes;
+    ResistanceTypes damageTypes;
     public ResistanceTypes DamageTypes => damageTypes;
 
     [SerializeField]
@@ -21,19 +21,19 @@ public class AttackProperties : ActionProperties
 
     [SerializeField]
     [Range(0, 100)]
-    private int accuracy;
+    int accuracy;
 
     [SerializeField]
-    private Vector2Int[] damage;
+    Vector2Int[] damage;
 
     public int Accuracy => accuracy;
     [NonSerialized]
     public Vector2Int Damage;
 
     [Header("SFX"), SerializeField]
-    private AudioSource hitSFX;
+    AudioSource hitSFX;
     [SerializeField]
-    private AudioSource missSFX, fireSFX;
+    AudioSource missSFX, fireSFX;
     public AudioSource HitSFX => hitSFX;
     public AudioSource MissSFX => missSFX;
     public AudioSource FireSFX => fireSFX;
@@ -42,7 +42,7 @@ public class AttackProperties : ActionProperties
     public struct AccuracyCurve
     {
         [SerializeField]
-        private int middleRange, steepness, offset;
+        int middleRange, steepness, offset;
 
         public float Calculate(float distance)
         {
@@ -51,14 +51,12 @@ public class AttackProperties : ActionProperties
         }
     }
 
-    private void OnEnable()
+    void OnEnable()
     {
         SumDamage();
     }
 
-    // Function
-
-    private void SumDamage()
+    void SumDamage()
     {
         Vector2Int dmg = Vector2Int.zero;
         for (int i = 0; i < damage.Length; i++)
@@ -66,6 +64,5 @@ public class AttackProperties : ActionProperties
             dmg += damage[i];
         }
         Damage = dmg;
-        //Debug.Log(Damage);
     }
 }

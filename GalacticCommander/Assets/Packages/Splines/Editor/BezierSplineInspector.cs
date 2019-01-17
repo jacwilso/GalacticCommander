@@ -7,21 +7,21 @@ namespace CatlikeCoding
     public class BezierSplineInspector : Editor
     {
 
-        private const int stepsPerCurve = 10;
-        private const float directionScale = 0.5f;
-        private const float handleSize = 0.04f;
-        private const float pickSize = 0.06f;
+        const int stepsPerCurve = 10;
+        const float directionScale = 0.5f;
+        const float handleSize = 0.04f;
+        const float pickSize = 0.06f;
 
-        private static Color[] modeColors = {
+        static Color[] modeColors = {
         Color.white,
         Color.yellow,
         Color.cyan
     };
 
-        private BezierSpline spline;
-        private Transform handleTransform;
-        private Quaternion handleRotation;
-        private int selectedIndex = -1;
+        BezierSpline spline;
+        Transform handleTransform;
+        Quaternion handleRotation;
+        int selectedIndex = -1;
 
         public override void OnInspectorGUI()
         {
@@ -46,7 +46,7 @@ namespace CatlikeCoding
             }
         }
 
-        private void DrawSelectedPointInspector()
+        void DrawSelectedPointInspector()
         {
             GUILayout.Label("Selected Point");
             EditorGUI.BeginChangeCheck();
@@ -67,7 +67,7 @@ namespace CatlikeCoding
             }
         }
 
-        private void OnSceneGUI()
+        void OnSceneGUI()
         {
             spline = target as BezierSpline;
             handleTransform = spline.transform;
@@ -91,7 +91,7 @@ namespace CatlikeCoding
             ShowDirections();
         }
 
-        private void ShowDirections()
+        void ShowDirections()
         {
             Handles.color = Color.green;
             Vector3 point = spline.GetPoint(0f);
@@ -104,7 +104,7 @@ namespace CatlikeCoding
             }
         }
 
-        private Vector3 ShowPoint(int index)
+        Vector3 ShowPoint(int index)
         {
             Vector3 point = handleTransform.TransformPoint(spline.GetControlPoint(index));
             float size = HandleUtility.GetHandleSize(point);

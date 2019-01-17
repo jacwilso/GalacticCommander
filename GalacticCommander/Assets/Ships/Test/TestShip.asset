@@ -4,7 +4,8 @@
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
@@ -23,7 +24,7 @@ MonoBehaviour:
   weapons:
   - {fileID: 11400000, guid: 2553ec674f1d55243acba0848673b877, type: 2}
   - {fileID: 11400000, guid: ea5c9d65e3da1a749a15cd070c296714, type: 2}
-  - {fileID: 11400000, guid: 2553ec674f1d55243acba0848673b877, type: 2}
+  - {fileID: 11400000, guid: 3c3c805559ce13e44aa0c4ef1f561cf0, type: 2}
   engines: []
   structure: []
   energy: []

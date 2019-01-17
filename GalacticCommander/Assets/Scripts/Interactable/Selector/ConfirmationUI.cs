@@ -8,11 +8,11 @@ public class ConfirmationUI : MonoBehaviour
     public static ConfirmationUI Instance => instance;
 
     [SerializeField]
-    private GameObject confirnBtn, cancelBtn, turnBtn;
+    GameObject confirnBtn, cancelBtn, turnBtn;
 
-    private static ConfirmationUI instance;
+    static ConfirmationUI instance;
 
-    private void Awake()
+    void Awake()
     {
         if (instance != null)
         {
@@ -21,7 +21,7 @@ public class ConfirmationUI : MonoBehaviour
         instance = this;
     }
 
-    private void Start()
+    void Start()
     {
         Activate(false);
     }

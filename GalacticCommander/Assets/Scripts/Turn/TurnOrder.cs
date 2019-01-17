@@ -15,23 +15,23 @@ public class TurnOrder : MonoBehaviour
     }
 
     [SerializeField]
-    private TurnIcon currentIcon;
+    TurnIcon currentIcon;
     [SerializeField]
-    private ShipPointer pointer;
+    ShipPointer pointer;
 
-    private static TurnOrder instance;
+    static TurnOrder instance;
 
-    private List<Ship> initiative;
-    private int indx = -1;
+    List<Ship> initiative;
+    int indx = -1;
 
-    private void Awake()
+    void Awake()
     {
         if (instance != null)
             Debug.LogError("Multiple turn order scripts.");
         instance = this;
     }
 
-    private void Start()
+    void Start()
     {
         if (initiative == null)
         {
@@ -61,7 +61,7 @@ public class TurnOrder : MonoBehaviour
         StartTurn();
     }
 
-    private void StartTurn()
+    void StartTurn()
     {
         currentIcon.icon.sprite = Current.properties.Icon;
         Current.StartTurn();

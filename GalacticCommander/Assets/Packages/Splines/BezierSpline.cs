@@ -7,13 +7,13 @@ namespace CatlikeCoding
     {
 
         [SerializeField]
-        private Vector3[] points;
+        Vector3[] points;
 
         [SerializeField]
-        private BezierControlPointMode[] modes;
+        BezierControlPointMode[] modes;
 
         [SerializeField]
-        private bool loop;
+        bool loop;
 
         public bool Loop
         {
@@ -109,7 +109,7 @@ namespace CatlikeCoding
             EnforceMode(index);
         }
 
-        private void EnforceMode(int index)
+        void EnforceMode(int index)
         {
             int modeIndex = (index + 1) / 3;
             BezierControlPointMode mode = modes[modeIndex];

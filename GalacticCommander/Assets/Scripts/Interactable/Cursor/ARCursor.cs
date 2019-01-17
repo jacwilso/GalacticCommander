@@ -29,29 +29,29 @@ public class ARCursor : MonoBehaviour
 
     public event Action DeselectEvent, SelectEvent;
 
-    private static ARCursor instance;
+    static ARCursor instance;
 
-    private Camera cam;
-    private IInteractable selected;
-    private PointerEventData pointerData;
-    private EventSystem eventSys;
-    private Vector2 screenPos;
+    Camera cam;
+    IInteractable selected;
+    PointerEventData pointerData;
+    EventSystem eventSys;
+    Vector2 screenPos;
 
-    private void Awake()
+    void Awake()
     {
         if (instance != null)
             Debug.LogError("Multiple cursors.");
         instance = this;
     }
 
-    private void Start()
+    void Start()
     {
         cam = Camera.main;
         eventSys = EventSystem.current;
         pointerData = new PointerEventData(null);
     }
 
-    private void Update()
+    void Update()
     {
 #if UNITY_EDITOR && !INSTANT_PREVIEW
         if (Input.GetMouseButtonDown(0))

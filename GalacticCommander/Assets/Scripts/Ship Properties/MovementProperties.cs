@@ -5,7 +5,7 @@ using UnityEngine;
 public class MovementProperties : ActionProperties
 {
     [SerializeField]
-    private float speed;
+    float speed;
     [NonSerialized]
     public Stat Speed;
 }

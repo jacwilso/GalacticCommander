@@ -8,7 +8,7 @@ public class ShipPropertiesEditor : Editor
     bool foldout = true;
     Editor modifierEditor;
 
-    private void OnEnable()
+    void OnEnable()
     {
         ship = target as ShipProperties;
     }
@@ -17,7 +17,8 @@ public class ShipPropertiesEditor : Editor
     {
         serializedObject.Update();
         DrawDefaultInspector();
-        if (ship.modifier) {
+        if (ship.modifier)
+        {
             foldout = EditorGUILayout.InspectorTitlebar(foldout, ship.modifier);
             if (foldout)
             {

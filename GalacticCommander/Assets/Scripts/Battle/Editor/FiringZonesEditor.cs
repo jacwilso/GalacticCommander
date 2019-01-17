@@ -4,10 +4,10 @@ using UnityEditor;
 [CustomEditor(typeof(FiringZone))]
 public class FiringZoneEditor : Editor
 {
-    private bool showInnerHandles = true,
-        showOuterHandles = true;
-    private Transform testTarget;
-    private static Transform staticTarget;
+    bool showInnerHandles = true,
+       showOuterHandles = true;
+    Transform testTarget;
+    static Transform staticTarget;
 
     public override void OnInspectorGUI()
     {
@@ -35,7 +35,7 @@ public class FiringZoneEditor : Editor
         }
     }
 
-    private void BoxHandles(FiringZone zone, ref Vector3 scale, Vector3 compare, bool stayBigger, string propertyName)
+    void BoxHandles(FiringZone zone, ref Vector3 scale, Vector3 compare, bool stayBigger, string propertyName)
     {
         float size = 0.025f;
         Handles.color = Color.green;
@@ -44,13 +44,15 @@ public class FiringZoneEditor : Editor
         {
             EditorGUI.BeginChangeCheck();
             Vector3 vec = Handles.FreeMoveHandle(
-                zone.transform.position + 0.5f * Vector3.Scale(scale, FiringZone.cubeVerticies[i]),
+                zone.transform.position +
+                0.5f * Vector3.Scale(zone.transform.localScale, Vector3.Scale(scale, FiringZone.cubeVerticies[i])),
                 zone.transform.rotation,
                 size, Vector3.one, Handles.DotHandleCap);
             if (EditorGUI.EndChangeCheck())
             {
                 Undo.RecordObject(zone, "Undo resize: " + FiringZone.cubeVerticies[i]);
                 Vector3 scaled = 2f * (vec - zone.transform.position);
+                for (int j = 0; j < 3; j++) scaled[j] /= zone.transform.localScale[j];
                 scaled = Vector3.Scale(scaled, FiringZone.cubeVerticies[i]);
                 scaled = Vector3.Max(scaled, Vector3.one * minAttrib.minVal);
                 for (int j = 0; j < 3; j++)

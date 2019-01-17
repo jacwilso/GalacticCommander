@@ -6,8 +6,8 @@ using UnityEditor;
 [CustomPropertyDrawer(typeof(MinValueAttribute))]
 public class MinValueDrawer : PropertyDrawer
 {
-    private bool expand;
-    private float height;
+    bool expand;
+    float height;
 
     public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
     {

@@ -5,17 +5,17 @@ public class LookAt : MonoBehaviour
     [SerializeField]
     protected Transform target;
     [SerializeField]
-    private string tag;
+    string tag;
     [SerializeField]
-    private bool enabledInitially = true;
+    bool enabledInitially = true;
     [SerializeField]
-    private bool inverse;
+    bool inverse;
     [SerializeField]
-    private Vector3Bool lockAxis;
+    Vector3Bool lockAxis;
 
-    private bool isEnabled;
+    bool isEnabled;
 
-    private void Start()
+    void Start()
     {
         if (target == null && tag != string.Empty)
             target = GameObject.FindGameObjectWithTag(tag).transform;
@@ -27,7 +27,7 @@ public class LookAt : MonoBehaviour
         isEnabled = enabledInitially;
     }
 
-    private void Update()
+    void Update()
     {
         Vector3 position = transform.position;
         //for (int i = 0; i < 3; i++)

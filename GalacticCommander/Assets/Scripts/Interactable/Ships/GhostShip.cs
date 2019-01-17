@@ -5,16 +5,16 @@ using UnityEngine;
 public class GhostShip : MonoBehaviour, IInteractable
 {
     [SerializeField]
-    private Transform handle;
+    Transform handle;
     [SerializeField]
-    private Vector3 handleOffset;
+    Vector3 handleOffset;
 
-    private Ship ship;
-    private bool selected;
-    private Camera cam;
-    private Vector3 toHandle;
+    Ship ship;
+    bool selected;
+    Camera cam;
+    Vector3 toHandle;
 
-    private void Start()
+    void Start()
     {
         ship = GetComponentInParent<Ship>();
         cam = Camera.main;
@@ -24,7 +24,7 @@ public class GhostShip : MonoBehaviour, IInteractable
         toHandle = handle.position - transform.position;
     }
 
-    private void Update()
+    void Update()
     {
         if (selected)
         {

@@ -15,7 +15,7 @@ public class Vector3BoolDrawer : PropertyDrawer
         BoolField(ref position, property, label, "z");
     }
 
-    private void BoolField(ref Rect position, SerializedProperty property, GUIContent label, string str)
+    void BoolField(ref Rect position, SerializedProperty property, GUIContent label, string str)
     {
         SerializedProperty xProp = property.FindPropertyRelative(str);
 

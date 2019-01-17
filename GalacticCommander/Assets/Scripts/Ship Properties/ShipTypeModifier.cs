@@ -26,9 +26,9 @@ public class ShipTypeModifier : ScriptableObject
     [MinValue(0)]
     public int[] modifier = new int[6];
     public bool[] enable = new bool[6];
-    private StatModifier frontStat, backStat, leftStat, rightStat, topStat, bottomStat;
+    StatModifier frontStat, backStat, leftStat, rightStat, topStat, bottomStat;
 
-    private void OnEnable()
+    void OnEnable()
     {
         backStat = new StatModifier(modifier[0], StatModType.PercentAdd);
         leftStat = new StatModifier(modifier[1], StatModType.PercentAdd);

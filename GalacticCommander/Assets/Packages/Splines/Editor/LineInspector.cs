@@ -7,7 +7,7 @@ namespace CatlikeCoding
     public class LineInspector : Editor
     {
 
-        private void OnSceneGUI()
+        void OnSceneGUI()
         {
             Line line = target as Line;
             Transform handleTransform = line.transform;

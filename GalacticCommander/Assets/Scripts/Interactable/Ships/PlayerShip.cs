@@ -9,12 +9,13 @@ public class PlayerShip : Ship
         set { cacheAP = value; }
     }
 
-    private GameEvent PlayerAttackEvent;
+    GameEvent PlayerAttackEvent;
 
-    private ActionType action = ActionType.None;
-    private int cacheAP;
+    ActionType action = ActionType.None;
+    int cacheAP;
 
-    private void Awake() {
+    void Awake()
+    {
         ResourceRequest req = Resources.LoadAsync("Events/PlayerAttackEvent", typeof(GameEvent));
         PlayerAttackEvent = req.asset as GameEvent;
     }
@@ -35,7 +36,7 @@ public class PlayerShip : Ship
 
     public void Action(int segment)
     {
-        Debug.Log(segment);
+        // Debug.Log(segment);
         ConfirmationUI.Instance.TurnAction();
         if (segment == 0)
         {
@@ -96,7 +97,7 @@ public class PlayerShip : Ship
         displayMovement = false;
     }
 
-    private IEnumerator ExecuteMovement()
+    IEnumerator ExecuteMovement()
     {
         float t = 0f;
         Vector3 startPos = transform.position, endPos = Ghost.transform.position;
@@ -135,7 +136,7 @@ public class PlayerShip : Ship
     #endregion
 
     #region Attack
-    private void SelectAttack()
+    void SelectAttack()
     {
         action = ActionType.Attack;
         PlayerAttackEvent.Raise();
@@ -145,7 +146,7 @@ public class PlayerShip : Ship
         ARCursor.Instance.SelectEvent += CheckEnemy;
     }
 
-    private void CheckEnemy()
+    void CheckEnemy()
     {
         IInteractable iEnemy = ARCursor.Instance.Selected;
         if (iEnemy is EnemyShip)
@@ -159,7 +160,7 @@ public class PlayerShip : Ship
         }
     }
 
-    private void ConfirmAttack()
+    void ConfirmAttack()
     {
         turnAP -= properties.activeWeapon.Cost;
         properties.activeWeapon.Used();
@@ -171,12 +172,12 @@ public class PlayerShip : Ship
         }
     }
 
-    private void CancelAttack()
+    void CancelAttack()
     {
         UnregisterAttackEvents();
     }
 
-    private void UnregisterAttackEvents()
+    void UnregisterAttackEvents()
     {
         action = ActionType.None;
         PlayerAttackEvent.Lower();

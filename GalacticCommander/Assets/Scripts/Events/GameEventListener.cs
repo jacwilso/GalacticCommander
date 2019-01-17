@@ -5,16 +5,16 @@ using UnityEngine.Events;
 public class GameEventListener : MonoBehaviour
 {
     [SerializeField]
-    private GameEvent Event;
+    GameEvent Event;
     [SerializeField]
-    private UnityEvent Raise, Lower;
+    UnityEvent Raise, Lower;
 
-    private void OnEnable()
+    void OnEnable()
     {
         Event.RegisterListener(this);
     }
 
-    private void OnDisable()
+    void OnDisable()
     {
         Event.UnregisterListener(this);
     }

@@ -4,38 +4,48 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu]
-public class GameEvent : ScriptableObject {
-	private List<GameEventListener> listeners = new List<GameEventListener>();
-	private List<Action> actions = new List<Action>();
+public class GameEvent : ScriptableObject
+{
+    List<GameEventListener> listeners = new List<GameEventListener>();
+    List<Action> actions = new List<Action>();
 
-	public void Raise() {
-		for (int i = 0; i < listeners.Count; i++) {
-			listeners[i].OnEventRaised();
-		}
-		for (int i = 0; i < actions.Count; i++) {
-			actions[i]();
-		}
-	}
+    public void Raise()
+    {
+        for (int i = 0; i < listeners.Count; i++)
+        {
+            listeners[i].OnEventRaised();
+        }
+        for (int i = 0; i < actions.Count; i++)
+        {
+            actions[i]();
+        }
+    }
 
-	public void Lower() {
-		for (int i = 0; i < listeners.Count; i++) {
-			listeners[i].OnEventLowered();
-		}
-	}
+    public void Lower()
+    {
+        for (int i = 0; i < listeners.Count; i++)
+        {
+            listeners[i].OnEventLowered();
+        }
+    }
 
-	public void RegisterListener(GameEventListener listener) {
-		listeners.Add(listener);
-	}
+    public void RegisterListener(GameEventListener listener)
+    {
+        listeners.Add(listener);
+    }
 
-	public void UnregisterListener(GameEventListener listener) {
-		listeners.Remove(listener);
-	}
+    public void UnregisterListener(GameEventListener listener)
+    {
+        listeners.Remove(listener);
+    }
 
-	public void RegisterListener(Action action) {
-		actions.Add(action);
-	}
+    public void RegisterListener(Action action)
+    {
+        actions.Add(action);
+    }
 
-	public void UnregisterListener(Action action) {
-		actions.Remove(action);
-	}
+    public void UnregisterListener(Action action)
+    {
+        actions.Remove(action);
+    }
 }

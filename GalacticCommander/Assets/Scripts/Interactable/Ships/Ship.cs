@@ -53,6 +53,7 @@ public abstract class Ship : MonoBehaviour, IDamageable, IInteractable
 
         properties.ShieldStrength.Value = Mathf.Max(0, properties.ShieldStrength.Value);
         properties.Health.Value = Mathf.Max(0, properties.Health.Value);
+        Debug.Log(properties.Health.Value +  " " + properties.ShieldStrength.Value);
         DamageEvent?.Invoke();
         if (properties.Health.Value == 0)
         {
@@ -74,8 +75,8 @@ public abstract class Ship : MonoBehaviour, IDamageable, IInteractable
         Ship attacker = TurnOrder.Instance.Current;
         attacker.properties.damage.AddModifier(attacker.properties.modifier[(int)face]);
         attacker.properties.damage.BaseValue = attacker.properties.activeWeapon.Damage.x;
-        attacker.properties.damage.BaseValue = attacker.properties.activeWeapon.Damage.y;
         damage.x = (int)attacker.properties.damage.Value;
+        attacker.properties.damage.BaseValue = attacker.properties.activeWeapon.Damage.y;
         damage.y = (int)attacker.properties.damage.Value;
         attacker.properties.damage.RemoveModifier(attacker.properties.modifier[(int)face]);
         return damage;

@@ -13,7 +13,7 @@ public class FiringZone : MonoBehaviour
     public Vector3 innerScale = Vector3.one,
         outerScale = 3f * Vector3.one;
 
-    private Plane[,] frustums;
+    Plane[,] frustums;
 
     public static Vector3[] cubeVerticies =
     {
@@ -27,8 +27,8 @@ public class FiringZone : MonoBehaviour
         new Vector3(1, 1, 1),
     };
 
-    private int[] winding =
-    {
+    int[] winding =
+   {
         // back
         6, 4, 0,
         2, 0,
@@ -67,13 +67,13 @@ public class FiringZone : MonoBehaviour
         4, 5,
     };
 
-    private void OnValidate()
+    void OnValidate()
     {
         if (innerScale.x > outerScale.x || innerScale.y > outerScale.y || innerScale.z > outerScale.z)
             Debug.LogError("Inner scale must be smaller than outer scale.");
     }
 
-    private void OnEnable()
+    void OnEnable()
     {
         RecalculateFrustum(transform.position, transform.rotation);
     }

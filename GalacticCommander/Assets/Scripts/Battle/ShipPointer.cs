@@ -2,15 +2,15 @@
 
 public class ShipPointer : MonoBehaviour
 {
-    private Ship ship;
+    Ship ship;
 
-    private Camera cam;
-    private RectTransform pointerRect;
-    private WorldToCanvas w2c;
-    private Vector2 canvasBorder;
-    private bool offset;
+    Camera cam;
+    RectTransform pointerRect;
+    WorldToCanvas w2c;
+    Vector2 canvasBorder;
+    bool offset;
 
-    private void Start()
+    void Start()
     {
         cam = Camera.main;
         pointerRect = GetComponent<RectTransform>();
@@ -20,7 +20,7 @@ public class ShipPointer : MonoBehaviour
         canvasBorder = 0.05f * new Vector2(w2c.canvasRect.rect.width, w2c.canvasRect.rect.height);
     }
 
-    private void Update()
+    void Update()
     {
         Vector2 screenPos2 = w2c.ConvertWorldToCanvas(ship.transform.position);
         //Vector3 screenPos = cam.WorldToScreenPoint(ship.transform.position);
