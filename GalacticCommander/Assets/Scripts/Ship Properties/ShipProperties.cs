@@ -7,75 +7,66 @@ using System.Reflection;
 [CreateAssetMenu(menuName = "Ship Properties/Ship")]
 public class ShipProperties : StatPropertyObject
 {
+    [Header("Hull")]
+    [SerializeField]
+    int hull = 0;
+    [NonSerialized, AssignableStat]
+    public Stat Hull;
+
+    [SerializeField]
+    int hullRegen;
+    [NonSerialized, AssignableStat]
+    public int HullRegen;
+
+    [Header("Shield")]
+    [SerializeField]
+    int shield = 0;
+    [NonSerialized, AssignableStat]
+    public Stat Shield;
+
+    [SerializeField]
+    int shieldRegen = 0;
+    [NonSerialized, AssignableStat]
+    public Stat ShieldRegen;
+
     [Header("General Stats")]
     [SerializeField]
-    int health;
-    [NonSerialized]
-    public Stat Health;
-
-    [SerializeField]
-    int armor;
-    [NonSerialized]
-    public Stat Armor;
-
-    [SerializeField]
     [Range(0, 100)]
-    int evasion;
-    [NonSerialized]
+    int evasion = 0;
+    [NonSerialized, AssignableStat]
     public Stat Evasion;
 
     [SerializeField]
-    int actionPoints;
-    [NonSerialized]
-    public Stat ActionPoints;
+    int actionPoints = 0;
+    public int ActionPoints => actionPoints;
 
     [SerializeField]
-    int initiative;
-    [NonSerialized]
-    public Stat Initiative;
-
-    [Header("Shield Stats")]
-    [SerializeField]
-    int shieldStrength;
-    [NonSerialized]
-    public Stat ShieldStrength;
-
-    [SerializeField]
-    int shieldRegen;
-    [NonSerialized]
-    public Stat ShieldRegen;
+    int initiative = 0;
+    public int Initiative => initiative;
 
     [Header("Actions")]
     public MovementProperties movement;
-    public AbilityProperties[] network;
     public AttackProperties[] weapons;
-    public AbilityProperties[] engines;
-    public AbilityProperties[] structure;
-    public AbilityProperties[] energy;
-    public AbilityProperties[] personnel;
+    // public AbilityProperties[] abilities;
     ActionProperties[] actions;
 
-    public ShipTypeModifier modifier;
+    public DamageProfile profile;
 
     [Header("Other")]
     [SerializeField]
-    Sprite icon;
+    Sprite icon = null;
     public Sprite Icon => icon;
     [SerializeField]
-    ParticleSystem explosion;
+    ParticleSystem explosion = null;
     public ParticleSystem Explosion => explosion;
 
-
-    // NON SERIALIZED
     [NonSerialized]
-    public Stat accuracy = new Stat(0),
-        damage = new Stat(0);
+    public AttackProperties active;
     [NonSerialized]
-    public AttackProperties activeWeapon;
+    public Stat accuracy, damage;
 
-    public void CreateInstance()
+    public void Init()
     {
-        movement = ScriptableObject.Instantiate(movement);
         actions = GetType().GetFields()
             .Where(field => field.GetValue(this) is ActionProperties[])
             .SelectMany(param => param.GetValue(this) as ActionProperties[]).ToArray();

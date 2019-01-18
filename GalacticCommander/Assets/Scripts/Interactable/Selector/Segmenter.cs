@@ -14,13 +14,13 @@ namespace UIWheel
         }
 
         [SerializeField]
-        float radius;
+        float radius = 3;
         [SerializeField]
-        UnityEngine.UI.Image iconPrefab;
+        UnityEngine.UI.Image iconPrefab = null;
         [SerializeField]
-        Transform iconParent;
+        Transform iconParent = null;
         [SerializeField]
-        Material segmentMaterial;
+        Material segmentMaterial = null;
         [SerializeField]
         int segments;
 

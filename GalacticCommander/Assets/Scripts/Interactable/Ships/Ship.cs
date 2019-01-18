@@ -6,41 +6,36 @@ using UnityEngine;
 [DisallowMultipleComponent]
 public abstract class Ship : MonoBehaviour, IDamageable, IInteractable
 {
+    #region Events
     public event Action DeathEvent;
     public event Action DamageEvent;
     public event Action StartTurnEvent;
     public event Action EndTurnEvent;
-
-    public GhostShip Ghost => ghost;
-    public FiringZone Zone => zone;
+    #endregion
 
     public ShipProperties properties;
 
-    protected FiringZone zone;
     protected GhostShip ghost;
-    protected bool displayMovement;
+    public GhostShip Ghost => ghost;
+
+    protected FiringZone zone;
+    public FiringZone Zone => zone;
+
     protected int turnAP;
     public int TurnAP => turnAP;
+
     protected float cachedAccuracy;
     protected Vector2Int cachedDamage;
 
     protected virtual void Start()
     {
+        properties = ShipProperties.Instantiate(properties);
         zone = GetComponent<FiringZone>();
         ghost = GetComponentInChildren<GhostShip>();
         ghost.Init();
         TurnOrder.Instance.Subscribe(this);
-        properties = ScriptableObject.Instantiate(properties);
-        properties.CreateInstance();
-    }
 
-    protected virtual void OnDrawGizmos()
-    {
-        if (displayMovement)
-        {
-            Gizmos.color = new Color(0, 1f, 0, 0.25f);
-            Gizmos.DrawSphere(transform.position, properties.movement.Speed.Value * turnAP);
-        }
+
     }
 
     #region Damage
@@ -48,14 +43,14 @@ public abstract class Ship : MonoBehaviour, IDamageable, IInteractable
     {
         // TODO include armor values
         // Debug.Log(hit.damage + " " + properties.Health.Value + " " + properties.ShieldStrength.Value);
-        properties.ShieldStrength.Value -= hit.damage;
-        properties.Health.Value += Mathf.Min(0, properties.ShieldStrength.Value);
+        properties.Shield.Value -= hit.damage;
+        properties.Hull.Value += Mathf.Min(0, properties.Shield.Value);
 
-        properties.ShieldStrength.Value = Mathf.Max(0, properties.ShieldStrength.Value);
-        properties.Health.Value = Mathf.Max(0, properties.Health.Value);
-        Debug.Log(properties.Health.Value +  " " + properties.ShieldStrength.Value);
+        properties.Shield.Value = Mathf.Max(0, properties.Shield.Value);
+        properties.Hull.Value = Mathf.Max(0, properties.Hull.Value);
+        Debug.Log(properties.Hull.Value + " " + properties.Shield.Value);
         DamageEvent?.Invoke();
-        if (properties.Health.Value == 0)
+        if (properties.Hull.Value == 0)
         {
             Death();
         }
@@ -73,12 +68,12 @@ public abstract class Ship : MonoBehaviour, IDamageable, IInteractable
     {
         Vector2Int damage = new Vector2Int();
         Ship attacker = TurnOrder.Instance.Current;
-        attacker.properties.damage.AddModifier(attacker.properties.modifier[(int)face]);
-        attacker.properties.damage.BaseValue = attacker.properties.activeWeapon.Damage.x;
+        attacker.properties.damage.AddModifier(attacker.properties.profile[(int)face]);
+        attacker.properties.damage.BaseValue = attacker.properties.active.Damage.x;
         damage.x = (int)attacker.properties.damage.Value;
-        attacker.properties.damage.BaseValue = attacker.properties.activeWeapon.Damage.y;
+        attacker.properties.damage.BaseValue = attacker.properties.active.Damage.y;
         damage.y = (int)attacker.properties.damage.Value;
-        attacker.properties.damage.RemoveModifier(attacker.properties.modifier[(int)face]);
+        attacker.properties.damage.RemoveModifier(attacker.properties.profile[(int)face]);
         return damage;
     }
 
@@ -86,8 +81,8 @@ public abstract class Ship : MonoBehaviour, IDamageable, IInteractable
     {
         Ship attacker = TurnOrder.Instance.Current;
         float range = Vector3.Distance(transform.position, attacker.transform.position);
-        attacker.properties.accuracy.BaseValue = attacker.properties.activeWeapon.Accuracy;
-        float accuracy = (attacker.properties.accuracy.Value - properties.Evasion.Value) * attacker.properties.activeWeapon.curve.Calculate(range);
+        attacker.properties.accuracy.BaseValue = attacker.properties.active.Accuracy;
+        float accuracy = (attacker.properties.accuracy.Value - properties.Evasion.Value) * attacker.properties.active.curve.Calculate(range);
         accuracy = Mathf.Max(accuracy, 0);
         return accuracy;
     }
@@ -95,7 +90,7 @@ public abstract class Ship : MonoBehaviour, IDamageable, IInteractable
 
     public virtual void StartTurn()
     {
-        turnAP = (int)properties.ActionPoints.Value;
+        turnAP = properties.ActionPoints;
         StartTurnEvent?.Invoke();
     }
 

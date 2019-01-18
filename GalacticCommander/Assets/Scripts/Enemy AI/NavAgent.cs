@@ -5,7 +5,7 @@ using UnityEngine;
 public class NavAgent : MonoBehaviour
 {
     [SerializeField]
-    NavField field;
+    NavField field = null;
 
     private void OnDrawGizmos()
     {

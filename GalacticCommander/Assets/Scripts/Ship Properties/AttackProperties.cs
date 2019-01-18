@@ -1,4 +1,6 @@
-﻿using System;
+﻿#pragma warning disable 0649
+
+using System;
 using UnityEngine;
 
 [CreateAssetMenu(menuName = "Ship Properties/Attack")]
@@ -9,22 +11,22 @@ public class AttackProperties : ActionProperties
     public int Requirement => requirement;
 
     [SerializeField]
-    WeaponType weaponType;
+    WeaponType weaponType = WeaponType.Laser;
     public WeaponType WeaponType => weaponType;
 
     [SerializeField, EnumFlag]
-    ResistanceTypes damageTypes;
-    public ResistanceTypes DamageTypes => damageTypes;
+    DamageType damageTypes = DamageType.Kinetic;
+    public DamageType DamageTypes => damageTypes;
 
-    [SerializeField]
+    // [SerializeField]
     public AccuracyCurve curve;
 
     [SerializeField]
     [Range(0, 100)]
-    int accuracy;
+    int accuracy = 0;
 
     [SerializeField]
-    Vector2Int[] damage;
+    Vector2Int[] damage = null;
 
     public int Accuracy => accuracy;
     [NonSerialized]
@@ -33,7 +35,8 @@ public class AttackProperties : ActionProperties
     [Header("SFX"), SerializeField]
     AudioSource hitSFX;
     [SerializeField]
-    AudioSource missSFX, fireSFX;
+    AudioSource missSFX = null,
+        fireSFX = null;
     public AudioSource HitSFX => hitSFX;
     public AudioSource MissSFX => missSFX;
     public AudioSource FireSFX => fireSFX;
@@ -51,7 +54,7 @@ public class AttackProperties : ActionProperties
         }
     }
 
-    void OnEnable()
+    new void OnEnable()
     {
         SumDamage();
     }

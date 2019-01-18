@@ -71,7 +71,7 @@ public class FiringZoneEditor : Editor
         }
     }
 
-    [DrawGizmo(GizmoType.Active | GizmoType.NonSelected)]
+    [DrawGizmo(GizmoType.Active | GizmoType.Selected)]
     static void DrawGizmo(FiringZone scr, GizmoType gizmoType)
     {
         Matrix4x4 m = Gizmos.matrix;

@@ -1,4 +1,4 @@
-﻿public enum ResistanceTypes
+﻿public enum DamageType
 {
     Kinetic = 1 << 0,
     Thermal = 1 << 1,

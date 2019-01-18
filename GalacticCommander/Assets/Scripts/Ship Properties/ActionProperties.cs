@@ -4,15 +4,15 @@ using UnityEngine;
 public abstract class ActionProperties : StatPropertyObject
 {
     [SerializeField]
-    Sprite icon;
+    Sprite icon = null;
     public Sprite Icon => icon;
 
     [SerializeField]
-    int cost;
+    int cost = 0;
     public int Cost => cost;
 
     [SerializeField]
-    int turnCooldown;
+    int turnCooldown = 0;
     [NonSerialized]
     public int TurnCooldown;
 

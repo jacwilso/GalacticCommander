@@ -33,7 +33,8 @@ public class Flycam : MonoBehaviour
 
     void Start()
     {
-        Screen.lockCursor = true;
+        Cursor.lockState = CursorLockMode.Locked;
+        // Screen.lockCursor = true;
     }
 
     void Update()
@@ -67,7 +68,8 @@ public class Flycam : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.End))
         {
-            Screen.lockCursor = (Screen.lockCursor == false) ? true : false;
+            Cursor.lockState = (Cursor.lockState == CursorLockMode.Locked) ? CursorLockMode.None : CursorLockMode.Locked;
+            // Screen.lockCursor = (Screen.lockCursor == false) ? true : false;
         }
     }
 }

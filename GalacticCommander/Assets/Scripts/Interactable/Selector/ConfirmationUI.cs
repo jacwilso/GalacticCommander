@@ -8,7 +8,9 @@ public class ConfirmationUI : MonoBehaviour
     public static ConfirmationUI Instance => instance;
 
     [SerializeField]
-    GameObject confirnBtn, cancelBtn, turnBtn;
+    GameObject confirnBtn = null,
+        cancelBtn = null,
+        turnBtn = null;
 
     static ConfirmationUI instance;
 

@@ -15,9 +15,9 @@ public class TurnOrder : MonoBehaviour
     }
 
     [SerializeField]
-    TurnIcon currentIcon;
+    TurnIcon currentIcon = null;
     [SerializeField]
-    ShipPointer pointer;
+    ShipPointer pointer = null;
 
     static TurnOrder instance;
 
@@ -57,7 +57,7 @@ public class TurnOrder : MonoBehaviour
     public void DetermineIntiative()
     {
         indx = 0;
-        initiative = initiative.OrderByDescending(ship => ship.properties.Initiative.Value).ToList();
+        initiative = initiative.OrderByDescending(ship => ship.properties.Initiative).ToList();
         StartTurn();
     }
 

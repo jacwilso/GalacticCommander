@@ -21,7 +21,7 @@ public class NavField : MonoBehaviour
     Vector3[] dirMtx;
 
     [SerializeField] // TODO remove
-    List<Transform> targets;
+    List<Transform> targets = null;
     public List<Transform> Targets => targets;
 
     static readonly Vector3Int VECTOR3INT_FORWARD = new Vector3Int(0, 0, 1);

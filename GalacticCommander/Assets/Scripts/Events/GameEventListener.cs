@@ -5,9 +5,10 @@ using UnityEngine.Events;
 public class GameEventListener : MonoBehaviour
 {
     [SerializeField]
-    GameEvent Event;
+    GameEvent Event = null;
     [SerializeField]
-    UnityEvent Raise, Lower;
+    UnityEvent Raise = null,
+        Lower = null;
 
     void OnEnable()
     {

@@ -5,7 +5,7 @@ using UnityEngine;
 public class GhostShip : MonoBehaviour, IInteractable
 {
     [SerializeField]
-    Transform handle;
+    Transform handle = null;
     [SerializeField]
     Vector3 handleOffset;
 

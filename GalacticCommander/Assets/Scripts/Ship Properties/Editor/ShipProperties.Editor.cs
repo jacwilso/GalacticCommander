@@ -17,12 +17,12 @@ public class ShipPropertiesEditor : Editor
     {
         serializedObject.Update();
         DrawDefaultInspector();
-        if (ship.modifier)
+        if (ship.profile)
         {
-            foldout = EditorGUILayout.InspectorTitlebar(foldout, ship.modifier);
+            foldout = EditorGUILayout.InspectorTitlebar(foldout, ship.profile);
             if (foldout)
             {
-                CreateCachedEditor(ship.modifier, null, ref modifierEditor);
+                CreateCachedEditor(ship.profile, null, ref modifierEditor);
                 modifierEditor.OnInspectorGUI();
             }
         }

@@ -17,7 +17,7 @@ public class EnemyAI : ScriptableObject
         Closest, Weakest, Center
     }
     [SerializeField]
-    MovementType movementType;
+    MovementType movementType = MovementType.Center;
 
     PlayerShip[] players;
 
@@ -35,15 +35,13 @@ public class EnemyAI : ScriptableObject
         priorityAction = new SortedList<float, Action>();
         List<AttackProperties> weapons = ship.properties.weapons.OfType<AttackProperties>().ToList();
         List<AbilityProperties> abilities = ship.properties.GetAbilities();
-        AbilityProperties.TargetType friendlyAbilityTypes = AbilityProperties.TargetType.Self |
-            AbilityProperties.TargetType.SelfAOE |
-            AbilityProperties.TargetType.Ally |
-            AbilityProperties.TargetType.AllyAOE;
-        AbilityProperties.TargetType enemyAbilityTypes = AbilityProperties.TargetType.Enemy |
-            AbilityProperties.TargetType.EnemyAOE;
+        // AbilityProperties.TargetType friendlyAbilityTypes = AbilityProperties.TargetType.Self |
+        //     AbilityProperties.TargetType.SelfAOE |
+        //     AbilityProperties.TargetType.Ally |
+        //     AbilityProperties.TargetType.AllyAOE;
+        // AbilityProperties.TargetType enemyAbilityTypes = AbilityProperties.TargetType.Enemy |
+        //     AbilityProperties.TargetType.EnemyAOE;
         // for (int i = 0; i < )
-
-
         // for (int i = 0; i < )
     }
 
@@ -66,7 +64,7 @@ public class EnemyAI : ScriptableObject
             FiringZone.Face face = ship.Zone.FrustrumFace(players[i].transform.position);
             for (int j = 0; j < ship.properties.weapons.Length; i++)
             {
-                ship.properties.activeWeapon = ship.properties.weapons[j];
+                ship.properties.active = ship.properties.weapons[j];
                 float accuracy = players[i].AttackerAccuracy();
                 if (accuracy < minAccReq)
                 {
@@ -154,7 +152,7 @@ public class EnemyAI : ScriptableObject
         for (int i = 0; i < players.Length; i++)
         {
             // TODO weight?
-            float health = players[i].properties.Health.Value + players[i].properties.ShieldStrength.Value;
+            float health = players[i].properties.Hull.Value + players[i].properties.Shield.Value;
             if (health < min)
             {
                 min = health;

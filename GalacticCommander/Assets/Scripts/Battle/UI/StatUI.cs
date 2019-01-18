@@ -4,11 +4,14 @@ using TMPro;
 public class StatUI : MonoBehaviour
 {
     [SerializeField]
-    TextMeshProUGUI nameText, healthText, shieldText;
-    [Header("Attacked Stats"), SerializeField]
-    TextMeshProUGUI accuracyText;
+    TextMeshProUGUI nameText = null,
+        healthText = null,
+        shieldText = null;
+    [Header("Attacked Stats")]
     [SerializeField]
-    TextMeshProUGUI damageText;
+    TextMeshProUGUI accuracyText = null;
+    [SerializeField]
+    TextMeshProUGUI damageText = null;
 
     Ship ship;
 
@@ -18,8 +21,8 @@ public class StatUI : MonoBehaviour
         ship.DamageEvent += UpdateDisplay;
 
         nameText.text = ship.properties.name;
-        healthText.text = ship.properties.Health.MaxValue.ToString("F2");
-        shieldText.text = ship.properties.ShieldStrength.MaxValue.ToString("F2");
+        healthText.text = ship.properties.Hull.Value.ToString("F2");
+        shieldText.text = ship.properties.Shield.Value.ToString("F2");
 
         // gameObject.SetActive(false);
         accuracyText.transform.parent.gameObject.SetActive(false);
@@ -43,7 +46,7 @@ public class StatUI : MonoBehaviour
 
     public void UpdateDisplay()
     {
-        healthText.text = ship.properties.Health.Value.ToString("F2");
-        shieldText.text = ship.properties.ShieldStrength.Value.ToString("F2");
+        healthText.text = ship.properties.Hull.Value.ToString("F2");
+        shieldText.text = ship.properties.Shield.Value.ToString("F2");
     }
 }

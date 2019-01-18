@@ -10,9 +10,10 @@ public class StatPropertyObject : ScriptableObject, ISerializationCallbackReceiv
     public virtual void OnAfterDeserialize()
     {
         this.GetType().GetFields(BindingFlags.Public | BindingFlags.Instance)
-            .Where(param => typeof(Stat).IsAssignableFrom(param.FieldType)).ToList()
+            .Where(param => typeof(Stat).IsAssignableFrom(param.FieldType) && param.GetCustomAttribute(typeof(AssignableStatAttribute)) != null).ToList()
             .ForEach(param =>
             {
+                Attribute.IsDefined(param, typeof(NonSerializedAttribute));
                 string name = Char.ToLowerInvariant(param.Name[0]) + param.Name.Substring(1);
                 FieldInfo info = this.GetType().GetField(name, BindingFlags.NonPublic | BindingFlags.Instance);
                 if (info != null)
@@ -22,7 +23,7 @@ public class StatPropertyObject : ScriptableObject, ISerializationCallbackReceiv
                 else
                 {
                     param.SetValue(this, new Stat(0));
-                    Debug.LogWarning(param.Name + " cannot be modified, no base name exists.");
+                    Debug.LogWarning($"StatPropertyObject::{param.Name} cannot be modified, no base name exists.");
                 }
             });
     }

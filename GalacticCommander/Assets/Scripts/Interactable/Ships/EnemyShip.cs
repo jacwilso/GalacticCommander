@@ -5,7 +5,7 @@ using UnityEngine;
 public class EnemyShip : Ship
 {
     [SerializeField]
-    EnemyAI aI;
+    EnemyAI aI = null;
 
     StatUI statUI;
 

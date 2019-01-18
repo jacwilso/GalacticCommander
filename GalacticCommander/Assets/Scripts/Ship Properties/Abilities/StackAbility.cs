@@ -6,7 +6,7 @@ public class StackAbility : AbilityProperties
 {
     [Space(10)]
     [SerializeField]
-    List<AbilityProperties> abilities;
+    List<AbilityProperties> abilities = null;
 
     public override void Ability(Ship target)
     {

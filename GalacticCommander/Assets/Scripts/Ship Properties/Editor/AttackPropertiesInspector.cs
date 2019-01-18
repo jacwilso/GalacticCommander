@@ -22,7 +22,7 @@ public class AttackPropertiesInspector : Editor
         EditorGUILayout.Space();
         EditorGUILayout.LabelField("Damage", EditorStyles.boldLabel);
         SerializedProperty[] properties = new SerializedProperty[excludeProps.Length - 1];
-        List<ResistanceTypes> types = GetTypeList(attack.DamageTypes);
+        List<DamageType> types = GetTypeList(attack.DamageTypes);
 
         EditorGUI.indentLevel++;
         SerializedProperty prop = serializedObject.FindProperty("damage");
@@ -55,10 +55,10 @@ public class AttackPropertiesInspector : Editor
         serializedObject.ApplyModifiedProperties();
     }
 
-    List<ResistanceTypes> GetTypeList(ResistanceTypes types)
+    List<DamageType> GetTypeList(DamageType types)
     {
-        List<ResistanceTypes> result = new List<ResistanceTypes>();
-        foreach (ResistanceTypes r in Enum.GetValues(typeof(ResistanceTypes)))
+        List<DamageType> result = new List<DamageType>();
+        foreach (DamageType r in Enum.GetValues(typeof(DamageType)))
         {
             if (types.HasFlag(r))
             {

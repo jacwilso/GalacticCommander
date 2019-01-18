@@ -48,7 +48,7 @@ public class PlayerShip : Ship
             AttackProperties attack = action as AttackProperties;
             if (attack is AttackProperties)
             {
-                properties.activeWeapon = attack;
+                properties.active = attack;
                 SelectAttack();
                 // Display accuracies
             }
@@ -76,7 +76,6 @@ public class PlayerShip : Ship
         ARCursor.Instance.Selected = Ghost;
         ConfirmationUI.Instance.ConfirmEvent += ConfirmMovement;
         ConfirmationUI.Instance.CancelEvent += CancelMovement;
-        displayMovement = true;
     }
 
     public void ConfirmMovement()
@@ -85,7 +84,6 @@ public class PlayerShip : Ship
         StartCoroutine(ExecuteMovement());
         ConfirmationUI.Instance.ConfirmEvent -= ConfirmMovement;
         ConfirmationUI.Instance.CancelEvent -= CancelMovement;
-        displayMovement = false;
     }
 
     public void CancelMovement()
@@ -94,7 +92,6 @@ public class PlayerShip : Ship
         Ghost.Hide();
         ConfirmationUI.Instance.ConfirmEvent -= ConfirmMovement;
         ConfirmationUI.Instance.CancelEvent -= CancelMovement;
-        displayMovement = false;
     }
 
     IEnumerator ExecuteMovement()
@@ -162,8 +159,8 @@ public class PlayerShip : Ship
 
     void ConfirmAttack()
     {
-        turnAP -= properties.activeWeapon.Cost;
-        properties.activeWeapon.Used();
+        turnAP -= properties.active.Cost;
+        properties.active.Used();
         EnemyShip enemy = (EnemyShip)ARCursor.Instance.Selected;
         if (enemy)
         {

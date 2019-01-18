@@ -8,7 +8,7 @@ public class ObjectPool<T> : MonoBehaviour where T : MonoBehaviour
     [SerializeField]
     int initialSize = 5, maxSize = 10;
     [SerializeField]
-    T prefab;
+    T prefab = null;
 
     Queue<T> pool;
     int size;

@@ -12,21 +12,21 @@ public class StatAbility : AbilityProperties
 
     [Space(10)]
     [SerializeField]
-    StatType statType;
+    StatType statType = StatType.Buff;
     [HideInInspector]
     public PropertyObject propertyObject;
     [HideInInspector]
     public string parameter;
     [SerializeField]
     [Tooltip("Whether the effect should be flat added, percentage add, or percentage multiply.")]
-    StatModType modifierType;
+    StatModType modifierType = StatModType.Flat;
     [SerializeField]
-    float effect;
+    float effect = 0;
     [NonSerialized]
-    float Effect;
+    float Effect = 0;
     [SerializeField]
     [Tooltip("Number of turns the effect will last.")]
-    float duration;
+    float duration = 0;
 
     public override void OnAfterDeserialize()
     {
