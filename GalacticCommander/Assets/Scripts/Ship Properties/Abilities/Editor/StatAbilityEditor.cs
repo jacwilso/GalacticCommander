@@ -16,7 +16,6 @@ public class StatAbilityEditor : Editor
     {
         PropertyDictionary(new ShipProperties(), shipProperties);
         //PropertyDictionary(new AttackProperties.AttackStat(), attackProperties);
-        PropertyDictionary(new MovementProperties(), movementProperites);
     }
 
     public override void OnInspectorGUI()
@@ -32,12 +31,9 @@ public class StatAbilityEditor : Editor
             case PropertyObject.Ship:
                 _properties = shipProperties;
                 break;
-            //case PropertyObject.Attack:
-            //    _properties = attackProperties;
-            //    break;
-            case PropertyObject.Movement:
-                _properties = movementProperites;
-                break;
+                //case PropertyObject.Attack:
+                //    _properties = attackProperties;
+                //    break;
         }
         string[] keys = _properties.Keys.ToArray();
         _index = Array.FindIndex(keys, elem => elem == ObjectNames.NicifyVariableName(statAbility.parameter));

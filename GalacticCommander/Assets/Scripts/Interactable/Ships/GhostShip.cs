@@ -17,32 +17,33 @@ public class GhostShip : MonoBehaviour, IInteractable
     void Start()
     {
         ship = GetComponentInParent<Ship>();
+
         cam = Camera.main;
         transform.localPosition = Vector3.zero;
         transform.localRotation = Quaternion.identity;
 
         toHandle = handle.position - transform.position;
+
+        if (ARCursor.Instance == null || ARCursor.Instance.Selected != this)
+            gameObject.SetActive(false);
     }
 
     void Update()
     {
         if (selected)
         {
-            transform.rotation = cam.transform.rotation;
-            Vector3 handlePos = cam.transform.position + transform.forward * (cam.nearClipPlane + 0.01f);
-
-            Vector3 toHandleWorld = handle.transform.TransformDirection(toHandle);
-            transform.position = handlePos - toHandleWorld;
-
             float distSq = Vector3.SqrMagnitude(transform.parent.position - transform.position);
-            float speedSq = ship.properties.movement.Speed.Value;
+            float speedSq = ship.properties.Speed.Value;
             speedSq *= speedSq;
             int cost = Mathf.CeilToInt(distSq / speedSq);
             PlayerShip player = (PlayerShip)ship;
-            if (cost > player.TurnAP)
+            if (cost <= player.CurrentAP)
             {
-                Debug.Log("STOP");
-                //TODO
+                transform.rotation = cam.transform.rotation;
+                Vector3 handlePos = cam.transform.position + transform.forward * (cam.nearClipPlane + 0.01f);
+
+                Vector3 toHandleWorld = handle.transform.TransformDirection(toHandle);
+                transform.position = handlePos - toHandleWorld;
             }
         }
     }
@@ -59,11 +60,11 @@ public class GhostShip : MonoBehaviour, IInteractable
         selected = false;
         ConfirmationUI.Instance.Activate(true);
         float distSq = Vector3.SqrMagnitude(transform.parent.position - transform.position);
-        float speedSq = ship.properties.movement.Speed.Value;
+        float speedSq = ship.properties.Speed.Value;
         speedSq *= speedSq;
         int cost = Mathf.CeilToInt(distSq / speedSq);
         PlayerShip player = (PlayerShip)ship;
-        if (cost > player.TurnAP)
+        if (cost > player.CurrentAP)
         {
             ConfirmationUI.Instance.Activate(false, true);
         }
@@ -74,14 +75,9 @@ public class GhostShip : MonoBehaviour, IInteractable
         }
     }
 
-    public void Init()
-    {
-        gameObject.SetActive(false);
-    }
-
     public void Hide()
     {
-        gameObject.SetActive(false);
+        gameObject.SetActive(false); // TODO remove
         transform.localPosition = Vector3.zero;
         handle.localPosition = toHandle;
         transform.localRotation = Quaternion.identity;

@@ -23,18 +23,19 @@ public class DamageProfile : ScriptableObject
         }
     }
 
-    [MinValue(0)]
-    public int[] profile = new int[6];
-    public bool[] enabled = { true, true, true, true, true, true };
+    [SerializeField, Range(0, 100)]
+    int[] modifier = new int[6];
+    [SerializeField]
+    bool[] enabled = { true, true, true, true, true, true };
     StatModifier front, back, left, right, top, bottom;
 
     void OnEnable()
     {
-        back = new StatModifier(profile[0], StatModType.PercentAdd);
-        left = new StatModifier(profile[1], StatModType.PercentAdd);
-        bottom = new StatModifier(profile[2], StatModType.PercentAdd);
-        front = new StatModifier(profile[3], StatModType.PercentAdd);
-        top = new StatModifier(profile[4], StatModType.PercentAdd);
-        right = new StatModifier(profile[5], StatModType.PercentAdd);
+        back = new StatModifier(modifier[0], StatModType.PercentAdd);
+        left = new StatModifier(modifier[1], StatModType.PercentAdd);
+        bottom = new StatModifier(modifier[2], StatModType.PercentAdd);
+        front = new StatModifier(modifier[3], StatModType.PercentAdd);
+        top = new StatModifier(modifier[4], StatModType.PercentAdd);
+        right = new StatModifier(modifier[5], StatModType.PercentAdd);
     }
 }

@@ -66,6 +66,7 @@ namespace UIWheel
         void SegmentIcons(List<Sprite> icons)
         {
             IconPool();
+
             float angle = 2f * Mathf.PI / segments;
             float offset = 0.5f * angle * (1 - segments % 2);
             for (int i = 0; i < segments; i++)

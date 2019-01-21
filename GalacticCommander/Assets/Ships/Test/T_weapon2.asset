@@ -9,22 +9,21 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b298fcc141954fa42bc8469bc6455a96, type: 3}
-  m_Name: TestAttack 1
+  m_Script: {fileID: 11500000, guid: a4602357efa18ee468765b2e8856f84a, type: 3}
+  m_Name: T_weapon2
   m_EditorClassIdentifier: 
-  icon: {fileID: 21300000, guid: 6dc064fca613cd847ab9b60910a05b15, type: 3}
-  cost: 10
-  turnCooldown: 0
-  requirement: 0
+  icon: {fileID: 21300000, guid: 6515bfd4c6f0e3444879ab051365512e, type: 3}
+  cost: 6
+  turnCooldown: 1
   weaponType: 0
-  damageTypes: 1
-  curve:
-    middleRange: 0
-    steepness: 0
-    offset: 0
+  damageTypes: 6
   accuracy: 0
   damage:
-  - {x: 0, y: 49}
+  - {x: 0, y: 0}
+  - {x: 16, y: 57}
+  - {x: 8, y: 9}
+  - {x: 0, y: 0}
+  - {x: 0, y: 0}
   hitSFX: {fileID: 0}
   missSFX: {fileID: 0}
   fireSFX: {fileID: 0}

@@ -45,7 +45,7 @@ public class NavField : MonoBehaviour
 
     void OnDrawGizmos()
     {
-        if (pathMtx == null) return;
+        if (pathMtx?.Length == 0) GenerateField();
         int index = -1;
         for (int z = 0; z < size.z; z++)
         {

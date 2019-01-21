@@ -3,14 +3,14 @@ using UnityEditor;
 using System.Collections.Generic;
 using System;
 
-[CustomEditor(typeof(AttackProperties))]
-public class AttackPropertiesInspector : Editor
+[CustomEditor(typeof(WeaponProperties))]
+public class WeaponPropertiesInspector : Editor
 {
-    AttackProperties attack;
+    WeaponProperties attack;
 
     public override void OnInspectorGUI()
     {
-        attack = target as AttackProperties;
+        attack = target as WeaponProperties;
 
         serializedObject.Update();
         GUI.enabled = false;
@@ -22,21 +22,23 @@ public class AttackPropertiesInspector : Editor
         EditorGUILayout.Space();
         EditorGUILayout.LabelField("Damage", EditorStyles.boldLabel);
         SerializedProperty[] properties = new SerializedProperty[excludeProps.Length - 1];
-        List<DamageType> types = GetTypeList(attack.DamageTypes);
+        var dmgTypeNames = Enum.GetNames(typeof(DamageType));
+        var dmgTypeVals = Enum.GetValues(typeof(DamageType));
 
         EditorGUI.indentLevel++;
         SerializedProperty prop = serializedObject.FindProperty("damage");
-        for (int j = 0; j < types.Count; j++)
+        for (int j = 0; j < dmgTypeNames.Length; j++)
         {
-            if (prop.arraySize <= j)
-            {
-                prop.InsertArrayElementAtIndex(j);
-            }
             SerializedProperty vecProp = prop.GetArrayElementAtIndex(j);
+            if (!attack.DamageTypes.HasFlag((DamageType)dmgTypeVals.GetValue(j)))
+            {
+                vecProp.vector2IntValue = Vector2Int.zero;
+                continue;
+            }
             Vector2 vec = vecProp.vector2IntValue;
 
             EditorGUILayout.BeginHorizontal();
-            EditorGUILayout.PrefixLabel(ObjectNames.NicifyVariableName(types[j].ToString()));
+            EditorGUILayout.PrefixLabel(dmgTypeNames[j]);
             vec.x = EditorGUILayout.IntField((int)vec.x);
             EditorGUILayout.MinMaxSlider(ref vec.x, ref vec.y, 0, Mathf.Max(vec.y + 50f, 100f));
             vec.y = EditorGUILayout.IntField((int)vec.y);
@@ -46,25 +48,8 @@ public class AttackPropertiesInspector : Editor
             vec.y = Mathf.Max(vec.y, vec.x + 1);
             vecProp.vector2IntValue = new Vector2Int((int)vec.x, (int)vec.y);
         }
-        for (int j = types.Count; j < prop.arraySize; j++)
-        {
-            prop.DeleteArrayElementAtIndex(j);
-        }
         EditorGUI.indentLevel--;
 
         serializedObject.ApplyModifiedProperties();
-    }
-
-    List<DamageType> GetTypeList(DamageType types)
-    {
-        List<DamageType> result = new List<DamageType>();
-        foreach (DamageType r in Enum.GetValues(typeof(DamageType)))
-        {
-            if (types.HasFlag(r))
-            {
-                result.Add(r);
-            }
-        }
-        return result;
     }
 }

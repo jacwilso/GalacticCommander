@@ -126,12 +126,12 @@ public class FiringZone : MonoBehaviour
 
     public enum Face
     {
+        None = -1,
         Back = 0,
         Left = 1,
         Bottom = 2,
         Front = 3,
         Top = 4,
         Right = 5,
-        None,
     }
 }

@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d7ded599a83a7104ba29e1c9a725c233, type: 3}
-  m_Name: Test Damage Profile
+  m_Name: T_DmgProfile
   m_EditorClassIdentifier: 
-  profile: 000000000000000000000000000000000000000000000000
-  enabled: 010101010101
+  modifier: 000000000000000000000000640000000000000000000000
+  enabled: 000000010000

@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class PlayerShip : Ship
@@ -9,15 +10,20 @@ public class PlayerShip : Ship
         set { cacheAP = value; }
     }
 
-    GameEvent PlayerAttackEvent;
-
     ActionType action = ActionType.None;
     int cacheAP;
 
-    void Awake()
+    static List<PlayerShip> playerShips = new List<PlayerShip>();
+    public static List<PlayerShip> PlayerShips => playerShips;
+
+    void OnEnable()
     {
-        ResourceRequest req = Resources.LoadAsync("Events/PlayerAttackEvent", typeof(GameEvent));
-        PlayerAttackEvent = req.asset as GameEvent;
+        playerShips.Add(this);
+    }
+
+    void OnDisable()
+    {
+        playerShips.Remove(this);
     }
 
     public override void Select()
@@ -25,7 +31,7 @@ public class PlayerShip : Ship
         if (TurnOrder.Instance.Current == this && action == ActionType.None)
         {
             UIWheel.ActionWheel.Instance.worldPos = transform.position;
-            UIWheel.ActionWheel.Instance.Activate(this, properties);
+            UIWheel.ActionWheel.Instance.Activate(this);
         }
     }
 
@@ -34,6 +40,7 @@ public class PlayerShip : Ship
         UIWheel.ActionWheel.Instance.Deselect();
     }
 
+    #region Action Wheel
     public void Action(int segment)
     {
         // Debug.Log(segment);
@@ -44,12 +51,12 @@ public class PlayerShip : Ship
         }
         else
         {
-            ActionProperties action = properties.GetAction(segment);
-            AttackProperties attack = action as AttackProperties;
-            if (attack is AttackProperties)
+            ActionProperties action = GetAction(segment - 1);
+            WeaponProperties attack = action as WeaponProperties;
+            if (attack is WeaponProperties)
             {
-                properties.active = attack;
-                SelectAttack();
+                ActiveWeapon = attack;
+                SelectedWeapon();
                 // Display accuracies
             }
             else
@@ -69,10 +76,25 @@ public class PlayerShip : Ship
         }
     }
 
+    public List<Sprite> GetIcons()
+    {
+        List<Sprite> icons = new List<Sprite>(actions.Length + 1);
+
+        foreach (var action in actions)
+        {
+            if (action)
+            {
+                icons.Add(action.Icon);
+            }
+        }
+        return icons;
+    }
+    #endregion
+
     #region Movement
     public void SelectMovement()
     {
-        action = ActionType.Movement;
+        action = ActionType.Move;
         ARCursor.Instance.Selected = Ghost;
         ConfirmationUI.Instance.ConfirmEvent += ConfirmMovement;
         ConfirmationUI.Instance.CancelEvent += CancelMovement;
@@ -80,7 +102,7 @@ public class PlayerShip : Ship
 
     public void ConfirmMovement()
     {
-        turnAP -= cacheAP;
+        currentAP -= cacheAP;
         StartCoroutine(ExecuteMovement());
         ConfirmationUI.Instance.ConfirmEvent -= ConfirmMovement;
         ConfirmationUI.Instance.CancelEvent -= CancelMovement;
@@ -133,9 +155,9 @@ public class PlayerShip : Ship
     #endregion
 
     #region Attack
-    void SelectAttack()
+    void SelectedWeapon()
     {
-        action = ActionType.Attack;
+        action = ActionType.Weapon;
         PlayerAttackEvent.Raise();
         ConfirmationUI.Instance.ConfirmEvent += ConfirmAttack;
         ConfirmationUI.Instance.CancelEvent += CancelAttack;
@@ -157,14 +179,15 @@ public class PlayerShip : Ship
         }
     }
 
+    // TODO: Move to Ship
     void ConfirmAttack()
     {
-        turnAP -= properties.active.Cost;
-        properties.active.Used();
+        currentAP -= ActiveWeapon.apCost;
+        ActiveWeapon.Used();
         EnemyShip enemy = (EnemyShip)ARCursor.Instance.Selected;
         if (enemy)
         {
-            enemy.DoAttack();
+            enemy.GetAttacked();
             UnregisterAttackEvents();
         }
     }

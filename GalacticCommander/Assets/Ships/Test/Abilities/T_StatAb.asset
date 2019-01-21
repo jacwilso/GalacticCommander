@@ -9,22 +9,19 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b298fcc141954fa42bc8469bc6455a96, type: 3}
-  m_Name: TestAttack
+  m_Script: {fileID: 11500000, guid: 503e6257a55dfd4468cef8f2c3974347, type: 3}
+  m_Name: T_StatAb
   m_EditorClassIdentifier: 
   icon: {fileID: 0}
-  cost: 1
-  turnCooldown: 4
+  cost: 0
+  turnCooldown: 0
   requirement: 0
-  weaponType: 0
-  damageTypes: 1
-  curve:
-    middleRange: 0
-    steepness: 0
-    offset: 0
-  accuracy: 0
-  damage:
-  - {x: 3, y: 57}
-  hitSFX: {fileID: 0}
-  missSFX: {fileID: 0}
-  fireSFX: {fileID: 0}
+  range: 0
+  target: 2
+  aiPriority: 0
+  statType: 1
+  propertyObject: 0
+  parameter: Evasion
+  modifierType: 200
+  effect: 1.2
+  duration: 0

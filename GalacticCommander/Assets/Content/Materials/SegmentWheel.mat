@@ -5,7 +5,8 @@ Material:
   serializedVersion: 6
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
   m_Name: SegmentWheel
   m_Shader: {fileID: 4800000, guid: a415e78947ea2bc4a8eb7bf13e07ae84, type: 3}
   m_ShaderKeywords: 
@@ -68,7 +69,7 @@ Material:
     - _OcclusionStrength: 1
     - _OuterRadius: 0.9
     - _Parallax: 0.02
-    - _Segments: 4
+    - _Segments: 2
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
     - _SrcBlend: 1

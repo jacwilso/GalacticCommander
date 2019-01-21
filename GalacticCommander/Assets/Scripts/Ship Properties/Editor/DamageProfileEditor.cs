@@ -3,29 +3,41 @@ using UnityEngine;
 using UnityEditor;
 
 [CustomEditor(typeof(DamageProfile))]
-public class ShipTypeModifierEditor : Editor
+public class DamageProfileEditor : Editor
 {
-    DamageProfile modifier;
+    DamageProfile dmgProfile;
     static readonly string[] SIDE_NAMES = { "Back", "Left", "Bottom", "Front", "Top", "Right" };
 
     void OnEnable()
     {
-        modifier = target as DamageProfile;
+        dmgProfile = target as DamageProfile;
     }
 
     public override void OnInspectorGUI()
     {
-        SerializedProperty mod = serializedObject.FindProperty("modifier");
+        serializedObject.Update();
+        SerializedProperty modifierArr = serializedObject.FindProperty("modifier");
+        SerializedProperty enabledArr = serializedObject.FindProperty("enabled");
         for (int i = 0; i < SIDE_NAMES.Length; i++)
         {
+            var enabled = enabledArr.GetArrayElementAtIndex(i);
+            var modifier = modifierArr.GetArrayElementAtIndex(i);
             EditorGUILayout.BeginHorizontal();
             EditorGUILayout.PrefixLabel(SIDE_NAMES[i]);
-            modifier.enabled[i] = EditorGUILayout.Toggle(name, modifier.enabled[i], GUILayout.MaxWidth(25));
-            GUI.enabled = modifier.enabled[i];
-            // modifier.modifier[i] = EditorGUILayout.IntField(modifier.modifier[i]);
-            modifier.profile[i] = EditorGUILayout.IntSlider(modifier.profile[i], -100, 100);
-            GUI.enabled = true;
+            EditorGUI.BeginChangeCheck();
+            EditorGUILayout.PropertyField(enabled, GUIContent.none, GUILayout.MaxWidth(20));
+            if (EditorGUI.EndChangeCheck())
+            {
+                if (!enabled.boolValue) modifier.intValue = 0;
+            }
+            EditorGUI.BeginChangeCheck();
+            EditorGUILayout.PropertyField(modifier, GUIContent.none);
+            if (EditorGUI.EndChangeCheck())
+            {
+                enabled.boolValue = modifier.intValue > 0;
+            }
             EditorGUILayout.EndHorizontal();
         }
+        serializedObject.ApplyModifiedProperties();
     }
 }

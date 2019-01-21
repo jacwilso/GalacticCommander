@@ -33,8 +33,8 @@ public class EnemyAI : ScriptableObject
         players = FindObjectsOfType<PlayerShip>();
         EnemyShip[] allies = FindObjectsOfType<EnemyShip>();
         priorityAction = new SortedList<float, Action>();
-        List<AttackProperties> weapons = ship.properties.weapons.OfType<AttackProperties>().ToList();
-        List<AbilityProperties> abilities = ship.properties.GetAbilities();
+        List<WeaponProperties> weapons = ship.Weapons.OfType<WeaponProperties>().ToList();
+        // List<AbilityProperties> abilities = ship.GetAbilities();
         // AbilityProperties.TargetType friendlyAbilityTypes = AbilityProperties.TargetType.Self |
         //     AbilityProperties.TargetType.SelfAOE |
         //     AbilityProperties.TargetType.Ally |
@@ -46,12 +46,12 @@ public class EnemyAI : ScriptableObject
     }
 
     void CalculatePositionPriority(EnemyShip ship, EnemyShip[] allies,
-       List<AbilityProperties> abilities, List<AttackProperties> weapons, int actionPoints,
+       List<AbilityProperties> abilities, List<WeaponProperties> weapons, int actionPoints,
        AbilityProperties.TargetType friendlyAbilityTypes, AbilityProperties.TargetType enemyAbilityTypes)
     {
         for (int i = 0; i < weapons.Count; i++)
         {
-            if (ship.properties.weapons[i].Cost > actionPoints)
+            if (ship.Weapons[i].apCost > actionPoints)
             {
                 weapons.RemoveAt(i);
             }
@@ -62,15 +62,15 @@ public class EnemyAI : ScriptableObject
         for (int i = 0; i < players.Length; i++)
         {
             FiringZone.Face face = ship.Zone.FrustrumFace(players[i].transform.position);
-            for (int j = 0; j < ship.properties.weapons.Length; i++)
+            for (int j = 0; j < ship.Weapons.Length; i++)
             {
-                ship.properties.active = ship.properties.weapons[j];
-                float accuracy = players[i].AttackerAccuracy();
+                ship.ActiveWeapon = ship.Weapons[j];
+                float accuracy = players[i].CalculateAccuracy(ship.transform.position, ship.properties.Evasion.Value);
                 if (accuracy < minAccReq)
                 {
                     continue;
                 }
-                Vector2 damage = players[i].AttackerDamage(face);
+                Vector2 damage = players[i].CalculateDamageRange(face);
                 priority += accuracy * 0.5f * (damage.y + damage.x);
             }
             float range = Vector3.Distance(ship.transform.position, players[i].transform.position);
@@ -99,7 +99,7 @@ public class EnemyAI : ScriptableObject
     public Vector3 Move(Ship ship)
     {
         Vector3 ideal = MoveToPosition(ship.transform);
-        float maxDist = ship.properties.movement.Speed.Value * ship.TurnAP;
+        float maxDist = ship.properties.Speed.Value * ship.CurrentAP;
         float dist = Vector3.Distance(ship.transform.position, ideal);
         if (dist <= minDistToMove)
         {

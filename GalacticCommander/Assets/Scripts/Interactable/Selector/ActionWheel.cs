@@ -13,6 +13,10 @@ namespace UIWheel
             get { return instance; }
         }
 
+
+        [SerializeField]
+        Sprite movementIcon;
+
         //[SerializeField, MinMaxValue(0.01f, 10f)]
         // Vector2 scaleBounds;
         [NonSerialized]
@@ -55,12 +59,14 @@ namespace UIWheel
             uiElement.anchoredPosition = w2c.ConvertWorldToCanvas(worldPos);
         }
 
-        public void Activate(PlayerShip ship, ShipProperties properties)
+        public void Activate(PlayerShip ship)
         {
             this.ship = ship;
             gameObject.SetActive(true);
-            availableActions = properties.AvailableActions(ship.TurnAP);
-            segmenter.SetSegments(properties.GetIcons(), availableActions);
+            availableActions = ship.AvailableActions(ship.CurrentAP);
+            var icons = ship.GetIcons();
+            icons.Insert(0, movementIcon);
+            segmenter.SetSegments(icons, availableActions);
             uiElement.anchoredPosition = w2c.ConvertWorldToCanvas(worldPos);
         }
 

@@ -9,12 +9,14 @@ public abstract class ActionProperties : StatPropertyObject
 
     [SerializeField]
     int cost = 0;
-    public int Cost => cost;
+    public int apCost => cost;
 
     [SerializeField]
     int turnCooldown = 0;
-    [NonSerialized]
-    public int TurnCooldown;
+    public int TurnCooldown => turnCooldown;
+
+    int currentCooldown;
+    public int CurrentCooldown => currentCooldown;
 
     GameEvent endRound;
 
@@ -27,11 +29,11 @@ public abstract class ActionProperties : StatPropertyObject
 
     public void Used()
     {
-        TurnCooldown = turnCooldown;
+        currentCooldown = turnCooldown;
     }
     public void Cooldown()
     {
-        TurnCooldown = Mathf.Max(TurnCooldown - 1, 0);
-        Debug.Log(TurnCooldown);
+        currentCooldown = Mathf.Max(currentCooldown - 1, 0);
+        Debug.Log(currentCooldown);
     }
 }

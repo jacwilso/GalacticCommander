@@ -1,7 +1,7 @@
 ﻿public enum ActionType
 {
-    Movement,
-    Attack,
+    Move,
+    Weapon,
     Ability,
     None
 }

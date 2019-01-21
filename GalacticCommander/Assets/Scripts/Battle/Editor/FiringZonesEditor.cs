@@ -9,9 +9,17 @@ public class FiringZoneEditor : Editor
     Transform testTarget;
     static Transform staticTarget;
 
+    bool foldout = true;
+
     public override void OnInspectorGUI()
     {
         base.DrawDefaultInspector();
+        GUIStyle style = EditorStyles.foldout;
+        FontStyle previousStyle = style.fontStyle;
+        style.fontStyle = FontStyle.Bold;
+        foldout = EditorGUILayout.Foldout(foldout, "Editor Fields", style);
+        style.fontStyle = previousStyle;
+        if (!foldout) return;
         EditorGUI.BeginChangeCheck();
         staticTarget = testTarget = EditorGUILayout.ObjectField("Target", testTarget, typeof(Transform), true) as Transform;
         showInnerHandles = EditorGUILayout.Toggle("Show Inner Handles", showInnerHandles);

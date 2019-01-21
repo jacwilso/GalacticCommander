@@ -4,23 +4,21 @@
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 503e6257a55dfd4468cef8f2c3974347, type: 3}
-  m_Name: TestStatAbility
+  m_Script: {fileID: 11500000, guid: 348107f15f61151499b99a61b9f51209, type: 3}
+  m_Name: T_StackAb
   m_EditorClassIdentifier: 
   icon: {fileID: 0}
   cost: 0
   turnCooldown: 0
   requirement: 0
   range: 0
-  target: 2
+  target: 0
   aiPriority: 0
-  statType: 1
-  propertyObject: 0
-  parameter: Evasion
-  modifierType: 200
-  effect: 1.2
-  duration: 0
+  abilities:
+  - {fileID: 0}
+  - {fileID: 0}
