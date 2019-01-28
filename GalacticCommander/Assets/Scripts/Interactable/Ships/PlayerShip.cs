@@ -12,6 +12,8 @@ public class PlayerShip : Ship
 
     ActionType action = ActionType.None;
     int cacheAP;
+    WeaponProperties activeWeapon;
+    public WeaponProperties ActiveWeapon;
 
     static List<PlayerShip> playerShips = new List<PlayerShip>();
     public static List<PlayerShip> PlayerShips => playerShips;
@@ -40,6 +42,11 @@ public class PlayerShip : Ship
         UIWheel.ActionWheel.Instance.Deselect();
     }
 
+    public override void EndTurn() {
+        base.EndTurn();
+        UIWheel.ActionWheel.Instance.Deselect();
+    }
+
     #region Action Wheel
     public void Action(int segment)
     {
@@ -52,12 +59,11 @@ public class PlayerShip : Ship
         else
         {
             ActionProperties action = GetAction(segment - 1);
-            WeaponProperties attack = action as WeaponProperties;
-            if (attack is WeaponProperties)
+            var weapon = action as WeaponProperties;
+            if (weapon != null)
             {
-                ActiveWeapon = attack;
+                activeWeapon = weapon;
                 SelectedWeapon();
-                // Display accuracies
             }
             else
             {
@@ -182,12 +188,10 @@ public class PlayerShip : Ship
     // TODO: Move to Ship
     void ConfirmAttack()
     {
-        currentAP -= ActiveWeapon.apCost;
-        ActiveWeapon.Used();
-        EnemyShip enemy = (EnemyShip)ARCursor.Instance.Selected;
-        if (enemy)
+        EnemyShip target = (EnemyShip)ARCursor.Instance.Selected;
+        if (target)
         {
-            enemy.GetAttacked();
+            UseWeapon(ActiveWeapon, target);
             UnregisterAttackEvents();
         }
     }

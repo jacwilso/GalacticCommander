@@ -31,11 +31,11 @@ public class DamageProfile : ScriptableObject
 
     void OnEnable()
     {
-        back = new StatModifier(modifier[0], StatModType.PercentAdd);
-        left = new StatModifier(modifier[1], StatModType.PercentAdd);
-        bottom = new StatModifier(modifier[2], StatModType.PercentAdd);
-        front = new StatModifier(modifier[3], StatModType.PercentAdd);
-        top = new StatModifier(modifier[4], StatModType.PercentAdd);
-        right = new StatModifier(modifier[5], StatModType.PercentAdd);
+        back = new StatModifier(modifier[0], StatModType.PercentMult);
+        left = new StatModifier(modifier[1], StatModType.PercentMult);
+        bottom = new StatModifier(modifier[2], StatModType.PercentMult);
+        front = new StatModifier(modifier[3], StatModType.PercentMult);
+        top = new StatModifier(modifier[4], StatModType.PercentMult);
+        right = new StatModifier(modifier[5], StatModType.PercentMult);
     }
 }

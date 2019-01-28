@@ -15,6 +15,6 @@ public class NavAgent : MonoBehaviour
 
     Vector3 GetDirection()
     {
-        return field.GetDirectionFromPosition(transform.position);
+        return field.GetDirection(transform.position);
     }
 }

@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.XR.ARFoundation;
 
 public class ShipPointer : MonoBehaviour
 {

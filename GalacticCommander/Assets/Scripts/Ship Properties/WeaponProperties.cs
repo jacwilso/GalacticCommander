@@ -1,6 +1,7 @@
 ﻿#pragma warning disable 0649
 
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu(menuName = "Ship Properties/Weapon")]
@@ -20,7 +21,8 @@ public class WeaponProperties : ActionProperties
 
     [SerializeField]
     Vector2Int[] damage = new Vector2Int[Enum.GetValues(typeof(DamageType)).Length];
-    public Vector2Int[] Damage => damage;
+    [NonSerialized]
+    public Dictionary<DamageType, Vector2Int> Damage;
 
     Vector2Int hullDamage;
     public Vector2Int HullDamage => hullDamage;
@@ -36,20 +38,17 @@ public class WeaponProperties : ActionProperties
     public AudioSource MissSFX => missSFX;
     public AudioSource FireSFX => fireSFX;
 
-    void Start()
+    protected override void OnEnable()
     {
-        SumDamage();
-    }
-
-    // TODO Remove
-    void SumDamage()
-    {
-        Vector2Int dmg = Vector2Int.zero;
-        var damageTypeEnum = Enum.GetValues(typeof(DamageType));
-        for (int i = 0; i < damage.Length; i++)
-        {
-            dmg += damage[i] * DamageTypeEffect.HullEffect((DamageType)damageTypeEnum.GetValue(i));
+        base.OnEnable();
+        var types = Enum.GetValues(typeof(DamageType));
+        Damage = new Dictionary<DamageType, Vector2Int>(types.Length);
+        Vector2 dmg = Vector2Int.zero;
+        for (int i = 0; i < types.Length; i++) {
+            var type = (DamageType)types.GetValue(i);
+            Damage.Add(type, damage[i]);
+            dmg += new Vector2(damage[i].x, damage[i].y) * DamageTypeEffect.HullEffect(type);
         }
-        hullDamage = dmg;
+        hullDamage = new Vector2Int((int)dmg.x, (int)dmg.y);
     }
 }

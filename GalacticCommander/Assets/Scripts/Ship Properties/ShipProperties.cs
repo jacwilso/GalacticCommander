@@ -6,8 +6,8 @@ using System.Reflection;
 
 public struct ShipDefaults
 {
-    public static readonly int baseAP = 4,
-        maxAP = 8;
+    public static readonly int BASE_AP = 4,
+        MAX_AP = 8;
 }
 
 [CreateAssetMenu(menuName = "Ship Properties/Ship")]
@@ -48,7 +48,7 @@ public class ShipProperties : StatPropertyObject
     public Stat Speed;
 
     [SerializeField]
-    int apRegen = ShipDefaults.baseAP;
+    int apRegen = ShipDefaults.BASE_AP;
     public int RegenAP => apRegen;
 
     [SerializeField]

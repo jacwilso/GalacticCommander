@@ -100,14 +100,14 @@ public class Stat
                     sumPercentAdd += mod.Value;
                     if (i + 1 >= statModifiers.Count || statModifiers[i + 1].Type != StatModType.PercentAdd)
                     {
-                        value *= 1 + sumPercentAdd;
+                        value *= sumPercentAdd / 100f;
+                        sumPercentAdd = 0;
                     }
                     break;
                 case StatModType.PercentMult:
-                    value *= 1 + mod.Value;
+                    value *= mod.Value / 100f;
                     break;
             }
-            value += statModifiers[i].Value;
         }
         return (float)Math.Round(value, 4);
     }

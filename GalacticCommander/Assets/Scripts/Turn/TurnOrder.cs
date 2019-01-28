@@ -18,6 +18,8 @@ public class TurnOrder : MonoBehaviour
     TurnIcon currentIcon = null;
     [SerializeField]
     ShipPointer pointer = null;
+    [SerializeField]
+    UnityEngine.UI.Button endTurnBtn;
 
     static TurnOrder instance;
 
@@ -29,15 +31,6 @@ public class TurnOrder : MonoBehaviour
         if (instance != null)
             Debug.LogError("Multiple turn order scripts.");
         instance = this;
-    }
-
-    void Start()
-    {
-        if (initiative == null)
-        {
-            initiative = new List<Ship>();
-        }
-        EndRoundEvent.RegisterListener(EndRound);
     }
 
     public void Subscribe(Ship ship)
@@ -65,6 +58,7 @@ public class TurnOrder : MonoBehaviour
     {
         currentIcon.icon.sprite = Current.properties.Icon;
         Current.StartTurn();
+        endTurnBtn.gameObject.SetActive(Current is PlayerShip);
         //pointer.PointTo(initiative[indx]); // TODO
     }
 
@@ -72,8 +66,10 @@ public class TurnOrder : MonoBehaviour
     {
         Current.EndTurn();
         indx++;
-        if (indx >= initiative.Count)
+        if (indx >= initiative.Count) {
             EndRoundEvent.Raise();
+            EndRound();
+        }
         else
             StartTurn();
     }
@@ -81,5 +77,6 @@ public class TurnOrder : MonoBehaviour
     public void EndRound()
     {
         indx = -1;
+        DetermineIntiative();
     }
 }

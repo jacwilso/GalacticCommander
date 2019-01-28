@@ -9,7 +9,7 @@
 
 public class DamageTypeEffect
 {
-    public static readonly DamageType[] SHIELD_PRIORITY = {
+    public static readonly DamageType[] SHIELD_PRIORITY_LIST = {
         DamageType.Electromagnetic,
         DamageType.Thermal,
         DamageType.Kinetic,
@@ -17,38 +17,38 @@ public class DamageTypeEffect
         DamageType.BioChemical,
     };
 
-    public static int ShieldEffect(DamageType type)
+    public static float ShieldEffect(DamageType type)
     {
         switch (type)
         {
             case DamageType.Kinetic:
-                return -25;
+                return 0.75f;
             case DamageType.Thermal:
-                return 25;
+                return 1.25f;
             case DamageType.Nuclear:
-                return -50;
+                return 0.5f;
             case DamageType.Electromagnetic:
-                return 50;
+                return 1.5f;
             case DamageType.BioChemical:
-                return -100;
+                return 0;
         }
         return 0;
     }
 
-    public static int HullEffect(DamageType type)
+    public static float HullEffect(DamageType type)
     {
         switch (type)
         {
             case DamageType.Kinetic:
-                return 25;
+                return 1.25f;
             case DamageType.Thermal:
-                return -25;
+                return 0.75f;
             case DamageType.Nuclear:
-                return 50;
+                return 1.5f;
             case DamageType.Electromagnetic:
-                return -50;
+                return 0.5f;
             case DamageType.BioChemical:
-                return 100;
+                return 2;
         }
         return 0;
     }

@@ -19,25 +19,44 @@ public class NavField : MonoBehaviour
 
     byte[] pathMtx, costMtx;
     Vector3[] dirMtx;
+    // Transform[] nodeTarget;
 
     [SerializeField] // TODO remove
     List<Transform> targets = null;
-    public List<Transform> Targets => targets;
+    public List<Transform> Targets {
+        get {return targets;}
+        set {
+            isDirty = true;
+            targets = value;
+        }
+    }
+    bool isDirty;
 
     static readonly Vector3Int VECTOR3INT_FORWARD = new Vector3Int(0, 0, 1);
 
-
     void OnEnable()
     {
-        pathMtx = new byte[size.x * size.y * size.z];
-        costMtx = new byte[size.x * size.y * size.z];
-        dirMtx = new Vector3[size.x * size.y * size.z];
+        int len = size.x * size.y * size.z;
+        pathMtx = new byte[len];
+        costMtx = new byte[len];
+        dirMtx = new Vector3[len];
+        // nodeTarget = new Transform[len];
+    }
+
+    public void GenerateField() {
+        Targets = PlayerShip.PlayerShips.ConvertAll(x => x.transform); // TODO REMOVE
+        if (isDirty) {
+            isDirty = false;
+            GeneratePathField();
+            GenerateDirections();
+        }
     }
 
 #if UNITY_EDITOR
     [ContextMenu("Generate Field")]
-    void GenerateField()
+    void EditorGenerateField()
     {
+        if (targets == null) return;
         OnEnable();
         GeneratePathField();
         GenerateDirections();
@@ -45,7 +64,9 @@ public class NavField : MonoBehaviour
 
     void OnDrawGizmos()
     {
-        if (pathMtx?.Length == 0) GenerateField();
+        if (pathMtx == null || pathMtx?.Length == 0 || 
+            dirMtx == null || dirMtx?.Length == 0) 
+            EditorGenerateField();
         int index = -1;
         for (int z = 0; z < size.z; z++)
         {
@@ -140,7 +161,7 @@ public class NavField : MonoBehaviour
 
     void GenerateDirections()
     {
-        int index = -1;
+        int index = 0;
         for (int z = 0; z < size.z; z++)
         {
             for (int y = 0; y < size.y; y++)
@@ -148,25 +169,34 @@ public class NavField : MonoBehaviour
                 for (int x = 0; x < size.x; x++)
                 {
                     byte minCost = 255;
+                    int minZeros = 4;
                     Vector3 minDir = Vector3.zero;
                     Vector3Int position = new Vector3Int(x, y, z);
-                    for (int i = -1; i < 2; i++)
+                    if (pathMtx[index] != 0) // TODO this should point at the target
                     {
-                        for (int j = -1; j < 2; j++)
+                        for (int i = -1; i < 2; i++)
                         {
-                            for (int k = -1; k < 2; k++)
+                            int iZero = Mathf.Abs(i);
+                            for (int j = -1; j < 2; j++)
                             {
-                                Vector3Int dir = new Vector3Int(i, j, k);
-                                byte cost = CalculateDirectionCost(position, dir);
-                                if (cost < minCost)
+                                int jZero = Mathf.Abs(j);
+                                for (int k = -1; k < 2; k++)
                                 {
-                                    minCost = cost;
-                                    minDir = dir;
+                                    Vector3Int dir = new Vector3Int(i, j, k);
+                                    byte cost = CalculateDirectionCost(position, dir);
+                                    int zeros = iZero + jZero + Mathf.Abs(k);
+                                    if (cost < minCost || (cost == minCost && zeros < minZeros))
+                                    {
+                                        minCost = cost;
+                                        minDir = dir;
+                                        minZeros = zeros;
+                                    }
                                 }
                             }
                         }
                     }
-                    dirMtx[++index] = minDir.normalized;
+                    dirMtx[index] = minDir.normalized;
+                    index++;
                 }
             }
         }
@@ -182,9 +212,14 @@ public class NavField : MonoBehaviour
         return pathMtx[index];
     }
 
-    public Vector3 GetDirectionFromPosition(Vector3 position)
+    public Vector3 GetDirection(Vector3 position)
     {
         Vector3Int intPos = PositionToNavPosition(position);
         return dirMtx[IndexFromPosition(intPos)];
+    }
+
+    public byte GetPathCost(Vector3 position) {
+        Vector3Int intPos = PositionToNavPosition(position);
+        return pathMtx[IndexFromPosition(intPos)];
     }
 }

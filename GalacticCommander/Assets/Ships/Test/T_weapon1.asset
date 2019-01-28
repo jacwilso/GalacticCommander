@@ -16,10 +16,10 @@ MonoBehaviour:
   cost: 1
   turnCooldown: 0
   weaponType: 0
-  damageTypes: 0
+  damageTypes: 1
   accuracy: 100
   damage:
-  - {x: 0, y: 0}
+  - {x: 10, y: 20}
   - {x: 0, y: 0}
   - {x: 0, y: 0}
   - {x: 0, y: 0}

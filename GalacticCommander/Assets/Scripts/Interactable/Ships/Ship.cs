@@ -29,16 +29,14 @@ public abstract class Ship : MonoBehaviour, IDamageable, IInteractable
     public WeaponProperties[] Weapons => weapons;
     protected ActionProperties[] actions;
 
-    WeaponProperties activeWeapon;
-    public WeaponProperties ActiveWeapon { get; set; }
-
-    Stat accuracy, damage;
+    Stat accuracy = new Stat(0), 
+        damage = new Stat(0);
 
     protected int currentAP;
     public int CurrentAP => currentAP;
 
-    protected float cachedAccuracy;
-    protected Vector2Int cachedDamage;
+    public float cachedAccuracy;
+    public WeaponDamageRange cachedDamage;
 
     protected virtual void Awake()
     {
@@ -61,7 +59,13 @@ public abstract class Ship : MonoBehaviour, IDamageable, IInteractable
     }
 
     #region Damage
-    public void GetAttacked()
+    public void UseWeapon(WeaponProperties weapon, Ship target) {
+        weapon.Used();
+        currentAP -= weapon.apCost;
+        target.GetAttacked();
+    }
+
+    public void GetAttacked() // TODO I hate this name
     {
 #if _DEBUG
         if (DebugPanel.Instance.alwaysHit || UnityEngine.Random.Range(0, 1) < cachedAccuracy)
@@ -69,10 +73,13 @@ public abstract class Ship : MonoBehaviour, IDamageable, IInteractable
         if (UnityEngine.Random.Range(0, 1) < cachedAccuracy)
 #endif
         {
-            GotHitParams hit = new GotHitParams();
-            hit.assailant = TurnOrder.Instance.Current.gameObject;
-            hit.damage = UnityEngine.Random.Range(cachedDamage.x, cachedDamage.y);
-            hit.direction = hit.assailant.transform.position - transform.position;
+            var assailant = TurnOrder.Instance.Current.gameObject;
+            GotHitParams hit = new GotHitParams(
+                (int)UnityEngine.Random.Range(cachedDamage.shieldRange.x, cachedDamage.shieldRange.y),
+                (int)UnityEngine.Random.Range(cachedDamage.hullRange.x, cachedDamage.hullRange.y),
+                assailant.transform.position - transform.position,
+                assailant
+            );
             Damaged(hit);
         }
         else { Debug.Log("Miss"); }
@@ -82,12 +89,14 @@ public abstract class Ship : MonoBehaviour, IDamageable, IInteractable
     {
         // TODO include armor values
         // Debug.Log(hit.damage + " " + properties.Hull.Value + " " + properties.Shield.Value);
-        properties.Shield.Value -= hit.damage;
-        properties.Hull.Value += Mathf.Min(0, properties.Shield.Value);
-
+        properties.Shield.Value -= hit.shieldDamage;
         properties.Shield.Value = Mathf.Max(0, properties.Shield.Value);
+        // Debug.Log("hull -- " + properties.Hull.Value + " " + hit.hullDamage);
+        properties.Hull.Value -= hit.hullDamage;
         properties.Hull.Value = Mathf.Max(0, properties.Hull.Value);
-        Debug.Log(properties.Hull.Value + " " + properties.Shield.Value);
+        // Debug.Log("hull -- " + properties.Hull.Value);
+
+        Debug.Log($"Hull: {properties.Hull.Value} Shield: {properties.Shield.Value}");
         DamageEvent?.Invoke();
         if (properties.Hull.Value == 0)
         {
@@ -103,60 +112,22 @@ public abstract class Ship : MonoBehaviour, IDamageable, IInteractable
         // Instantiate<ParticleSystem>(properties.Explosion, transform);
     }
 
-    public class WeaponDamageRange
-    {
-        public Vector2 hullRange, shieldRange;
-
-        public WeaponDamageRange()
-        {
-            hullRange = new Vector2();
-            shieldRange = new Vector2();
-        }
-
-        public WeaponDamageRange(Vector2 hull, Vector2 shield)
-        {
-            hullRange = hull;
-            shieldRange = shield;
-        }
-
-        public static WeaponDamageRange operator +(WeaponDamageRange a, WeaponDamageRange b)
-        {
-            return new WeaponDamageRange(
-                a.hullRange + b.hullRange,
-                a.shieldRange + b.shieldRange
-            );
-        }
-
-        public static WeaponDamageRange operator *(WeaponDamageRange a, float b)
-        {
-            return new WeaponDamageRange(
-                a.hullRange * b,
-                a.shieldRange * b
-            );
-        }
-
-        public float DamageSum()
-        {
-            return hullRange.x + hullRange.y + shieldRange.x + shieldRange.y;
-        }
-    }
-
-    public WeaponDamageRange CalculateDamageRange(WeaponDamageRange targetDamage, FiringZone.Face face, float targetShield)
+    public WeaponDamageRange CalculateDamageRange(WeaponProperties weapon, float accuracy, FiringZone.Face face, float targetShield, float priorShieldDamage = 0)
     {
         WeaponDamageRange damageRange = new WeaponDamageRange();
         damage.AddModifier(properties.Profile[(int)face]);
         // target has a shield - need to factor in each weapon types effectiveness
-        if (targetShield - targetDamage.shieldRange.x > 0)
+        if (targetShield - priorShieldDamage > 0)
         {
             // a list going from most effective to least effective against shields
-            foreach (var shieldPriority in DamageTypeEffect.SHIELD_PRIORITY)
+            foreach (var shieldPriority in DamageTypeEffect.SHIELD_PRIORITY_LIST)
             {
-                Vector2Int range = activeWeapon.Damage[(int)shieldPriority];
+                Vector2Int range = weapon.Damage[shieldPriority];
                 // TODO add modifiers of effect
                 // THIS IS PROBLEM AREA
                 // TODO doing targetDamage.shieldRange.x is being conservative
                 // doing targetDamage.shieldRange.y would be greedy
-                if (damageRange.shieldRange.x >= targetShield - targetDamage.shieldRange.x)
+                if (damageRange.shieldRange.x >= targetShield - priorShieldDamage)
                 {
                     damage.BaseValue = range.x;
                     damageRange.hullRange.x += damage.Value * DamageTypeEffect.HullEffect(shieldPriority);
@@ -178,6 +149,7 @@ public abstract class Ship : MonoBehaviour, IDamageable, IInteractable
                     damageRange.shieldRange.y += damage.Value * DamageTypeEffect.ShieldEffect(shieldPriority);
                 }
             }
+            damageRange *= accuracy;
             damageRange.shieldRange.x = Mathf.Clamp(damageRange.shieldRange.x, 0, targetShield);
             damageRange.shieldRange.y = Mathf.Clamp(damageRange.shieldRange.y, 0, targetShield);
         }
@@ -185,55 +157,50 @@ public abstract class Ship : MonoBehaviour, IDamageable, IInteractable
         {
             // if the target has no shield it is simply hull damage
             // hull damage of a weapon can be precomputed and cached with effectivenesses
-            damage.BaseValue = activeWeapon.HullDamage.x;
+            damage.BaseValue = weapon.HullDamage.x;
             damageRange.hullRange.x = damage.Value;
-            damage.BaseValue = activeWeapon.HullDamage.y;
+            damage.BaseValue = weapon.HullDamage.y;
             damageRange.hullRange.y = damage.Value;
+            damageRange *= accuracy;
         }
         damage.RemoveModifier(properties.Profile[(int)face]);
         return damageRange;
     }
 
-    // public WeaponDamageRange CalculateDamageRange(Vector3 targetPosition, float targetShield)
+    // NO DamageType Effectiveness
+    // public Vector2Int CalculateDamageRange(FiringZone.Face face)
     // {
-    //     FiringZone.Face face = Zone.FrustrumFace(targetPosition);
-    //     return CalculateDamageRange(face, targetShield);
+    //     Vector2Int damageRange = new Vector2Int();
+    //     damage.AddModifier(properties.Profile[(int)face]);
+    //     // if (shield) {
+
+    //     // } else {
+    //     damage.BaseValue = activeWeapon.HullDamage.x;
+    //     damageRange.x = (int)damage.Value;
+    //     damage.BaseValue = activeWeapon.HullDamage.y;
+    //     damageRange.y = (int)damage.Value;
+    //     damage.RemoveModifier(properties.Profile[(int)face]);
+    //     // }
+    //     return damageRange;
     // }
 
-    // NO DamageType Effectiveness
-    public Vector2Int CalculateDamageRange(FiringZone.Face face)
-    {
-        Vector2Int damageRange = new Vector2Int();
-        damage.AddModifier(properties.Profile[(int)face]);
-        // if (shield) {
-
-        // } else {
-        damage.BaseValue = activeWeapon.HullDamage.x;
-        damageRange.x = (int)damage.Value;
-        damage.BaseValue = activeWeapon.HullDamage.y;
-        damageRange.y = (int)damage.Value;
-        damage.RemoveModifier(properties.Profile[(int)face]);
-        // }
-        return damageRange;
-    }
-
-    public float CalculateAccuracy(Vector3 targetPosition, float targetEvasion, Vector3? position = null)
+    public float CalculateAccuracy(WeaponProperties weapon, Vector3 targetPosition, float targetEvasion, Vector3? position = null)
     {
         float range = Vector3.Distance(targetPosition, position ?? transform.position);
-        accuracy.BaseValue = activeWeapon.Accuracy;
-        float accuracyVal = (accuracy.Value - targetEvasion) / 24;
-        accuracyVal = Mathf.Max(accuracyVal, 0);
+        accuracy.BaseValue = weapon.Accuracy;
+        float accuracyVal = (accuracy.Value - targetEvasion) / (100 * range); // TODO change
+        accuracyVal = Mathf.Clamp(accuracyVal, 0, 1);
         return accuracyVal;
     }
     #endregion
 
     public virtual void StartTurn()
     {
-        currentAP = Mathf.Min(currentAP + ShipDefaults.baseAP, ShipDefaults.maxAP);
+        currentAP = Mathf.Min(currentAP + ShipDefaults.BASE_AP, ShipDefaults.MAX_AP);
         StartTurnEvent?.Invoke();
     }
 
-    public void EndTurn()
+    public virtual void EndTurn()
     {
         EndTurnEvent?.Invoke();
     }

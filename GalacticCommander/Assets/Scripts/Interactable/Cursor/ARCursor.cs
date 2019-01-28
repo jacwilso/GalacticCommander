@@ -53,29 +53,31 @@ public class ARCursor : MonoBehaviour
 
     void Update()
     {
-#if UNITY_EDITOR && !INSTANT_PREVIEW
+#if UNITY_EDITOR
         if (Input.GetMouseButtonDown(0))
         {
             screenPos = Input.mousePosition;
 #else
         if (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began)
         {
+            Debug.Log("touch happened");
             screenPos = Input.GetTouch(0).position;
 #endif
             IInteractable newSelected = null;
             IInteractable oldSelected = selected;
 
             RaycastHit hit;
-            pointerData.position = screenPos;
-            List<RaycastResult> results = new List<RaycastResult>();
-            eventSys.RaycastAll(pointerData, results);
-            if (results.Count > 0)
-            {
-                newSelected = results[0].gameObject.GetComponent<IInteractable>();
-                newSelected?.Select();
-                return;
-            }
-            else if (Physics.Raycast(cam.ScreenPointToRay(screenPos), out hit))
+            // pointerData.position = screenPos;
+            // List<RaycastResult> results = new List<RaycastResult>();
+            // eventSys.RaycastAll(pointerData, results);
+            // if (results.Count > 0)
+            // {
+            //     newSelected = results[0].gameObject.GetComponent<IInteractable>();
+            //     newSelected?.Select();
+            //     return;
+            // }
+            if (Physics.Raycast(cam.ScreenPointToRay(screenPos), out hit))
+            // else if (Physics.Raycast(cam.ScreenPointToRay(screenPos), out hit))
             {
                 newSelected = hit.transform.GetComponent<IInteractable>();
             }

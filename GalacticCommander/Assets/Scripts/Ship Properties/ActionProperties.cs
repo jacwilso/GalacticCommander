@@ -20,7 +20,7 @@ public abstract class ActionProperties : StatPropertyObject
 
     GameEvent endRound;
 
-    protected void OnEnable()
+    protected virtual void OnEnable()
     {
         ResourceRequest req = Resources.LoadAsync("Events/EndRound", typeof(GameEvent));
         endRound = req.asset as GameEvent;
@@ -31,9 +31,13 @@ public abstract class ActionProperties : StatPropertyObject
     {
         currentCooldown = turnCooldown;
     }
+
     public void Cooldown()
     {
         currentCooldown = Mathf.Max(currentCooldown - 1, 0);
-        Debug.Log(currentCooldown);
+    }
+
+    public void ResetCooldown() {
+        currentCooldown = 0;
     }
 }
